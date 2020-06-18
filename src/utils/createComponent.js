@@ -1,0 +1,117 @@
+/**
+ * @file san test utils tool file
+ **/
+
+import isPlainObject from 'lodash/isPlainObject';
+import isEmpty from 'lodash/isEmpty';
+import cloneDeep from 'lodash/cloneDeep';
+import {throwError, genId, componentMap, getComponentProto} from './index';
+import {createComponentStubs} from './createComponentStubs';
+
+function mergeStubsComponents(rootComponent, stubsComponents) {
+    if (isEmpty(rootComponent.components)) {
+        rootComponent.components = stubsComponents;
+    }
+    rootComponent = componentMap(rootComponent, (component, name) => {
+        if (stubsComponents[name]) {
+            component = stubsComponents[name];
+        }
+        return component;
+    });
+    return rootComponent;
+}
+
+function getSlotObject(key, value) {
+    const result = {};
+    let template;
+    if (typeof value === 'function' || isPlainObject(value)) {
+        result.slotId = genId();
+        result.type = 'component';
+        result.component = value;
+        template = `<${result.slotId} />`;
+    }
+    else if (typeof value === 'string') {
+        result.type = 'string';
+        template = value;
+    }
+    result.template = `<template ${key === 'default' ? '' : 'slot="' + key + '"'}>${template}</template>`;
+    return result;
+}
+
+export function getNewComponent(component) {
+    if (isPlainObject(component)) {
+        const clonedComponent = cloneDeep(component);
+        for (let key in clonedComponent.components) {
+            clonedComponent.components[key] = getComponentProto(clonedComponent.components[key]);
+        }
+        return clonedComponent;
+    }
+    return getComponentProto(component);
+}
+
+
+export default function (component, options = {}) {
+    let newComponent = getNewComponent(component);
+
+    const componentOptions = {
+        data: options.data || {}
+    };
+
+    // process methods
+    const methods = options.methods || {};
+    Object.keys(methods).forEach(key => {
+        if (typeof methods[key] === 'function') {
+            newComponent[key] = methods[key];
+        }
+    });
+
+    // process parent component
+    let parentComponent = options.parentComponent;
+    if (parentComponent) {
+        if (!isPlainObject(parentComponent)
+            && (typeof parentComponent !== 'function' || parentComponent.name !== 'ComponentClass')) {
+            throwError('options.parentComponent should be a valid San component');
+        }
+        componentOptions.owner = parentComponent;
+    }
+
+    // process stubs
+    let stubsComponents = {};
+    if (Object.keys(options.stubs).length > 0) {
+        const components = newComponent.components || {};
+        stubsComponents = {
+            ...options.components,
+            ...createComponentStubs(components, options.stubs)
+        };
+    }
+    newComponent = mergeStubsComponents(newComponent, stubsComponents);
+
+    const slots = options.slots;
+    if (slots) {
+        const slotsArr = [];
+        Object.keys(slots).forEach(key => {
+            const slotItems = Array.isArray(slots[key]) ? slots[key] : [slots[key]];
+            slotItems.forEach(slot => {
+                if (typeof slot !== 'string' && !isPlainObject(slot) && typeof slot !== 'function') {
+                    throwError('slots[key] must be a Component, string or an array of Components');
+                }
+                slotsArr.push(getSlotObject(key, slot));
+            });
+        });
+        let slotTemplate = '';
+        slotsArr.forEach(slot => {
+            if (slot.type === 'component') {
+                newComponent.components[slot.slotId] = getComponentProto(slot.component);
+            }
+            slotTemplate += slot.template;
+        });
+
+        componentOptions.source = `<slots-component>${slotTemplate}</slots-component>`;
+        componentOptions.owner = newComponent;
+    }
+
+    return {
+        newComponent: newComponent,
+        componentOptions
+    };
+}

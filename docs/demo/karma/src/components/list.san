@@ -1,0 +1,17 @@
+/**
+ * @file mocha demo file
+ **/
+
+<template>
+    <ul>
+        <li s-for="item in items">
+            {{item}}
+        </li>
+    </ul>
+</template>
+
+<script>
+    export default {
+
+    }
+</script>

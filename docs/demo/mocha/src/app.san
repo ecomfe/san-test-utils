@@ -1,0 +1,30 @@
+<template>
+    <div>
+        <message-toggle />
+        <list items="{{items}}" />
+    </div>
+</template>
+
+<script>
+    import list from '@/components/list.san';
+    import messageToggle from '@/components/messageToggle.san';
+
+    export default {
+        initData() {
+            return {
+                items: ['list item 1', 'list item 2']
+            };
+        },
+        components: {
+            'list': list,
+            'message-toggle': messageToggle
+        }
+    }
+</script>
+
+<style>
+#app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    color: #2c3e50;
+}
+</style>

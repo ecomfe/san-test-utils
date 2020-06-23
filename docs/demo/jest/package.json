@@ -13,7 +13,7 @@
     "san-store": "^2.0.0"
   },
   "devDependencies": {
-    "@baidu/san-test-utils": "^0.1.0",
+    "san-test-utils": "^0.1.0",
     "babel-core": "^6.26.0",
     "babel-jest": "^21.2.0",
     "babel-loader": "^7.1.2",

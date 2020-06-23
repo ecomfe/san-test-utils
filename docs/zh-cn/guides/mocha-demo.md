@@ -1,6 +1,6 @@
 # 用 Mocha 和 webpack 测试组件
 
-> 我们在 [icode](http://icode.baidu.com/repos/baidu/hulk/@baidu/san-test-utils/tree/master:docs/demo/mocha) 上放有一个关于这些设置的示例工程。
+> 我们在 [github](https://github.com/ecomfe/san-test-utils/tree/master/docs/demo/mocha) 上放有一个关于这些设置的示例工程。
 
 另一个测试单文件组件的策略是通过 webpack 编译所有的测试文件然后在测试运行器中运行。这样做的好处是可以完全支持所有 webpack 和 san-loader 的功能，所以我们不必对我们的源代码做任何妥协。
 
@@ -13,7 +13,7 @@
 首先要做的是安装测试依赖：
 
 ```js
-$ npm install --save-dev @baidu/san-test-utils mocha mocha-webpack
+$ npm install --save-dev san-test-utils mocha mocha-webpack
 ```
 
 接下来我们需要在 `package.json` 中定义一个测试脚本。
@@ -140,7 +140,7 @@ global.expect = require('expect');
 然后创建一个名为 test/list.test.js 的测试文件并写入如下代码：
 
 ```js
-import {shallowMount} from '@baidu/@baidu/san-test-utils';
+import {shallowMount} from 'san-test-utils';
 import list from '../src/list.san';
 
 describe('list', () => {
@@ -168,7 +168,7 @@ $ npm run test
 
 ### 相关资料
 
-* [该设置的示例工程](http://icode.baidu.com/repos/baidu/hulk/@baidu/san-test-utils/tree/master:docs/demo/mocha)
+* [该设置的示例工程](https://github.com/ecomfe/san-test-utils/tree/master/docs/demo/mocha)
 * [Mocha](https://mochajs.org/)
 * [mocha-webpack](http://zinserjan.github.io/mocha-webpack/)
 * [Chai](http://chaijs.com/)

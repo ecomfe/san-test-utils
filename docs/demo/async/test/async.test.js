@@ -3,7 +3,7 @@
  **/
 
 /* global jest */
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import async from '../async';
 import flushPromises from 'flush-promises';
 

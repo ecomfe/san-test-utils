@@ -8,7 +8,7 @@
 * **示例**：
 
 ```js
-import {mount, shallowMount} from '@baidu/san-test-utils';
+import {mount, shallowMount} from 'san-test-utils';
 import foo from './foo';
 
 mount(component, {

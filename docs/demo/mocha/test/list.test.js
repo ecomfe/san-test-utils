@@ -1,7 +1,7 @@
 /**
  * @file mocha demo file
  **/
-import {shallowMount} from '@baidu/san-test-utils';
+import {shallowMount} from 'san-test-utils';
 import list from '@/components/list.san';
 
 describe('list', () => {

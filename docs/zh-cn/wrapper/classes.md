@@ -15,7 +15,7 @@
 * **示例**：
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import foo from './foo';
 
 const wrapper = mount(Foo);

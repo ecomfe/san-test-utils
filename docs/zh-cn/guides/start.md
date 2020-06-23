@@ -1,13 +1,13 @@
 # 起步
 
-> 我们在 [icode](http://icode.baidu.com/repos/baidu/hulk/san-test-utils/tree/master:docs/demo/start) 上放有一个关于起步的示例工程。
+> 我们在 [github](https://github.com/ecomfe/san-test-utils/tree/master/docs/demo/start) 上放有一个关于起步的示例工程。
 
 # 安装
 
 快速尝鲜 San Test Utils 的办法就是克隆我们的 demo 仓库再加上基本的设置和依赖安装。
 
 ```js
-$ git clone ssh://mayihui@icode.baidu.com:8235/baidu/hulk/san-test-utils
+$ git clone https://github.com/ecomfe/san-test-utils.git
 $ cd docs/demo/start
 $ npm install
 ```
@@ -51,7 +51,7 @@ San Test Utils 通过将它们隔离挂载，然后模拟必要的输入 (data�
 
 // 从测试实用工具集中导入 `mount()` 方法
 // 同时导入你要测试的组件
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import counter from './counter';
 
 // 现在挂载组件，你便得到了这个包裹器
@@ -69,7 +69,7 @@ console.log(wrapper);
 现在我们已经有了这个包裹器，我们能做的第一件事就是确认该组件渲染出来的 HTML 符合预期。
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import counter from './counter';
 
 describe('Counter', () => {

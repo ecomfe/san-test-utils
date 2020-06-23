@@ -21,7 +21,7 @@
 #### 不使用options选项
 
 ```js
-import {renderToString} from '@baidu/san-test-utils/dist/san-test-utils.ssr';
+import {renderToString} from 'san-test-utils/dist/san-test-utils.ssr';
 import foo from './foo';
 
 describe('Foo', () => {
@@ -35,7 +35,7 @@ describe('Foo', () => {
 #### 使用options选项
 
 ```js
-import {renderToString} from '@baidu/san-test-utils/dist/san-test-utils.ssr';
+import {renderToString} from 'san-test-utils/dist/san-test-utils.ssr';
 import foo from './foo';
 
 describe('Foo', () => {

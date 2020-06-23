@@ -1,6 +1,6 @@
 # 用 Karma 测试单文件组件
 
-> 我们在 [icode](http://icode.baidu.com/repos/baidu/hulk/san-test-utils/tree/master:docs/demo/karma) 上放有一个该设置的示例工程。
+> 我们在 [github](https://github.com/ecomfe/san-test-utils/tree/master/docs/demo/karma) 上放有一个该设置的示例工程。
 
 Karma 是一个启动浏览器运行测试并生成报告的测试运行器。我们会使用 Mocha 框架撰写测试，同时使用 chai 作为断言库。
 
@@ -11,7 +11,7 @@ Karma 是一个启动浏览器运行测试并生成报告的测试运行器。�
 第一件要做的事是安装测试依赖：
 
 ```js
-$ npm install --save-dev @baidu/san-test-utils karma karma-chrome-launcher karma-mocha karma-sourcemap-loader karma-spec-reporter karma-webpack mocha
+$ npm install --save-dev san-test-utils karma karma-chrome-launcher karma-mocha karma-sourcemap-loader karma-spec-reporter karma-webpack mocha
 ```
 
 接下来我们需要在 `package.json` 定义一个测试脚本。
@@ -94,7 +94,7 @@ $ npm install --save-dev karma-chai
 然后创建一个名为 test/list.test.js 的测试文件并写入如下代码：
 
 ```js
-import {shallowMount} from '@baidu/san-test-utils';
+import {shallowMount} from 'san-test-utils';
 import list from '../src/list.san';
 
 describe('list', () => {
@@ -179,7 +179,7 @@ module.exports = function(config) {
 
 ### 相关资料
 
-* [该设置的示例工程](http://icode.baidu.com/repos/baidu/hulk/san-test-utils/tree/master:docs/demo/karma)
+* [该设置的示例工程](https://github.com/ecomfe/san-test-utils/tree/master/docs/demo/karma)
 * [Karma](http://karma-runner.github.io/)
 * [Mocha](https://mochajs.org/)
 * [Chai](http://chaijs.com/)

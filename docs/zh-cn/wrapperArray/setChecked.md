@@ -14,7 +14,7 @@ wrapperArray.wrappers.forEach(wrapper => wrapper.setChecked(checked))
 * **示例**：
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 
 const wrapper = mount({
   initData() {

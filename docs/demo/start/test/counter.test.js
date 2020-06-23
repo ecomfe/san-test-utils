@@ -3,7 +3,7 @@
  **/
 
 import san from 'san';
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import counter from '../counter';
 
 describe('counter', () => {

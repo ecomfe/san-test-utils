@@ -25,7 +25,7 @@
 #### 不使用options选项
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import foo from './foo';
 
 describe('Foo', () => {
@@ -39,7 +39,7 @@ describe('Foo', () => {
 #### 使用options选项
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import foo from './foo';
 
 describe('Foo', () => {
@@ -57,7 +57,7 @@ describe('Foo', () => {
 #### 固定在DOM上
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import foo from './foo';
 
 describe('Foo', () => {
@@ -73,7 +73,7 @@ describe('Foo', () => {
 #### 默认插槽和具名插槽
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import foo from './foo';
 import bar from './bar';
 import fooBar from './fooBar';
@@ -95,7 +95,7 @@ describe('Foo', () => {
 #### 将组件存根
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import foo from './foo';
 import bar from './bar';
 import faz from './faz';

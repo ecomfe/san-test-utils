@@ -14,7 +14,7 @@
 `createWrapper` 为一个被挂载的 San 实例或一个 HTML 元素创建一个 `Wrapper`。
 
 ```js
-import {createWrapper} from '@baidu/san-test-utils';
+import {createWrapper} from 'san-test-utils';
 import Foo from './foo';
 
 const vm = new Foo();

@@ -2,7 +2,7 @@
  * @file mocha demo file
  **/
 import san from 'san';
-import {shallowMount} from '@baidu/san-test-utils';
+import {shallowMount} from 'san-test-utils';
 import messageToggle from '@/components/messageToggle.san';
 import message from '@/components/message.san';
 

@@ -8,7 +8,7 @@
 * **示例**：
 
 ```js
-import {shallowMount} from '@baidu/san-test-utils';
+import {shallowMount} from 'san-test-utils';
 import foo from './foo';
 
 const bazComponent = {

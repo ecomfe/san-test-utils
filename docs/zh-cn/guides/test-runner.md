@@ -35,6 +35,6 @@ San 的单文件组件在它们运行于 Node 或浏览器之前是需要预编�
 ### 相关资料
 
 * [测试运行器性能比拼](https://github.com/eddyerburgh/vue-unit-test-perf-comparison)
-* [使用 Jest 的示例工程](http://icode.baidu.com/repos/baidu/hulk/san-test-utils/tree/master:docs/demo/jest)
-* [使用 Mocha 的示例工程](http://icode.baidu.com/repos/baidu/hulk/san-test-utils/tree/master:docs/demo/mocha)
-* [使用 Karma 的示例工程](http://icode.baidu.com/repos/baidu/hulk/san-test-utils/tree/master:docs/demo/karma)
+* [使用 Jest 的示例工程](https://github.com/ecomfe/san-test-utils/tree/master/docs/demo/jest)
+* [使用 Mocha 的示例工程](https://github.com/ecomfe/san-test-utils/tree/master/docs/demo/mocha)
+* [使用 Karma 的示例工程](https://github.com/ecomfe/san-test-utils/tree/master/docs/demo/karma)

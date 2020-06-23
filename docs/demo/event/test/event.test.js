@@ -2,7 +2,7 @@
  * @file san test utils getting started test file
  **/
 
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import quantity from '../quantity';
 import click from '../click';
 import sinon from 'sinon';

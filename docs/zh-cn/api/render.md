@@ -23,7 +23,7 @@ Cheerio 是一个类似 jQuery 的库，可以在 Node.js 中游览 DOM 对象�
 #### 不使用options选项
 
 ```js
-import {render} from '@baidu/san-test-utils/dist/san-test-utils.ssr';
+import {render} from 'san-test-utils/dist/san-test-utils.ssr';
 import foo from './foo';
 
 describe('Foo', () => {
@@ -37,7 +37,7 @@ describe('Foo', () => {
 #### 使用options选项
 
 ```js
-import {render} from '@baidu/san-test-utils/dist/san-test-utils.ssr';
+import {render} from 'san-test-utils/dist/san-test-utils.ssr';
 import foo from './foo';
 
 describe('Foo', () => {

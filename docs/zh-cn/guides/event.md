@@ -56,7 +56,7 @@ export default san.defineComponent({
 
 ```js
 import yesNoComponent from './yesNoComponent';
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import sinon from 'sinon';
 
 describe('Click event', () => {
@@ -131,7 +131,7 @@ export default san.defineComponent({
 
 ```js
 import quantityComponent from './quantityComponent';
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 
 describe('Key event tests', () => {
     it('Quantity is zero by default', () => {

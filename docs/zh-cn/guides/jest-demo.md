@@ -1,6 +1,6 @@
 # 用 Jest 测试组件
 
-> 我们在 [icode](http://icode.baidu.com/repos/baidu/hulk/san-test-utils/tree/master:docs/demo/jest) 上放有一个关于这些设置的示例工程。
+> 我们在 [github](https://github.com/ecomfe/san-test-utils/tree/master/docs/demo/jest) 上放有一个关于这些设置的示例工程。
 
 Jest 是一个由 Facebook 开发的测试运行器，致力于提供一个“bettery-included”单元测试解决方案。你可以在其[官方文档](https://jestjs.io/)学习到更多 Jest 的知识。
 
@@ -11,7 +11,7 @@ Jest 是一个由 Facebook 开发的测试运行器，致力于提供一个“be
 我们要做的第一件事就是安装 `Jest` 和 `San Test Utils`：
 
 ```js
-$ npm install jest @baidu/san-test-utils --save-dev
+$ npm install jest san-test-utils --save-dev
 ```
 
 然后我们需要在 `package.json` 中定义一个单元测试的脚本。
@@ -144,7 +144,7 @@ Jest 可以被用来生成多种格式的测试覆盖率报告。以下是一个
 如果你已经熟悉了 Jasmine，你应该很适应 Jest 的[断言 API](https://jestjs.io/docs/zh-Hans/expect)：
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 import component from './component';
 
 describe('component', () => {
@@ -168,6 +168,6 @@ test('renders correctly', () => {
 
 ### 相关资料
 
-* [该设置的示例工程](http://icode.baidu.com/repos/baidu/hulk/san-test-utils/tree/master:docs/demo/jest)
+* [该设置的示例工程](https://github.com/ecomfe/san-test-utils/tree/master/docs/demo/jest)
 * [Jest](https://jestjs.io/)
 * [Babel preset env](https://github.com/babel/babel-preset-env)

@@ -41,7 +41,7 @@ export default {
 测试用例可以写成像这样：
 
 ```js
-import {shallowMount} from '@baidu/san-test-utils';
+import {shallowMount} from 'san-test-utils';
 import async from './async';
 jest.mock('axios');
 
@@ -72,7 +72,7 @@ it('fetches async when a button is clicked', done => {
 更新后的测试看起来像这样：
 
 ```js
-import {shallowMount} from '@baidu/san-test-utils';
+import {shallowMount} from 'san-test-utils';
 import flushPromises from 'flush-promises';
 import async from './async';
 

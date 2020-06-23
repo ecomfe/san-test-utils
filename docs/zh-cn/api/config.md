@@ -15,7 +15,7 @@ San Test Utils 包含了一个定义其选项的配置对象。
 示例
 
 ```js
-import {config} from '@baidu/san-test-utils';
+import {config} from 'san-test-utils';
 
 config.stubs['my-component'] = '<div />';
 ```
@@ -30,7 +30,7 @@ config.stubs['my-component'] = '<div />';
 示例
 
 ```js
-import {config} from '@baidu/san-test-utils';
+import {config} from 'san-test-utils';
 
 config.data['state'] = {
     id: 1
@@ -47,7 +47,7 @@ config.data['state'] = {
 示例
 
 ```js
-import {config} from '@baidu/san-test-utils';
+import {config} from 'san-test-utils';
 
 config.methods['getData'] = () => {};
 ```

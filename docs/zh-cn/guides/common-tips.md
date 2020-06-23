@@ -21,7 +21,7 @@
 San Test Utils 允许你通过 shallowMount 方法只挂载一个组件而不渲染其子组件 (即保留它们的存根)：
 
 ```js
-import {shallowMount} from '@baidu/san-test-utils';
+import {shallowMount} from 'san-test-utils';
 
 const wrapper = shallowMount(component);
 wrapper.vm; // 挂载的 San 实例
@@ -106,7 +106,7 @@ const parentComponent = san.defineComponent({
 测试代码
 
 ```js
-import {shallowMount} from '@baidu/san-test-utils';
+import {shallowMount} from 'san-test-utils';
 import parentComponent from './parentComponent';
 import childComponent from './childComponent';
 
@@ -133,7 +133,7 @@ wrapper.setData({count: 10});
 ### 数据注入
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 
 const data = {
     foo: 'bar',
@@ -150,7 +150,7 @@ mount(component, {
 你可以使用 `stubs` 选项覆写已经注册的组件：
 
 ```js
-import {mount} from '@baidu/san-test-utils';
+import {mount} from 'san-test-utils';
 
 mount(component, {
   // 将会把 globally-registered-component 解析为空的存根

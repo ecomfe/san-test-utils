@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: __isProduction ? 'http://hulk.baidu-int.com/docs/san-test-utils/' : '/'
+    publicPath: __isProduction ? 'https://ecomfe.github.io/san-test-utils/' : '/'
 };

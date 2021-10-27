@@ -4,8 +4,9 @@
 
 import {throwError} from './index';
 import isPlainObject from 'lodash/isPlainObject';
+import { SelectorValue } from '../types';
 
-export function isDomSelector(selector) {
+export function isDomSelector(selector: SelectorValue) {
     if (typeof selector !== 'string') {
         return false;
     }
@@ -27,7 +28,7 @@ export function isDomSelector(selector) {
     }
 }
 
-export function getSelector(selector, methodName) {
+export function getSelector(selector: SelectorValue, methodName: string) {
     let type;
     if (isDomSelector(selector)) {
         type = 'DOM_SELECTOR';

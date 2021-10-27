@@ -7,22 +7,24 @@ import isEmpty from 'lodash/isEmpty';
 import cloneDeep from 'lodash/cloneDeep';
 import {throwError, genId, componentMap, getComponentProto} from './index';
 import {createComponentStubs} from './createComponentStubs';
+import { ComponentWithPrototype, LooseObject, SlotObject } from '../types';
+import { ComponentConstructor, SanComponent, SanComponentConfig } from 'san/types';
 
-function mergeStubsComponents(rootComponent, stubsComponents) {
+function mergeStubsComponents(rootComponent: ComponentWithPrototype, stubsComponents: LooseObject) {
     if (isEmpty(rootComponent.components)) {
         rootComponent.components = stubsComponents;
     }
-    rootComponent = componentMap(rootComponent, (component, name) => {
+    rootComponent = componentMap(rootComponent, (component, name = '') => {
         if (stubsComponents[name]) {
             component = stubsComponents[name];
         }
         return component;
-    });
+    })!;
     return rootComponent;
 }
 
-function getSlotObject(key, value) {
-    const result = {};
+function getSlotObject(key: string, value: string | Function | object) {
+    const result: SlotObject = {};
     let template;
     if (typeof value === 'function' || isPlainObject(value)) {
         result.slotId = genId();
@@ -38,11 +40,11 @@ function getSlotObject(key, value) {
     return result;
 }
 
-export function getNewComponent(component) {
+export function getNewComponent(component: SanComponentConfig<any, any>) {
     if (isPlainObject(component)) {
         const clonedComponent = cloneDeep(component);
         for (let key in clonedComponent.components) {
-            clonedComponent.components[key] = getComponentProto(clonedComponent.components[key]);
+            clonedComponent.components[key] = getComponentProto(clonedComponent.components[key] as ComponentConstructor<{}, {}>);
         }
         return clonedComponent;
     }
@@ -50,10 +52,14 @@ export function getNewComponent(component) {
 }
 
 
-export default function (component, options = {}) {
+export default function (component: SanComponent<any>, options: LooseObject = {}) {
     let newComponent = getNewComponent(component);
 
-    const componentOptions = {
+    const componentOptions: {
+        data: LooseObject,
+        source?: string,
+        owner?: any,
+    } = {
         data: options.data || {}
     };
 
@@ -88,10 +94,10 @@ export default function (component, options = {}) {
 
     const slots = options.slots;
     if (slots) {
-        const slotsArr = [];
+        const slotsArr: SlotObject[] = [];
         Object.keys(slots).forEach(key => {
             const slotItems = Array.isArray(slots[key]) ? slots[key] : [slots[key]];
-            slotItems.forEach(slot => {
+            slotItems.forEach((slot: Function | string | object) => {
                 if (typeof slot !== 'string' && !isPlainObject(slot) && typeof slot !== 'function') {
                     throwError('slots[key] must be a Component, string or an array of Components');
                 }
@@ -101,7 +107,7 @@ export default function (component, options = {}) {
         let slotTemplate = '';
         slotsArr.forEach(slot => {
             if (slot.type === 'component') {
-                newComponent.components[slot.slotId] = getComponentProto(slot.component);
+                newComponent.components[slot.slotId!] = getComponentProto(slot.component as object);
             }
             slotTemplate += slot.template;
         });

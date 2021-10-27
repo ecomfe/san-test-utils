@@ -9,7 +9,7 @@ import babel from 'rollup-plugin-babel';
 import typescript from '@rollup/plugin-typescript';
 
 export default [{
-    input: 'src/testUtils.js',
+    input: 'src/testUtils.ts',
     output: {
         file: 'dist/san-test-utils.js',
         format: 'cjs'
@@ -23,16 +23,11 @@ export default [{
         babel({
             runtimeHelpers: true
         }),
-        typescript({
-            target: 'esnext',
-            lib: ["es5", "es6", "dom"],
-            tsconfig: './tsconfig.json',
-            rootDir: 'src'
-        }),
+        typescript(),
         commonjs()
     ]
 }, {
-    input: 'src/testUtils.js',
+    input: 'src/testUtils.ts',
     output: {
         file: 'dist/san-test-utils.iife.js',
         format: 'iife',
@@ -53,15 +48,10 @@ export default [{
         babel({
             runtimeHelpers: true
         }),
-        typescript({
-            target: 'esnext',
-            lib: ["es5", "es6", "dom"],
-            tsconfig: './tsconfig.json',
-            rootDir: 'src'
-        }),
+        typescript(),
     ]
 }, {
-    input: 'src/testUtils.js',
+    input: 'src/testUtils.ts',
     output: {
         file: 'dist/san-test-utils.umd.js',
         format: 'umd',
@@ -82,15 +72,10 @@ export default [{
         babel({
             runtimeHelpers: true
         }),
-        typescript({
-            target: 'esnext',
-            lib: ["es5", "es6", "dom"],
-            tsconfig: './tsconfig.json',
-            rootDir: 'src'
-        }),
+        typescript(),
     ]
 }, {
-    input: 'src/serverTestUtils.js',
+    input: 'src/serverTestUtils.ts',
     output: {
         file: 'dist/san-test-utils.ssr.js',
         format: 'cjs'
@@ -105,11 +90,6 @@ export default [{
         babel({
             runtimeHelpers: true
         }),
-        typescript({
-            target: 'esnext',
-            lib: ["es5", "es6", "dom"],
-            tsconfig: './tsconfig.json',
-            rootDir: 'src'
-        }),
+        typescript(),
     ]
 }];

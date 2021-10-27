@@ -2,7 +2,10 @@
  * @file san test utils tool file
  **/
 
-function getOption(name, options, config = {}) {
+import { Component } from "san";
+import { ComponentWithPrototype, LooseObject, MergedComponentOptions, SelectorValue, VM } from "../types";
+
+function getOption(name: string, options: MergedComponentOptions, config: LooseObject = {}) {
     if (options
         || (config[name] && Object.keys(config[name]).length > 0)) {
         if (options instanceof Function) {
@@ -35,11 +38,11 @@ export function genId() {
     return id;
 }
 
-export function throwError(msg) {
+export function throwError(msg: string) {
     throw new Error(`[san-test-utils]: ${msg}`);
 }
 
-export function mergeOptions(options, config) {
+export function mergeOptions(options: MergedComponentOptions, config: LooseObject): MergedComponentOptions {
     return {
         ...options,
         stubs: getOption('stubs', options.stubs, config),
@@ -48,16 +51,16 @@ export function mergeOptions(options, config) {
     };
 }
 
-export function templateContainsComponent(template, name) {
+export function templateContainsComponent(template: string, name: string) {
     const re = new RegExp(`<${name}\\s*(\\s|>|(\/>))`, 'g');
     return re.test(template);
 }
 
-export function getComponentProto(rootComponent, results = {}) {
+export function getComponentProto(rootComponent: LooseObject, results: LooseObject = {}) {
     const names = Object.getOwnPropertyNames(rootComponent && rootComponent.prototype || {});
     names.forEach(name => {
         if (name !== 'constructor') {
-            results[name] = rootComponent.prototype[name];
+            results[name] = rootComponent!.prototype[name];
         }
     });
 
@@ -67,6 +70,7 @@ export function getComponentProto(rootComponent, results = {}) {
             results[key] = rootComponent[key];
         });
     }
+    // @ts-ignore
     delete results.constructor;
     const components = {
         ...results.components
@@ -75,16 +79,17 @@ export function getComponentProto(rootComponent, results = {}) {
     Object.keys(components).forEach(component => {
         results.components[component] = getComponentProto(components[component]);
     });
+
     return results;
 }
 
 
-export function componentMap(component, callback = component => component) {
+export function componentMap(component?: ComponentWithPrototype, callback = (component?: ComponentWithPrototype, key?: string) => component) {
     if (!component) {
         return;
     }
     const components = Object.assign({}, component.components || component.prototype && component.prototype.components);
-    let newComponent;
+    let newComponent: LooseObject = {};
     if (typeof component === 'function') {
         newComponent = getComponentProto(component);
     }
@@ -100,8 +105,8 @@ export function componentMap(component, callback = component => component) {
 }
 
 
-export function getAllComponents(rootComponent, components = {}) {
-    const comps = rootComponent.prototype.components || {};
+export function getAllComponents(rootComponent: ComponentWithPrototype, components: LooseObject = {}) {
+    const comps = rootComponent.prototype.components || {} as LooseObject;
     Object.keys(comps).forEach(key => {
         components[key] = comps[key];
         getAllComponents(comps[key], components);
@@ -109,7 +114,7 @@ export function getAllComponents(rootComponent, components = {}) {
     return components;
 }
 
-export function findAllComponents(vm, components = []) {
+export function findAllComponents(vm: VM<any>, components: VM<any>[] = []) {
     components.push(vm);
     if (vm && vm.children && vm.children.length) {
         vm.children.forEach(child => {
@@ -121,17 +126,19 @@ export function findAllComponents(vm, components = []) {
     return components;
 }
 
-export function findSanComponent(vm, component) {
+export function findSanComponent(vm: VM<any>, component: VM<any>) {
     const components = findAllComponents(vm);
     return components.filter(
+        // @ts-ignore
         item => item.constructor === component
+        // @ts-ignore
         || (component.prototype.name && item.name === component.prototype.name)
         || (component.name && item.name === component.name)
     );
 }
 
-export function findDomNodes(root, selector) {
-    const nodes = [];
+export function findDomNodes(root: Element, selector: SelectorValue) {
+    const nodes: Element[] = [];
     if (!root || !root.querySelectorAll || !root.matches) {
         return nodes;
     }
@@ -143,7 +150,7 @@ export function findDomNodes(root, selector) {
     return nodes.concat([].slice.call(root.querySelectorAll(selector)));
 }
 
-export function versionCompare(version1, version2) {
+export function versionCompare(version1: string, version2: string) {
     const version1Arr = version1.split('.');
     const version2Arr = version2.split('.');
     let i = 0;
@@ -151,7 +158,7 @@ export function versionCompare(version1, version2) {
 
     diff = version1Arr.length - version2Arr.length;
     while (diff === 0 && i < version1Arr.length) {
-        diff = Number(version1Arr[i] - Number(version2Arr[i]));
+        diff = Number(version1Arr[i]) - Number(version2Arr[i]);
         ++i;
     }
     if (diff > 0) {

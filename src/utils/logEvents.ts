@@ -2,8 +2,10 @@
  * @file san test utils log events file
  **/
 
-export function addEventLogger(localSan) {
-    localSan.Component.prototype.fire = function (name, ...args) {
+import { LocalSan, LooseObject } from "../types";
+
+export function addEventLogger(localSan: LocalSan) {
+    localSan.Component.prototype.fire = function (name: string, ...args: any[]) {
         const fired = this.data.get('_fired') || {};
         const firedByOrder = this.data.get('_firedByOrder') || [];
         (fired[name] || (fired[name] = [])).push(args);
@@ -12,13 +14,13 @@ export function addEventLogger(localSan) {
         this.data.set('_firedByOrder', firedByOrder);
 
         const listeners = this.listeners[name] || [];
-        listeners.forEach(listener => {
+        listeners.forEach((listener: any) => {
             listener.fn.call(this, ...args);
         });
     };
 
 
-    localSan.Component.prototype.dispatch = function (name, args) {
+    localSan.Component.prototype.dispatch = function (name: string, args: LooseObject) {
         const dispatched = this.data.get('_dispatched') || {};
         const dispatchedByOrder = this.data.get('_dispatchedByOrder') || [];
         (dispatched[name] || (dispatched[name] = [])).push(args || null);

@@ -3,7 +3,8 @@
  **/
 
 export default class ErrorWrapper {
-    constructor(selector) {
+    selector: string
+    constructor(selector: string) {
         this.selector = selector;
     }
 

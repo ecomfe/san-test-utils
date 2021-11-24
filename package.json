@@ -34,8 +34,8 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "cheerio": "^1.0.0-rc.3",
-    "san": "^3.8.1",
+    "cheerio": "1.0.0-rc.3",
+    "san": "3.8.1",
     "san-ssr": "^1.10.0",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-transform-runtime": "^7.7.6",

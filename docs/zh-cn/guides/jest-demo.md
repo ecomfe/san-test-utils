@@ -41,8 +41,6 @@ $ npm install jest san-test-utils --save-dev
 }
 ```
 
-> 注意：目前 Jest 无法处理类似后缀名为.san的单文件组件。如果想对单文件进行测试，你需要用 Mocha 取代 Jest 来运行你的测试，同时用 webpack 来编译你的组件。想知道如何起步，请阅读教程里的用 [Mocha + webpack](./mocha-demo.md) 测试单文件组件。
-
 ### 处理 webpack 别名
 
 如果你在 webpack 中配置了别名解析，比如把 `@` 设置为 `/src` 的别名，那么你也需要用 `moduleNameMapper` 选项为 Jest 增加一个匹配配置：
@@ -103,6 +101,48 @@ $ npm install babel-jest --save-dev
     }
 }
 ```
+
+### 测试 San 单文件组件
+
+如果需要测试 .san 的单文件组件，我们需要安装 `san-jest` 转换器。
+
+```js
+$ npm install san-jest --save-dev
+```
+
+在 package.json 的 `jest` 块中修改 `transform` 的配置:
+
+```js
+{
+    // ...
+    "jest": {
+        "testEnvironment": "jsdom",
+        "moduleFileExtensions": [
+            "js",
+            "ts",
+            "json",
+            "san"
+        ],
+        "transform": {
+        "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+        "^.+\\.san$": "<rootDir>/node_modules/san-jest"
+        },
+        "globals": {
+            "san-jest": {
+                "templateCompileOptions": {
+                    // 对全部 .san 文件生效
+                    "compileANode": "aNode"
+                },
+                "styleCompileOptions": {},
+                "scriptCompileOptions": {}
+            }
+        }
+    }
+}
+```
+
+> 详细配置请阅读 [san-jest](https://github.com/wanwu/san-jest) 文档。
+
 
 ### 放置测试文件
 

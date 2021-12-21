@@ -80,6 +80,10 @@ export function getComponentProto(rootComponent: LooseObject, results: LooseObje
         results.components[component] = getComponentProto(components[component]);
     });
 
+    if (typeof rootComponent === 'function' && rootComponent.name && !results.name && rootComponent.name !== 'ComponentClass') {
+        results.name = rootComponent.name;
+    };
+
     return results;
 }
 

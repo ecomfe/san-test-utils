@@ -41,8 +41,6 @@ describeWithShallowAndMount('is', mount => {
         const comp = wrapper.find(component);
         expect(comp.is(component)).toEqual(true);
     });
-    const _wrapper = mount(ComponentAsAClass);
-    console.log('_wrapper', _wrapper.is(ComponentAsAClass));
 
     test('returns true if root node matches Component extending class component', () => {
         const wrapper = mount(ComponentAsAClass);

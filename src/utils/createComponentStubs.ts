@@ -2,12 +2,13 @@
  * @file san test utils tool file
  **/
 
-import san from 'san';
+import san, { ANode, ANodeProperty, SanComponent, SanComponentConfig } from 'san';
 import isPlainObject from 'lodash/isPlainObject';
-import {throwError, templateContainsComponent} from '../utils/index';
+import {throwError, templateContainsComponent} from './index';
 import config from '../config';
+import { BasicOptions, ComponentWithPrototype, LooseObject } from '../types';
 
-function getAllSlot(source, slots = []) {
+function getAllSlot(source: ANode, slots: ANode[] = []) {
     if (source.tagName === 'slot') {
         slots.push(source);
     }
@@ -19,7 +20,7 @@ function getAllSlot(source, slots = []) {
     return slots;
 }
 
-function getComponentProps(source, tagName) {
+function getComponentProps(source: ANode, tagName: string) {
     let props;
     if (source.tagName === tagName) {
         return source.props;
@@ -32,8 +33,9 @@ function getComponentProps(source, tagName) {
     return props;
 }
 
-function createBlankStub(originalComponent, name, props = []) {
+function createBlankStub(originalComponent: SanComponentConfig<any, any>, name: string, props: ANodeProperty[] = []) {
     const template = originalComponent.template
+    // @ts-ignore
         || originalComponent.prototype && originalComponent.prototype.template;
     const source = san.parseTemplate(template);
     const slots = getAllSlot(source);
@@ -60,7 +62,7 @@ function createBlankStub(originalComponent, name, props = []) {
     };
 }
 
-export function isValidStub(stub) {
+export function isValidStub(stub: BasicOptions) {
     return !!stub
         && typeof stub === 'string'
         || stub === true
@@ -68,8 +70,8 @@ export function isValidStub(stub) {
         || (typeof stub === 'function' && stub.name === 'ComponentClass');
 }
 
-export function createComponentStubs(originalComponents = {}, stubs) {
-    const components = {};
+export function createComponentStubs(originalComponents: LooseObject = {}, stubs: BasicOptions[]) {
+    const components: LooseObject = {};
 
     if (!stubs) {
         return components;
@@ -81,7 +83,7 @@ export function createComponentStubs(originalComponents = {}, stubs) {
                 if (!config.stubs[stub]) {
                     components[stub] = createBlankStub({}, stub);
                 }
-                else {
+                else { 
                     components[stub] = {
                         template: config.stubs[stub]
                     };
@@ -126,8 +128,8 @@ export function createComponentStubs(originalComponents = {}, stubs) {
     return components;
 }
 
-export function createAllStubComponents(component) {
-    const stubbedComponents = {};
+export function createAllStubComponents(component: ComponentWithPrototype) {
+    const stubbedComponents: LooseObject = {};
     const components = component.components
         || component.prototype && component.prototype.components
         || {};

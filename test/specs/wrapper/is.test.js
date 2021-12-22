@@ -4,7 +4,7 @@
 
 import {describeWithShallowAndMount} from '../../utils';
 import component from '../../resources/component';
-import componentAsAClass from '../../resources/component-as-a-class';
+import ComponentAsAClass from '../../resources/component-as-a-class';
 import componentWithChild from '../../resources/component-with-child';
 
 /* global test */
@@ -43,9 +43,8 @@ describeWithShallowAndMount('is', mount => {
     });
 
     test('returns true if root node matches Component extending class component', () => {
-        const wrapper = mount(componentAsAClass);
-
-        expect(wrapper.is(componentAsAClass)).toEqual(true);
+        const wrapper = mount(ComponentAsAClass);
+        expect(wrapper.is(ComponentAsAClass)).toEqual(true);
     });
     return;
 

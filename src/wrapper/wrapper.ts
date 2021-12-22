@@ -9,9 +9,11 @@ import cloneDeep from 'lodash/cloneDeep';
 import find from './find';
 import ErrorWrapper from './errorWrapper';
 import createDomEvent from './createDomEvent';
+import { SanComponent } from 'san/types';
+import {VM, SelectorValue, WrapperElement, WrapperHTMLElement, LooseObject} from '../types/index'
 
 /* eslint-disable max-len */
-function mergeData(originData, newData) {
+function mergeData(originData: any, newData: LooseObject) {
     const keys = Object.keys(newData);
     for (let i = 0; i < keys.length; i++) {
         const name = keys[i];
@@ -26,19 +28,21 @@ function mergeData(originData, newData) {
 }
 
 export class WrapperArray {
-    constructor(wrappers) {
+    wrappers: Wrapper[];
+    length: number;
+    constructor(wrappers: Wrapper[]) {
         this.wrappers = wrappers;
         this.length = wrappers.length;
     }
 
-    at(index) {
+    at(index: number) {
         if (!this.wrappers[index]) {
             throwError('no item exists at ' + index);
         }
         return this.wrappers[index];
     }
 
-    contains(selector) {
+    contains(selector: SelectorValue) {
         this.throwErrorIfEmpty('contains');
         return this.wrappers.every(wrapper => wrapper.contains(selector));
     }
@@ -52,11 +56,11 @@ export class WrapperArray {
         return this.length > 0 && this.wrappers.every(wrapper => wrapper.exists());
     }
 
-    filter(fn) {
+    filter(fn: (value: Wrapper, index: number, array: Wrapper[]) => value is Wrapper, thisArg?: any) {
         return new WrapperArray(this.wrappers.filter(fn));
     }
 
-    is(selector) {
+    is(selector: SelectorValue) {
         this.throwErrorIfEmpty('is');
         return this.wrappers.every(wrapper => wrapper.is(selector));
     }
@@ -81,27 +85,27 @@ export class WrapperArray {
         this.wrappers.forEach(wrapper => wrapper.setChecked());
     }
 
-    setData(data) {
+    setData(data: any) {
         this.throwErrorIfEmpty('setData');
         this.wrappers.forEach(wrapper => wrapper.setData(data));
     }
 
-    setMethods(data) {
+    setMethods(data: any) {
         this.throwErrorIfEmpty('setMethods');
         this.wrappers.forEach(wrapper => wrapper.setMethods(data));
     }
 
-    setValue(data) {
+    setValue(data?: string) {
         this.throwErrorIfEmpty('setValue');
         this.wrappers.forEach(wrapper => wrapper.setValue(data));
     }
 
-    trigger(type, options = {}) {
+    trigger(type: any, options = {}) {
         this.throwErrorIfEmpty('trigger');
         this.wrappers.forEach(wrapper => wrapper.trigger(type, options));
     }
 
-    throwErrorIfEmpty(msg) {
+    throwErrorIfEmpty(msg: string) {
         if (this.wrappers.length === 0) {
             throwError(msg + ' cannot be called on 0 items');
         }
@@ -109,7 +113,10 @@ export class WrapperArray {
 }
 
 export class Wrapper {
-    constructor(node, options, isSanWrapper) {
+    el?: WrapperElement | WrapperHTMLElement;
+    vm: null | VM<any> = null;
+    options: object = {};
+    constructor(node: Element | SanComponent<any>, options: object, isSanWrapper: boolean) {
         if (!isSanWrapper) {
             this.el = node instanceof Element ? node : node.el;
             this.vm = null;
@@ -117,49 +124,48 @@ export class Wrapper {
         }
     }
 
-    attributes(key) {
-        const attributes = this.el.attributes;
-        const attributesMap = {};
-
+    attributes(key: string) {
+        const attributes = this.el!.attributes;
+        let attributesMap: LooseObject = {};
+        
         for (let i = 0; i < attributes.length; i++) {
-            attributesMap[attributes.item(i).localName] = attributes.item(i).value;
+            attributesMap[attributes.item(i)!.localName] = attributes.item(i)!.value;
         }
-
         return key ? attributesMap[key] : attributesMap;
     }
 
-    classes(key) {
-        const classes = this.el.classList;
+    classes(key?: string) {
+        const classes = this.el!.classList;
 
         return key ? classes.contains(key) : [].slice.call(classes);
     }
 
-    contains(selector) {
+    contains(selector: SelectorValue) {
         const newSelector = getSelector(selector, 'contains');
-        return !!find(this.el, this.vm, newSelector).length;
+        return !!find(this.el!, this.vm!, newSelector).length;
     }
 
-    data(key) {
+    data(key?: string) {
         if (!this.isSanInstance()) {
             throwError('wrapper.data() must be called on a San instance');
         }
-        const data = this.vm.data.get();
+        const data = this.vm!.data.get();
 
         return key ? data[key] : data;
     }
 
     detach() {
-        this.vm.detach();
+        this.vm!.detach();
     }
 
-    dispatched(event) {
+    dispatched(event?: string) {
         if (!this.isSanInstance()) {
             throwError('wrapper.dispatched() can only be called on a San instance');
         }
         if (event) {
-            return this.vm.data.get('_dispatched')[event];
+            return this.vm!.data.get('_dispatched')[event];
         }
-        return this.vm.data.get('_dispatched');
+        return this.vm!.data.get('_dispatched');
     }
 
     dispatchedByOrder() {
@@ -167,12 +173,12 @@ export class Wrapper {
             throwError('wrapper.dispatchedByOrder() can only be called on a San instance');
         }
 
-        return this.vm.data.get('_dispatchedByOrder');
+        return this.vm!.data.get('_dispatchedByOrder');
     }
 
     exists() {
         if (this.vm) {
-            return !this.vm.lifeCycle.detached;
+            return !this.vm!.lifeCycle.detached;
         }
         return true;
     }
@@ -181,9 +187,9 @@ export class Wrapper {
         throwError('filter() must be called on a WrapperArray');
     }
 
-    find(selector) {
+    find(selector: SelectorValue): SanWrapper | Wrapper | ErrorWrapper {
         const newSelector = getSelector(selector, 'find');
-        const node = find(this.el, this.vm, newSelector)[0];
+        const node = find(this.el!, this.vm!, newSelector)[0] as VM<any>;
 
         if (!node) {
             if (newSelector.type === 'REF_SELECTOR') {
@@ -194,23 +200,23 @@ export class Wrapper {
         return createWrapper(node, this.options);
     }
 
-    findAll(selector) {
+    findAll(selector: SelectorValue): WrapperArray {
         const newSelector = getSelector(selector, 'findAll');
-        const nodes = find(this.el, this.vm, newSelector);
+        const nodes = find(this.el!, this.vm!, newSelector) as VM<any>[];
 
         const wrappers = nodes.map(node => createWrapper(node, this.options));
 
         return new WrapperArray(wrappers);
     }
 
-    fired(event) {
+    fired(event?: string) {
         if (!this.isSanInstance()) {
             throwError('wrapper.fired() can only be called on a San instance');
         }
         if (event) {
-            return this.vm.data.get('_fired')[event];
+            return this.vm!.data.get('_fired')[event];
         }
-        return this.vm.data.get('_fired');
+        return this.vm!.data.get('_fired');
     }
 
     firedByOrder() {
@@ -218,11 +224,11 @@ export class Wrapper {
             throwError('wrapper.firedByOrder() can only be called on a San instance');
         }
 
-        return this.vm.data.get('_firedByOrder');
+        return this.vm!.data.get('_firedByOrder');
     }
 
     html() {
-        return this.el.outerHTML;
+        return this.el!.outerHTML;
     }
 
     htmlNoComment() {
@@ -230,7 +236,7 @@ export class Wrapper {
         return html.replace(/<!--[\w\W]*?-->/gi, '');
     }
 
-    is(selector) {
+    is(selector: SelectorValue) {
         const newSelector = getSelector(selector, 'is');
         if (newSelector.type === 'DOM_SELECTOR') {
             return this.el && this.el.matches && this.el.matches(newSelector.value);
@@ -249,7 +255,7 @@ export class Wrapper {
     }
 
     isEmpty() {
-        return !([].slice.call(this.el.children).length);
+        return !([].slice.call(this.el!.children).length);
     }
 
     isSanInstance() {
@@ -257,17 +263,17 @@ export class Wrapper {
     }
 
     isVisible() {
-        let el = this.el;
+        let el = this.el as HTMLElement;
         while (el) {
             if (el.style && (el.style.visibility === 'hidden' || el.style.display === 'none')) {
                 return false;
             }
-            el = el.parentNode;
+            el = el.parentNode as HTMLElement;
         }
         return true;
     }
 
-    setChecked(checked) {
+    setChecked(checked?: boolean) {
         const type = this.attributes('type');
 
         if (checked && typeof checked !== 'boolean') {
@@ -275,9 +281,9 @@ export class Wrapper {
         }
 
         if (type === 'checkbox') {
-            this.el.checked = checked !== undefined
+            this.el!.checked = checked !== undefined
                 ? !checked
-                : this.el.checked;
+                : this.el!.checked;
 
             this.trigger('click');
         }
@@ -289,39 +295,41 @@ export class Wrapper {
         }
     }
 
-    setData(data) {
+    setData(data: object) {
         if (!this.isSanInstance()) {
             throwError('wrapper.setData() must be called on a San instance');
         }
-        const originData = this.vm.data.get();
+        const originData = this.vm!.data.get();
         const newData = mergeData(cloneDeep(originData), data);
         Object.keys(data).forEach(key => {
-            this.vm.data.set(key, newData[key]);
+            this.vm!.data.set(key, newData[key]);
         });
     }
 
-    setMethods(methods) {
+    setMethods(methods: LooseObject) {
         if (!this.isSanInstance()) {
             throwError('wrapper.setMethods() can only be called on a San instance');
         }
 
         Object.keys(methods).forEach(method => {
+            //@ts-ignore
             this.vm[method] = methods[method];
         });
     }
 
     setSelected() {
-        const tagName = this.el.tagName;
+        const tagName = this.el!.tagName;
 
         if (tagName === 'OPTION') {
-            this.el.selected = true;
+            this.el!.selected = true;
 
-            let selectEl = this.el.parentNode;
+            let selectEl = this.el!.parentNode as WrapperHTMLElement;
             while (selectEl && selectEl.tagName !== 'SELECT') {
-                selectEl = selectEl.parentNode;
+                selectEl = selectEl.parentNode as WrapperHTMLElement;
             }
 
             if (selectEl) {
+                //@ts-ignore
                 createWrapper(selectEl, this.options).trigger('change');
             }
         }
@@ -330,8 +338,8 @@ export class Wrapper {
         }
     }
 
-    setValue(value) {
-        const tagName = this.el.tagName;
+    setValue(value?: string) {
+        const tagName = this.el!.tagName;
 
         if (tagName === 'OPTION') {
             throwError('wrapper.setValue() cannot be called on an <option> element. Use wrapper.setSelected() instead');
@@ -346,7 +354,7 @@ export class Wrapper {
         }
 
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tagName)) {
-            this.el.value = value;
+            this.el!.value = value;
             this.trigger(tagName === 'SELECT' ? 'change' : 'input');
         }
         else {
@@ -355,23 +363,23 @@ export class Wrapper {
     }
 
     text() {
-        return this.el.textContent.trim();
+        return this.el!.textContent?.trim();
     }
 
-    trigger(type, options = {}) {
+    trigger(type: string, options?: LooseObject) {
         if (typeof type !== 'string') {
             throwError('wrapper.trigger() must be passed a string');
         }
-        if (options.target) {
+        if (options && options.target) {
             throwError('you cannot set the target value of an event');
         }
         const event = createDomEvent(type, options);
-        this.el.dispatchEvent(event);
+        this.el!.dispatchEvent(event);
     }
 }
 
 export class SanWrapper extends Wrapper {
-    constructor(vm, options) {
+    constructor(vm: VM<any>, options: object) {
         super(vm, options, true);
         this.vm = vm;
         this.el = vm.el;
@@ -379,8 +387,8 @@ export class SanWrapper extends Wrapper {
     }
 }
 
-export function createWrapper(vm, options) {
+export function createWrapper(vm: VM<any>, options: object) : SanWrapper | Wrapper {
     return vm.aNode
         ? new SanWrapper(vm, options)
-        : new Wrapper(vm, options);
+        : new Wrapper(vm, options, false);
 }

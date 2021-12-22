@@ -1,11 +1,12 @@
 /**
  * @file san test utils wrapper find file
  **/
-
+import { VM, Selector, SelectorValue} from '../types';
 import {throwError} from '../utils/index';
 
-export function findAllComponents(vm, components = []) {
+export function findAllComponents(vm: VM<any>, components: Array<VM<any>> = []) {
     components.push(vm);
+    
     if (vm && vm.children && vm.children.length) {
         vm.children.forEach(child => {
             if ([2, 3, 4, 5, 6, 7].includes(child.nodeType)) {
@@ -16,7 +17,7 @@ export function findAllComponents(vm, components = []) {
     return components;
 }
 
-export function findSanComponent(vm, component) {
+export function findSanComponent(vm: VM<any>, component: any) {
     const components = findAllComponents(vm);
     return components.filter(
         item => item.constructor === component
@@ -26,20 +27,20 @@ export function findSanComponent(vm, component) {
     );
 }
 
-export function findDomNodes(root, selector) {
-    const nodes = [];
+export function findDomNodes(root: Element, selector: SelectorValue) {
+const nodes: Element[] = [];
     if (!root || !root.querySelectorAll || !root.matches) {
         return nodes;
     }
 
-    if (root.matches(selector)) {
+    if (typeof selector === 'string' && root.matches(selector)) {
         nodes.push(root);
     }
 
-    return nodes.concat([].slice.call(root.querySelectorAll(selector)));
+    return nodes.concat([].slice.call(root.querySelectorAll(selector as any)));
 }
 
-export default function (el, vm, selector) {
+export default function (el: Element, vm: VM<any>, selector: Selector) {
     if (!vm && selector.type === 'COMPONENT_SELECTOR') {
         throwError('cannot find a San instance on a DOM node');
     }
@@ -49,7 +50,7 @@ export default function (el, vm, selector) {
     }
 
     if (el instanceof Element && selector.type === 'DOM_SELECTOR') {
-        let domComponents = [];
+        let domComponents: VM<any>[] = [];
         if (vm && vm.children.length) {
             domComponents = findAllComponents(vm).filter(component => {
                 return component.el && findDomNodes(el, selector.value).includes(component.el);
@@ -58,8 +59,9 @@ export default function (el, vm, selector) {
         return domComponents.length ? domComponents : findDomNodes(el, selector.value);
     }
 
-    if (vm && vm.ref && selector.type === 'REF_SELECTOR') {
-        const ref = vm.ref(selector.value.ref);
+    // @ts-ignore
+    if (vm && vm.ref && selector.type === 'REF_SELECTOR' && typeof selector.value !== 'string') {
+        const ref = 'ref' in selector.value ? vm.ref(selector.value.ref) : undefined;
         return ref ? [ref] : [];
     }
 

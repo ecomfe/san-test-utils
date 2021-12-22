@@ -5,8 +5,7 @@
 import {Component} from 'san';
 import componentWithChild from './component-with-child';
 
-export default class App extends Component {
-    static name = 'componentasaclass'
+export default class ComponentAsAClass extends Component {
 
     static template = `
         <div><child-component /><slot /></div>

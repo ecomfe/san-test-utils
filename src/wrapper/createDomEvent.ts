@@ -22,7 +22,9 @@ const modifiers = {
     pagedown: 34
 };
 
-export default function (type, options) {
+type Modifier = keyof typeof modifiers
+
+export default function (type: string, options?: {[key: string]: any}) {
     const [eventType, modifier] = type.split('-');
     const {
         eventInterface,
@@ -30,30 +32,30 @@ export default function (type, options) {
         bubbles
     } = (eventTypes[eventType] || eventTypes.click);
 
-    let event;
+    let event: any;
     if (typeof window.Event === 'function') {
-        const EventInterface = typeof window[eventInterface] === 'function'
-            ? window[eventInterface]
+        const EventInterface = typeof window[eventInterface as any] === 'function'
+            ? window[eventInterface as keyof Window]
             : window.Event;
         event = new EventInterface(eventType, {
             ...options,
             bubbles,
             cancelable,
-            keyCode: modifiers[modifier]
+            keyCode: modifiers[modifier as Modifier]
         });
     }
     else {
         event = document.createEvent('Event');
         event.initEvent(eventType, bubbles, cancelable);
-        event.keyCode = modifiers[modifier];
+        event.keyCode = modifiers[modifier as Modifier];
     }
 
     const eventPrototype = Object.getPrototypeOf(event);
     Object.keys(options || {}).forEach(key => {
-        const prototypeDescriptor = Object.getOwnPropertyDescriptor(eventPrototype, key);
-        if (!prototypeDescriptor || prototypeDescriptor.setter !== undefined) {
-            event[key] = options[key];
-        }
+        const prototypeDescriptor = Object.getOwnPropertyDescriptor(eventPrototype, key) as any;
+        if ((!prototypeDescriptor || prototypeDescriptor.setter !== undefined) && options) {
+            event[key] = options[key as keyof Event];
+        } 
     });
     return event;
 }

@@ -2,7 +2,7 @@
 
 ## 介绍
 
-San Test Utils 是专门为 [San.js](https://baidu.github.io/san/) 而打造的测试库，它提供了各种为San组件进行单元测试的能力。
+San Test Utils 是为 [San.js](https://baidu.github.io/san/) 打造的测试库，它提供了为San组件进行单元测试的能力。该工具包参考了 [vue-test-utils](https://github.com/vuejs/vue-test-utils)。
 
 ## 安装
 

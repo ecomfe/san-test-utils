@@ -2,19 +2,19 @@
  * @file san test utils wrapper exists test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
-describeWithShallowAndMount('exists', mount => {
+describeWithShallowAndAttach('exists', attach => {
     test('returns true if called on Wrapper', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         expect(wrapper.exists()).toEqual(true);
     });
 
     test('returns false if Wrapper is detached', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         wrapper.detach();
@@ -22,7 +22,7 @@ describeWithShallowAndMount('exists', mount => {
     });
 
     test('return false if called on an ErrorWrapper', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         expect(wrapper.find('p').exists()).toEqual(false);

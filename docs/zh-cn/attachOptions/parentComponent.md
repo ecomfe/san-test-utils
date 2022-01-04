@@ -8,10 +8,10 @@
 * **示例**：
 
 ```js
-import {shallowMount} from 'san-test-utils';
+import {shallowAttach} from 'san-test-utils';
 import foo from './foo';
 
-const wrapper = shallowMount(component, {
+const wrapper = shallowAttach(component, {
     parentComponent: foo
 });
 expect(wrapper.vm.parentComponent.name).toBe('foo');

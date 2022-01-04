@@ -1,10 +1,10 @@
 /**
- * @file san test utils mount file
+ * @file san test utils attach file
  **/
 
 import san from 'san';
-import mount from '../../src/attach';
-import shallowMount from '../../src/shallowAttach';
+import attach from '../../src/attach';
+import shallowAttach from '../../src/shallowAttach';
 import componentWithNestedChildren from '../resources/component-with-nested-children';
 import component from '../resources/component';
 import componentWithChild from '../resources/component-with-child';
@@ -12,7 +12,7 @@ import componentAsAClassWithChild from '../resources/component-as-a-class-with-c
 import sinon from 'sinon';
 
 /* global test jest */
-describe('shallow mount', () => {
+describe('shallow attach', () => {
     beforeEach(() => {
         sinon.stub(console, 'info').callThrough();
         sinon.stub(console, 'error').callThrough();
@@ -23,8 +23,8 @@ describe('shallow mount', () => {
         console.error.restore();
     });
 
-    test('return new SanWrapper with mounted San component if no options are passed', () => {
-        const wrapper = shallowMount({
+    test('return new SanWrapper with attached San component if no options are passed', () => {
+        const wrapper = shallowAttach({
             template: '<div><input /></div>'
         });
 
@@ -34,18 +34,18 @@ describe('shallow mount', () => {
     });
 
     test('returns new SanWrapper with all children stubbed', () => {
-        const wrapper = shallowMount(componentWithNestedChildren);
+        const wrapper = shallowAttach(componentWithNestedChildren);
         expect(wrapper.isSanInstance()).toEqual(true);
         expect(wrapper.findAll(componentWithChild).length).toEqual(1);
         expect(wrapper.findAll(component).length).toEqual(0);
     });
 
     test('does not modify component directly', () => {
-        const wrapper = shallowMount(componentWithNestedChildren);
+        const wrapper = shallowAttach(componentWithNestedChildren);
         expect(wrapper.findAll(component).length).toEqual(0);
-        const mountedWrapper = mount(componentWithNestedChildren);
+        const attachedWrapper = attach(componentWithNestedChildren);
 
-        expect(mountedWrapper.findAll(component).length).toEqual(1);
+        expect(attachedWrapper.findAll(component).length).toEqual(1);
     });
 
     test('renders children', () => {
@@ -58,7 +58,7 @@ describe('shallow mount', () => {
             },
             template: '<div><child>Hello</child></div>'
         };
-        const wrapper = shallowMount(testComponent);
+        const wrapper = shallowAttach(testComponent);
         expect(wrapper.htmlNoComment()).toEqual('<div><child-stub>Hello</child-stub></div>');
     });
 
@@ -81,7 +81,7 @@ describe('shallow mount', () => {
                 </child>
             </div>`
         };
-        const wrapper = shallowMount(testComponent);
+        const wrapper = shallowAttach(testComponent);
         expect(wrapper.htmlNoComment()).toEqual(
             '<div><child-stub><p>Hello</p><p>World</p></child-stub></div>'
         );
@@ -94,7 +94,7 @@ describe('shallow mount', () => {
                 child: {}
             }
         };
-        const wrapper = shallowMount(testComponent);
+        const wrapper = shallowAttach(testComponent);
         expect(wrapper.htmlNoComment()).toEqual('<div><child-stub></child-stub></div>');
     });
 
@@ -110,7 +110,7 @@ describe('shallow mount', () => {
                 child: {}
             }
         };
-        const wrapper = shallowMount(testComponent);
+        const wrapper = shallowAttach(testComponent);
         expect(wrapper.htmlNoComment()).toEqual('<div><child-stub prop=\"a\" attr=\"hello\"></child-stub></div>');
     });
 
@@ -126,7 +126,7 @@ describe('shallow mount', () => {
                 child: {}
             }
         };
-        const wrapper = shallowMount(testComponent);
+        const wrapper = shallowAttach(testComponent);
         expect(wrapper.htmlNoComment()).toEqual('<div><child-stub prop=\"a\" attr=\"hello\"></child-stub></div>');
     });
 
@@ -139,18 +139,18 @@ describe('shallow mount', () => {
                 'test-component': self
             }
         };
-        const wrapper = shallowMount(testComponent);
+        const wrapper = shallowAttach(testComponent);
         expect(wrapper.html()).toContain('<test-component-stub>');
         expect(console.error).not.called;
     });
 
     test('does not call stubbed children lifecycle hooks', () => {
-        shallowMount(componentWithNestedChildren);
+        shallowAttach(componentWithNestedChildren);
         expect(console.info.called).toEqual(false);
     });
 
     test('stubs San class component children', () => {
-        const wrapper = shallowMount(componentAsAClassWithChild);
+        const wrapper = shallowAttach(componentAsAClassWithChild);
         expect(wrapper.find(component).exists()).toEqual(true);
         expect(wrapper.findAll('div').length).toEqual(1);
     });
@@ -164,7 +164,7 @@ describe('shallow mount', () => {
                 component
             }
         };
-        const wrapper = shallowMount(testComponent);
+        const wrapper = shallowAttach(testComponent);
         expect(wrapper.contains(component)).toEqual(true);
         expect(wrapper.find(component).exists()).toEqual(true);
         expect(wrapper.findAll(component).length).toEqual(1);
@@ -174,14 +174,14 @@ describe('shallow mount', () => {
         const testComponent = {
             template: '<div><custom-element /></div>'
         };
-        const wrapper = shallowMount(testComponent);
+        const wrapper = shallowAttach(testComponent);
 
         expect(wrapper.html()).toEqual('<div><custom-element></custom-element></div>');
     });
 
-    test('throws an error when the component fails to mount', () => {
+    test('throws an error when the component fails to attach', () => {
         expect(() =>
-            shallowMount({
+            shallowAttach({
                 template: '<div></div>',
                 attached() {
                     throw new Error('Error');

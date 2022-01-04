@@ -2,7 +2,7 @@
  * @file san test utils wrapper contains test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import component from '../../resources/component';
 import componentWithChild from '../../resources/component-with-child';
 import componentWithSlot from '../../resources/component-with-slot';
@@ -10,21 +10,21 @@ import componentAsAClass from '../../resources/component-as-a-class';
 import componentWithoutName from '../../resources/component-without-name';
 
 /* global test */
-describeWithShallowAndMount('contains', mount => {
+describeWithShallowAndAttach('contains', attach => {
     test('returns true if wrapper contains element', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><input /></div>'
         });
         expect(wrapper.contains('input')).toEqual(true);
     });
 
     test('returns true if wrapper contains San component', () => {
-        const wrapper = mount(componentWithChild);
+        const wrapper = attach(componentWithChild);
         expect(wrapper.contains(component)).toEqual(true);
     });
 
     test('returns true if wrapper contains San component with slot', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             components: {
                 'component-with-slot': componentWithSlot,
                 'component': component
@@ -37,7 +37,7 @@ describeWithShallowAndMount('contains', mount => {
     });
 
     test('returns true if wrapper contains San class component', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             components: {
                 'component-as-a-class': componentAsAClass
             },
@@ -49,14 +49,14 @@ describeWithShallowAndMount('contains', mount => {
     });
 
     test('returns true if wrapper contains element specified by ref selector', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><input s-ref="foo" /></div>'
         });
         expect(wrapper.contains({ref: 'foo'})).toEqual(true);
     });
 
     test('throws an error when ref selector is called on a wrapper that is not a San component', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><a href="/">href</a></div>'
         });
         const a = wrapper.find('a');
@@ -66,24 +66,24 @@ describeWithShallowAndMount('contains', mount => {
     });
 
     test('returns true if wrapper root Component matches selector', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         expect(wrapper.contains(component)).toEqual(true);
     });
 
     test('returns false if wrapper does not contain element', () => {
-        const wrapper = mount(componentWithoutName);
+        const wrapper = attach(componentWithoutName);
         expect(wrapper.contains('div')).toEqual(true);
     });
 
     test('returns false if wrapper does not contain element specified by ref selector', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><input s-ref="bar" /></div>'
         });
         expect(wrapper.contains({ref: 'foo'})).toEqual(false);
     });
 
     test('throws an error if selector is not a valid selector', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         const invalidSelectors = [
             undefined,
             null,

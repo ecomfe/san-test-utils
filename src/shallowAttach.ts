@@ -1,5 +1,5 @@
 /**
- * @file san test utils shallow mount file
+ * @file san test utils shallow attach file
  **/
 
 import attach from './attach';

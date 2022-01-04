@@ -32,10 +32,10 @@ export default san.defineComponent({
 ```
 
 ```js
-import {shallowMount} from 'san-test-utils';
+import {shallowAttach} from 'san-test-utils';
 import foo from './foo';
 
-const wrapper = shallowMount(foo);
+const wrapper = shallowAttach(foo);
 expect(wrapper.is(foo)).toBe(true);
 ```
 

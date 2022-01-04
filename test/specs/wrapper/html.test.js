@@ -3,20 +3,20 @@
  **/
 
 import {Component} from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import component from '../../resources/component';
 
 /* global test */
-describeWithShallowAndMount('html', (mount, methodName) => {
+describeWithShallowAndAttach('html', (attach, methodName) => {
     test('returns a San Wrappers HTML as a string', () => {
         const expectedHtml = '<div></div>';
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         expect(wrapper.html()).toEqual(expectedHtml);
     });
 
-    if (methodName !== 'shallowMount') {
+    if (methodName !== 'shallowAttach') {
         test('returns a San Wrappers HTML as a string', () => {
-            const wrapper = mount({
+            const wrapper = attach({
                 template: '<div>1<tester /></div>',
                 components: {
                     tester: {
@@ -33,7 +33,7 @@ describeWithShallowAndMount('html', (mount, methodName) => {
         class componentAsAClass extends Component {
             static template = '<div />'
         }
-        const wrapper = mount(componentAsAClass);
+        const wrapper = attach(componentAsAClass);
         expect(wrapper.html()).toEqual('<div></div>');
     });
 
@@ -47,7 +47,7 @@ describeWithShallowAndMount('html', (mount, methodName) => {
             + '  </div>\n'
             + '</body>';
 
-        const wrapper = mount({
+        const wrapper = attach({
             template: expectedHtml
         });
         expect(wrapper.html()).toEqual(expectedHtml);

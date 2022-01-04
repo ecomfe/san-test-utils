@@ -2,19 +2,19 @@
  * @file san test utils wrapper isEmpty test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import component from '../../resources/component';
 
 /* global test */
-describeWithShallowAndMount('isEmpty', mount => {
+describeWithShallowAndAttach('isEmpty', attach => {
     test('return true if nodes is empty', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
 
         expect(wrapper.isEmpty()).toEqual(true);
     });
 
     test('return true if nodes contains comment', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><div s-if="false"></div></div>'
         });
 
@@ -23,7 +23,7 @@ describeWithShallowAndMount('isEmpty', mount => {
     });
 
     test('return false if nested child contains renders element', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             components: {
                 'child-component': {
                     template: '<div />'
@@ -35,7 +35,7 @@ describeWithShallowAndMount('isEmpty', mount => {
     });
 
     test('returns true contains empty slot', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><slot /></div>'
         });
 
@@ -43,7 +43,7 @@ describeWithShallowAndMount('isEmpty', mount => {
     });
 
     test('returns false if node contains other nodes', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /></div>'
         });
 

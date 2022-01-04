@@ -2,14 +2,14 @@
  * @file san test utils wrapper is san instance test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
-describeWithShallowAndMount('data', mount => {
+describeWithShallowAndAttach('data', attach => {
     test('returns true if wrapper has prop', () => {
         const prop1 = {};
         const prop2 = 'string val';
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div></div>'
         }, {
             data: {prop1, prop2}
@@ -18,7 +18,7 @@ describeWithShallowAndMount('data', mount => {
     });
 
     test('returns an empty object if wrapper does not have data', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         expect(wrapper.data()).toEqual({});
@@ -27,7 +27,7 @@ describeWithShallowAndMount('data', mount => {
     test('should update after setData', () => {
         const prop1 = {};
         const prop2 = 'string val';
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div></div>'
         }, {
             data: {prop1, prop2}
@@ -39,7 +39,7 @@ describeWithShallowAndMount('data', mount => {
     });
 
     test('returns default data', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />',
             initData() {
                 return {
@@ -51,7 +51,7 @@ describeWithShallowAndMount('data', mount => {
     });
 
     test('throw an error if called on a non vm wrapper', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /></div>'
         });
         const p = wrapper.find('p');
@@ -63,7 +63,7 @@ describeWithShallowAndMount('data', mount => {
     test('returns the given data if a key is provided', () => {
         const prop1 = {};
         const prop2 = 'string val';
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div></div>'
         }, {
             data: {prop1, prop2}
@@ -75,7 +75,7 @@ describeWithShallowAndMount('data', mount => {
     test('returns undefined if the given key is not found', () => {
         const prop1 = {};
         const prop2 = 'string val';
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div></div>'
         }, {
             data: {prop1, prop2}

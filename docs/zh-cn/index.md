@@ -15,8 +15,8 @@ San Test Utils 是 San.js 官方的单元测试实用工具库。
 
 * API
 
-    - [mount](./api/mount.md)
-    - [shallowMount](./api/shallowMount.md)
+    - [attach](./api/attach.md)
+    - [shallowAttach](./api/shallowAttach.md)
     - [render](./api/render.md)
     - [renderToString](./api/renderToString.md)
     - [选择器](./api/selector.md)
@@ -67,9 +67,9 @@ San Test Utils 是 San.js 官方的单元测试实用工具库。
 
 * 挂载选项
 
-    - [slots](./mountOptions/slots.md)
-    - [stubs](./mountOptions/stubs.md)
-    - [data](./mountOptions/data.md)
-    - [attachToDocument](./mountOptions/attachToDocument.md)
-    - [parentComponent](./mountOptions/parentComponent.md)
-    - [methods](./mountOptions/methods.md)
+    - [slots](./attachOptions/slots.md)
+    - [stubs](./attachOptions/stubs.md)
+    - [data](./attachOptions/data.md)
+    - [attachToDocument](./attachOptions/attachToDocument.md)
+    - [parentComponent](./attachOptions/parentComponent.md)
+    - [methods](./attachOptions/methods.md)

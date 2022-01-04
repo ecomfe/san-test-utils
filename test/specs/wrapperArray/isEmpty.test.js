@@ -2,13 +2,13 @@
  * @file san test utils wrapper array is empty test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
 /* eslint-disable max-len */
-describeWithShallowAndMount('is empty', mount => {
+describeWithShallowAndAttach('is empty', attach => {
     test('returns true if node is empty', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /></div>'
         });
 
@@ -16,7 +16,7 @@ describeWithShallowAndMount('is empty', mount => {
     });
 
     it('returns false if node contains other nodes', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><span><p /></span></div>'
         });
 
@@ -24,7 +24,7 @@ describeWithShallowAndMount('is empty', mount => {
     });
 
     it('throws error if wrapper array contains no items', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         const message = '[san-test-utils]: isEmpty cannot be called on 0 items';

@@ -3,13 +3,13 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import componentWithSIf from '../../resources/component-with-s-if';
 import componentWithWatch from '../../resources/component-with-watch';
 import sinon from 'sinon';
 
 /* global test */
-describeWithShallowAndMount('set data', mount => {
+describeWithShallowAndAttach('set data', attach => {
     const sandbox = sinon.createSandbox();
 
     beforeEach(() => {
@@ -22,7 +22,7 @@ describeWithShallowAndMount('set data', mount => {
     });
 
     test('sets component data and updates nested vm nodes when called on San instance', done => {
-        const wrapper = mount(componentWithSIf);
+        const wrapper = attach(componentWithSIf);
         expect(wrapper.find('.child.ready').isVisible()).toEqual(false);
         wrapper.setData({ready: true});
         san.nextTick(() => {
@@ -32,7 +32,7 @@ describeWithShallowAndMount('set data', mount => {
     });
 
     test('keeps element in sync', done => {
-        const wrapper = mount({
+        const wrapper = attach({
             initData() {
                 return {
                     show: false
@@ -51,7 +51,7 @@ describeWithShallowAndMount('set data', mount => {
 
     test('runs watch function when data is updated', done => {
         const data1 = 'testest';
-        const wrapper = mount(componentWithWatch);
+        const wrapper = attach(componentWithWatch);
         wrapper.setData({data1});
         san.nextTick(() => {
             expect(wrapper.vm.data.get('data2')).toEqual(data1);
@@ -62,7 +62,7 @@ describeWithShallowAndMount('set data', mount => {
 
     test('runs watch function after all data are updated', done => {
         const data1 = 'testest';
-        const wrapper = mount(componentWithWatch);
+        const wrapper = attach(componentWithWatch);
         wrapper.setData({data1, data2: 'newData'});
         san.nextTick(() => {
             expect(console.info.args[0][0]).toEqual(data1);
@@ -71,7 +71,7 @@ describeWithShallowAndMount('set data', mount => {
     });
 
     test('throw an error if called on a non vm wrapper', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /></div>'
         });
         const p = wrapper.find('p');
@@ -101,7 +101,7 @@ describeWithShallowAndMount('set data', mount => {
                 });
             }
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
 
         wrapper.setData({text: 'hello'});
         san.nextTick(() => {
@@ -129,7 +129,7 @@ describeWithShallowAndMount('set data', mount => {
                 }
             }
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         wrapper.setData({message: null});
         san.nextTick(() => {
             expect(wrapper.text()).toEqual('There is no message yet');
@@ -151,7 +151,7 @@ describeWithShallowAndMount('set data', mount => {
             },
             template: '<div />'
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         wrapper.setData({
             anObject: {
                 propA: {
@@ -177,7 +177,7 @@ describeWithShallowAndMount('set data', mount => {
             },
             template: '<div />'
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         wrapper.setData({
             anObject: {
                 propA: {
@@ -200,7 +200,7 @@ describeWithShallowAndMount('set data', mount => {
                 };
             }
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         wrapper.setData({
             undefinedProperty: {
                 foo: 'baz'
@@ -221,7 +221,7 @@ describeWithShallowAndMount('set data', mount => {
                 };
             }
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         wrapper.setData({
             nullProperty: {
                 foo: 'bar',
@@ -256,7 +256,7 @@ describeWithShallowAndMount('set data', mount => {
                 };
             }
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         wrapper.setData({
             items: [3]
         });
@@ -292,7 +292,7 @@ describeWithShallowAndMount('set data', mount => {
             },
             template: '<div>{{anObjectKeys}}</div>'
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         wrapper.setData({
             anObject: {
                 propC: 'c'
@@ -318,7 +318,7 @@ describeWithShallowAndMount('set data', mount => {
             }
         };
         const testDate = new Date();
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         wrapper.setData({selectedDate: testDate});
         expect(wrapper.vm.data.get('selectedDate')).toEqual(testDate);
     });

@@ -2,21 +2,21 @@
  * @file san test utils wrapper set method test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import componentWithMethod from '../../resources/component-with-method';
 import componentWithEvent from '../../resources/component-with-events';
 
 /* global test */
-describeWithShallowAndMount('set method', mount => {
+describeWithShallowAndAttach('set method', attach => {
     test('set component data and updates nested vm nodes when called on San instance', () => {
-        const wrapper = mount(componentWithMethod);
+        const wrapper = attach(componentWithMethod);
         const someMethod = () => {};
         wrapper.setMethods({someMethod});
         expect(wrapper.vm.someMethod).toEqual(someMethod);
     });
 
     test('throw an error if node is not a San instance', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /></div>'
         });
         const fn = () => wrapper.find('p').setMethods({ready: true});
@@ -25,7 +25,7 @@ describeWithShallowAndMount('set method', mount => {
     });
 
     test('should replace methods when tied to an event', () => {
-        const wrapper = mount(componentWithEvent);
+        const wrapper = attach(componentWithEvent);
         expect(wrapper.vm.data.get('isActive')).toEqual(false);
         wrapper.find('.toggle').trigger('click');
         expect(wrapper.vm.data.get('isActive')).toEqual(true);

@@ -2,13 +2,13 @@
  * @file san test utils wrapper array filter test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
 /* eslint-disable max-len */
-describeWithShallowAndMount('filter', mount => {
+describeWithShallowAndAttach('filter', attach => {
     test('return filtered wrapper when filter is called', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p class="foo" /><p class="bar" /></div>'
         });
         const filtered = wrapper.findAll('p').filter(component => {
@@ -19,7 +19,7 @@ describeWithShallowAndMount('filter', mount => {
     });
 
     test('return filtered wrapper when filter is called with raw html', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             initData() {
                 return {
                     html: '<p class="foo" /><p class="bar" />'

@@ -2,12 +2,12 @@
  * @file san test utils wrapper test file
  **/
 
-import {describeWithShallowAndMount} from '../utils';
+import {describeWithShallowAndAttach} from '../utils';
 
 /* global test */
-describeWithShallowAndMount('wrapper', mount => {
+describeWithShallowAndAttach('wrapper', attach => {
     test('return true if wrapper is instance of Wrapper', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             initData() {
                 return {
                     svg: '<svg />'
@@ -19,7 +19,7 @@ describeWithShallowAndMount('wrapper', mount => {
     });
 
     test('return true if wrapper is instance of SanWrapper', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /></div>'
         });
         expect(wrapper.find('p').constructor.name).toEqual('SanWrapper');

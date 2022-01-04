@@ -3,13 +3,13 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import component from '../../resources/component';
 import componentWithEvents from '../../resources/component-with-events';
 import sinon from 'sinon';
 
 /* global test */
-describeWithShallowAndMount('trigger', mount => {
+describeWithShallowAndAttach('trigger', attach => {
     const sandbox = sinon.createSandbox();
 
     afterEach(() => {
@@ -19,7 +19,7 @@ describeWithShallowAndMount('trigger', mount => {
 
     test('causes click handler to fire when wrapper.trigger("click") is called on a Component', () => {
         const clickHandler = sandbox.stub();
-        const wrapper = mount(componentWithEvents, {
+        const wrapper = attach(componentWithEvents, {
             methods: {
                 clickHandler
             }
@@ -32,7 +32,7 @@ describeWithShallowAndMount('trigger', mount => {
 
     test('causes keydown handler to fire when wrapper.trigger("keydown") is fired on a Component', () => {
         const keydownHandler = sandbox.stub();
-        const wrapper = mount(componentWithEvents, {
+        const wrapper = attach(componentWithEvents, {
             methods: {
                 keydownHandler
             }
@@ -44,7 +44,7 @@ describeWithShallowAndMount('trigger', mount => {
 
     test('causes keydown handler to fire when wrapper.trigger("keydown") is fired on a Component', () => {
         const keydownHandler = sandbox.stub();
-        const wrapper = mount(componentWithEvents, {
+        const wrapper = attach(componentWithEvents, {
             methods: {
                 keydownHandler
             }
@@ -73,7 +73,7 @@ describeWithShallowAndMount('trigger', mount => {
             pagedown: 34
         };
         const keyupHandler = sandbox.stub();
-        const wrapper = mount(componentWithEvents, {
+        const wrapper = attach(componentWithEvents, {
             methods: {
                 keyupHandler
             }
@@ -86,7 +86,7 @@ describeWithShallowAndMount('trigger', mount => {
     });
 
     test('causes DOM to update after clickHandler method that changes components data is called', done => {
-        const wrapper = mount(componentWithEvents);
+        const wrapper = attach(componentWithEvents);
         const toggle = wrapper.find('.toggle');
         expect(toggle.classes()).not.toContain('active');
         toggle.trigger('click');
@@ -98,7 +98,7 @@ describeWithShallowAndMount('trigger', mount => {
 
     test('adds options to event', () => {
         const clickHandler = sandbox.stub();
-        const wrapper = mount(componentWithEvents, {
+        const wrapper = attach(componentWithEvents, {
             methods: {
                 clickHandler
             }
@@ -122,7 +122,7 @@ describeWithShallowAndMount('trigger', mount => {
             }
         };
 
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
 
         wrapper.trigger('update', {
             customData: 123
@@ -132,7 +132,7 @@ describeWithShallowAndMount('trigger', mount => {
     });
 
     test('throws error if options contains a target value', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         const div = wrapper.find('div');
@@ -145,7 +145,7 @@ describeWithShallowAndMount('trigger', mount => {
     });
 
     test('throws an error if type is not a string', () => {
-        const wrapper = mount(componentWithEvents);
+        const wrapper = attach(componentWithEvents);
         const invalidSelectors = [
             undefined,
             null,
@@ -167,7 +167,7 @@ describeWithShallowAndMount('trigger', mount => {
 
     test('trigger should create events with correct interface', () => {
         let lastEvent;
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div on-click="updateLastEvent" />',
             updateLastEvent(e) {
                 lastEvent = e;
@@ -182,7 +182,7 @@ describeWithShallowAndMount('trigger', mount => {
             template: '<div />'
         };
 
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         wrapper.trigger('gamepadconnected');
     });
 });

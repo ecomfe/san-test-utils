@@ -3,11 +3,11 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import componentWithInput from '../../resources/component-with-input';
 
-function shouldThrowErrorOnElement(selector, message, mount) {
-    const wrapper = mount(componentWithInput);
+function shouldThrowErrorOnElement(selector, message, attach) {
+    const wrapper = attach(componentWithInput);
     const input = wrapper.find(selector);
 
     const fn = () => input.setValue('');
@@ -15,9 +15,9 @@ function shouldThrowErrorOnElement(selector, message, mount) {
 }
 
 /* global test */
-describeWithShallowAndMount('set value', mount => {
+describeWithShallowAndAttach('set value', attach => {
     test('set element of input value', () => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const input = wrapper.find('input[type="text"]');
         input.setValue('foo');
 
@@ -25,7 +25,7 @@ describeWithShallowAndMount('set value', mount => {
     });
 
     test('sets element of textarea value', () => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const textarea = wrapper.find('textarea');
         textarea.setValue('foo');
 
@@ -33,7 +33,7 @@ describeWithShallowAndMount('set value', mount => {
     });
 
     test('updates dom with input value', done => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const input = wrapper.find('input[type="text"]');
         input.setValue('input text awesome binding');
         san.nextTick(() => {
@@ -43,7 +43,7 @@ describeWithShallowAndMount('set value', mount => {
     });
 
     test('sets element of select value', () => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const select = wrapper.find('select');
         select.setValue('selectB');
 
@@ -51,7 +51,7 @@ describeWithShallowAndMount('set value', mount => {
     });
 
     test('updates dom with select value', done => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const select = wrapper.find('select');
         select.setValue('selectB');
         san.nextTick(() => {
@@ -62,22 +62,22 @@ describeWithShallowAndMount('set value', mount => {
 
     test('throws error if element is option', () => {
         const message = 'wrapper.setValue() cannot be called on an <option> element. Use wrapper.setSelected() instead';
-        shouldThrowErrorOnElement('option', message, mount);
+        shouldThrowErrorOnElement('option', message, attach);
     });
 
     /* eslint-disable max-len */
     test('throws error if element is radio', () => {
         const message = 'wrapper.setValue() cannot be called on a <input type="radio" /> element. Use wrapper.setChecked() instead';
-        shouldThrowErrorOnElement('input[type="radio"]', message, mount);
+        shouldThrowErrorOnElement('input[type="radio"]', message, attach);
     });
 
     test('throws error if element is checkbox', () => {
         const message = 'wrapper.setValue() cannot be called on a <input type="checkbox" /> element. Use wrapper.setChecked() instead';
-        shouldThrowErrorOnElement('input[type="checkbox"]', message, mount);
+        shouldThrowErrorOnElement('input[type="checkbox"]', message, attach);
     });
 
     test('throws error if element is not valid', () => {
         const message = 'wrapper.setValue() cannot be called on this element';
-        shouldThrowErrorOnElement('#label-el', message, mount);
+        shouldThrowErrorOnElement('#label-el', message, attach);
     });
 });

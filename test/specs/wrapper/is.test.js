@@ -2,15 +2,15 @@
  * @file san test utils wrapper is test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import component from '../../resources/component';
 import ComponentAsAClass from '../../resources/component-as-a-class';
 import componentWithChild from '../../resources/component-with-child';
 
 /* global test */
-describeWithShallowAndMount('is', mount => {
+describeWithShallowAndAttach('is', attach => {
     test('return true if root node matches tag selector', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<input />'
         });
         expect(wrapper.is('input')).toEqual(true);
@@ -18,59 +18,59 @@ describeWithShallowAndMount('is', mount => {
 
 
     test('return true if root node matches class selector', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div class="div" />'
         });
         expect(wrapper.is('.div')).toEqual(true);
     });
 
     test('return true if root node matches id selector', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div id="div" />'
         });
         expect(wrapper.is('#div')).toEqual(true);
     });
 
     test('return true if root node matches component', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         expect(wrapper.is(component)).toEqual(true);
     });
 
     test('returns true if root node matches San component selector', () => {
-        const wrapper = mount(componentWithChild);
+        const wrapper = attach(componentWithChild);
         const comp = wrapper.find(component);
         expect(comp.is(component)).toEqual(true);
     });
 
     test('returns true if root node matches Component extending class component', () => {
-        const wrapper = mount(ComponentAsAClass);
+        const wrapper = attach(ComponentAsAClass);
         expect(wrapper.is(ComponentAsAClass)).toEqual(true);
     });
     return;
 
     test('returns false if root node is not a San Component', () => {
-        const wrapper = mount(componentWithChild);
+        const wrapper = attach(componentWithChild);
         const input = wrapper.find('span');
         expect(input.is(component)).toEqual(false);
     });
 
     test('returns false if root node does not match tag selector', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         expect(wrapper.is('p')).toEqual(false);
     });
 
     test('returns false if root node does not match class selector', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         expect(wrapper.is('.p')).toEqual(false);
     });
 
     test('returns false if root node does not match id selector', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         expect(wrapper.is('#p')).toEqual(false);
     });
 
     test('throws error if ref options object is passed', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
 
         const message = '[san-test-utils]: $ref selectors can not be used with wrapper.is()';
         const fn = () => wrapper.is({ref: 'foo'});
@@ -78,7 +78,7 @@ describeWithShallowAndMount('is', mount => {
     });
 
     test('throws an error if selector is not a valid selector', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         const invalidSelectors = [
             undefined,
             null,

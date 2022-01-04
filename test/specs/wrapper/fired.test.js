@@ -3,12 +3,12 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
-describeWithShallowAndMount('fired', (mount, methodName) => {
+describeWithShallowAndAttach('fired', (attach, methodName) => {
     test('captures fired events with a different api', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
 
@@ -30,7 +30,7 @@ describeWithShallowAndMount('fired', (mount, methodName) => {
     });
 
     test('captures fired events', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
 
@@ -52,7 +52,7 @@ describeWithShallowAndMount('fired', (mount, methodName) => {
     });
 
     test('throws error when called on non SanWrapper', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /></div>'
         });
         const message = '[san-test-utils]: wrapper.fired() can only be called on a San instance';
@@ -62,7 +62,7 @@ describeWithShallowAndMount('fired', (mount, methodName) => {
     });
 
     test('captures all events thrown after created lifecycle hook', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             created() {
                 this.fire('foo');
             },
@@ -77,14 +77,14 @@ describeWithShallowAndMount('fired', (mount, methodName) => {
     });
 
     test('captures only events from its component without side effects', () => {
-        const wrapper1 = mount({
+        const wrapper1 = attach({
             template: '<div />',
             created() {
                 this.fire('foo');
             }
         });
 
-        const wrapper2 = mount({
+        const wrapper2 = attach({
             template: '<div />',
             attached() {
                 this.fire('bar');
@@ -97,7 +97,7 @@ describeWithShallowAndMount('fired', (mount, methodName) => {
         expect(wrapper2.fired().bar).toEqual([[]]);
     });
 
-    if (methodName !== 'shallowMount') {
+    if (methodName !== 'shallowAttach') {
         test('works correctly on nested extended components', () => {
             const grandChildComponent = san.defineComponent({
                 name: 'grandchildcomponent',
@@ -114,7 +114,7 @@ describeWithShallowAndMount('fired', (mount, methodName) => {
                 template: '<a><grand-child-component /></a>'
             });
 
-            const wrapper = mount({
+            const wrapper = attach({
                 template: '<div><child-component /></div>',
                 components: {
                     'child-component': childComponent

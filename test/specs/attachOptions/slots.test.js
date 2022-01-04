@@ -1,17 +1,17 @@
 /**
- * @file san test utils mount options test file
+ * @file san test utils attach options test file
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import componentWithSlots from '../../resources/component-with-slots';
 import componentAsAClass from '../../resources/component-as-a-class';
 import component from '../../resources/component';
 
 /* global test jest */
-describeWithShallowAndMount('options.slots', (mount, methodName) => {
-    test('mounts component with default slot if passed component in slot object', () => {
-        const wrapper = mount(componentWithSlots, {
+describeWithShallowAndAttach('options.slots', (attach, methodName) => {
+    test('attachs component with default slot if passed component in slot object', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 default: component
             }
@@ -19,8 +19,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         expect(wrapper.contains(component)).toEqual(true);
     });
 
-    if (methodName !== 'shallowMount') {
-        test('mounts component with default slot if passed component as string in slot object', () => {
+    if (methodName !== 'shallowAttach') {
+        test('attachs component with default slot if passed component as string in slot object', () => {
             const customComponent = san.defineComponent({
                 template: '<time />'
             });
@@ -31,7 +31,7 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
                 template: '<div><slot /></div>'
             });
 
-            const wrapper = mount(testComponent, {
+            const wrapper = attach(testComponent, {
                 slots: {
                     default: '<custom-component />'
                 }
@@ -41,8 +41,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         });
     }
 
-    test('mounts component with default slot if passed component in array in slot object', () => {
-        const wrapper = mount(componentWithSlots, {
+    test('attachs component with default slot if passed component in array in slot object', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 default: [component]
             }
@@ -50,8 +50,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         expect(wrapper.contains(component)).toEqual(true);
     });
 
-    test('mounts component with default slot if passed plain object in slot object', () => {
-        const wrapper = mount(componentWithSlots, {
+    test('attachs component with default slot if passed plain object in slot object', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 default: [{template: '<div id="div" />'}]
             }
@@ -59,8 +59,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         expect(wrapper.contains('#div')).toEqual(true);
     });
 
-    test('mounts component with default slot if passed string in slot object', () => {
-        const wrapper = mount(componentWithSlots, {
+    test('attachs component with default slot if passed string in slot object', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 default: '<span />'
             }
@@ -70,7 +70,7 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
 
 
     test('works correctly with class component', () => {
-        const wrapper = mount(componentAsAClass, {
+        const wrapper = attach(componentAsAClass, {
             slots: {
                 default: '<span />'
             }
@@ -79,8 +79,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
     });
 
 
-    test('mounts component with default slot if passed string in slot array object', () => {
-        const wrapper = mount(componentWithSlots, {
+    test('attachs component with default slot if passed string in slot array object', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 default: ['<span />']
             }
@@ -88,8 +88,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         expect(wrapper.contains('span')).toEqual(true);
     });
 
-    test('mounts component with named slot if passed component in slot object', () => {
-        const wrapper = mount(componentWithSlots, {
+    test('attachs component with named slot if passed component in slot object', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 header: [component],
                 footer: [component]
@@ -98,8 +98,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         expect(wrapper.findAll(component).length).toEqual(2);
     });
 
-    test('mounts component with default and named slots', () => {
-        const wrapper = mount(componentWithSlots, {
+    test('attachs component with default and named slots', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 default: '<span>hello</span>',
                 footer: '<p>world</p>'
@@ -110,8 +110,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         expect(HTML).toContain('<p>world</p>');
     });
 
-    test('mounts component with default and named text slot', () => {
-        const wrapper = mount(componentWithSlots, {
+    test('attachs component with default and named text slot', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 footer: 'world',
                 default: 'hello,'
@@ -121,8 +121,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         expect(text.replace(/(\r\n)|(\s)*/g, '')).toContain('hello,world');
     });
 
-    test('mounts component with named slot if passed component in slot object', () => {
-        const wrapper = mount(componentWithSlots, {
+    test('attachs component with named slot if passed component in slot object', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 header: component
             }
@@ -132,7 +132,7 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
     });
 
     test('supports multiple root nodes in default slot option', () => {
-        const wrapper = mount(componentWithSlots, {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 default: ['<time /><time />']
             }
@@ -141,7 +141,7 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
     });
 
     test('throws error if passed false for slots', () => {
-        const fn = () => mount(componentWithSlots, {
+        const fn = () => attach(componentWithSlots, {
             slots: {
                 default: [false]
             }
@@ -151,7 +151,7 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
     });
 
     test('throws error if passed a number for slots', () => {
-        const fn = () => mount(componentWithSlots, {
+        const fn = () => attach(componentWithSlots, {
             slots: {
                 default: [1]
             }
@@ -161,7 +161,7 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
     });
 
     test('throws error if passed false for slots', () => {
-        const fn = () => mount(componentWithSlots, {
+        const fn = () => attach(componentWithSlots, {
             slots: {
                 default: false
             }
@@ -171,7 +171,7 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
     });
 
     test('throws error if passed a number for slots', () => {
-        const fn = () => mount(componentWithSlots, {
+        const fn = () => attach(componentWithSlots, {
             slots: {
                 default: 1
             }
@@ -195,7 +195,7 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         });
 
 
-        const wrapper = mount(parent, {
+        const wrapper = attach(parent, {
             slots: {
                 content: '*parent content!*'
             },
@@ -206,8 +206,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         wrapper.find('div').trigger('click');
     });
 
-    test('mounts component with default slot if passed class component in slot object', () => {
-        const wrapper = mount(componentWithSlots, {
+    test('attachs component with default slot if passed class component in slot object', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 default: componentAsAClass
             }
@@ -215,8 +215,8 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         expect(wrapper.contains(componentAsAClass)).toEqual(true);
     });
 
-    test('mounts component with default slot if passed class component in array in slot object', () => {
-        const wrapper = mount(componentWithSlots, {
+    test('attachs component with default slot if passed class component in array in slot object', () => {
+        const wrapper = attach(componentWithSlots, {
             slots: {
                 default: [componentAsAClass]
             }
@@ -240,7 +240,7 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
                 <span baz="qux">{{bar}}</span>
             </div>`
         });
-        let parentComponent = mount({
+        let parentComponent = attach({
             name: 'parentComponent',
             template: '<div><slot /></div>',
             initData() {
@@ -265,7 +265,7 @@ describeWithShallowAndMount('options.slots', (mount, methodName) => {
         expect(childComponents.at(0).vm.name).toEqual(childComponentName);
         expect(childComponents.at(1).vm.name).toEqual(childComponentName);
 
-        parentComponent = mount(
+        parentComponent = attach(
             {
                 name: 'parentComponent',
                 template: '<div><slot /></div>'

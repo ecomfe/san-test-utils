@@ -3,15 +3,15 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import componentWithInput from '../../resources/component-with-input';
 
 /* global test */
 /* eslint-disable max-len */
 /* eslint-disable max-nested-callbacks */
-describeWithShallowAndMount('set checked', mount => {
+describeWithShallowAndAttach('set checked', attach => {
     test('set element checked true with no option passed', () => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const input = wrapper.find('input[type="checkbox"]');
 
         input.setChecked();
@@ -19,7 +19,7 @@ describeWithShallowAndMount('set checked', mount => {
     });
 
     test('set element checked equal to param passed', () => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const input = wrapper.find('input[type="checkbox"]');
 
         input.setChecked(true);
@@ -29,7 +29,7 @@ describeWithShallowAndMount('set checked', mount => {
     });
 
     test('update dom with checkbox value', done => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const input = wrapper.find('input[type="checkbox"]');
 
         input.setChecked();
@@ -44,8 +44,8 @@ describeWithShallowAndMount('set checked', mount => {
         });
     });
 
-    test('changes state the right amount of times with checkbox value', done => {
-        const wrapper = mount(componentWithInput);
+    test('changes state the right aattach of times with checkbox value', done => {
+        const wrapper = attach(componentWithInput);
         const input = wrapper.find('input[type="checkbox"]');
 
         input.setChecked();
@@ -62,7 +62,7 @@ describeWithShallowAndMount('set checked', mount => {
     });
 
     it('updates dom with radio value', done => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
 
         wrapper.find('#radioBar').setChecked();
         san.nextTick(() => {
@@ -75,8 +75,8 @@ describeWithShallowAndMount('set checked', mount => {
         });
     });
 
-    test('changes state the right amount of times with radio value', done => {
-        const wrapper = mount(componentWithInput);
+    test('changes state the right aattach of times with radio value', done => {
+        const wrapper = attach(componentWithInput);
         const radioBar = wrapper.find('#radioBar');
         const radioFoo = wrapper.find('#radioFoo');
 
@@ -95,7 +95,7 @@ describeWithShallowAndMount('set checked', mount => {
 
     test('throws error if checked param is not boolean', () => {
         const message = '[san-test-utils]: wrapper.setChecked() must be passed a boolean';
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const input = wrapper.find('input[type="checkbox"]');
         const fn = () => input.setChecked('asdf');
         expect(fn).toThrow(new Error(message));
@@ -103,7 +103,7 @@ describeWithShallowAndMount('set checked', mount => {
 
     test('throws error if checked param is false on radio element', () => {
         const message = '[san-test-utils]: wrapper.setChecked() cannot be called with parameter false on a <input type="radio" /> element';
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const input = wrapper.find('#radioFoo');
         const fn = () => input.setChecked(false);
         expect(fn).toThrow(new Error(message));

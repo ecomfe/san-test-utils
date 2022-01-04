@@ -3,13 +3,13 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import componentWithSIf from '../../resources/component-with-s-if';
 
 /* global test */
-describeWithShallowAndMount('set data', mount => {
+describeWithShallowAndAttach('set data', attach => {
     test('sets component data and updates nested vm nodes', done => {
-        const wrapper = mount(componentWithSIf);
+        const wrapper = attach(componentWithSIf);
         const componentArr = wrapper.findAll(componentWithSIf);
 
         expect(componentArr.at(0).findAll('.child.ready').length).toEqual(0);
@@ -23,7 +23,7 @@ describeWithShallowAndMount('set data', mount => {
 
     test('throws an error if node is not a San instance', () => {
         const message = '[san-test-utils]: wrapper.setData() must be called on a San instance';
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /></div>'
         });
         const fn = () => wrapper.findAll('p').setData({ready: true});
@@ -31,7 +31,7 @@ describeWithShallowAndMount('set data', mount => {
     });
 
     it('throws error if wrapper array contains no items', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         const message = '[san-test-utils]: setData cannot be called on 0 items';

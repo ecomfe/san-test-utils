@@ -8,11 +8,11 @@
 * **示例**：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import foo from './foo';
 import bar from './bar';
 
-const wrapper = mount(foo);
+const wrapper = attach(foo);
 const barArray = wrapper.findAll(bar);
 expect(barArray.isSanInstance()).toBe(true);
 ```

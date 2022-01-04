@@ -8,7 +8,7 @@
 * **示例**：
 
 ```js
-import {shallowMount} from 'san-test-utils';
+import {shallowAttach} from 'san-test-utils';
 import foo from './foo';
 
 const bazComponent = {
@@ -16,7 +16,7 @@ const bazComponent = {
     template: '<p>baz</p>'
 };
 
-const wrapper = shallowMount(component, {
+const wrapper = shallowAttach(component, {
     slots: {
         default: [foo, '<my-component />', 'text'],
         fooBar: foo, // 将会匹配 `<slot name="fooBar" />`.

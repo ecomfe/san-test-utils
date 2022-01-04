@@ -2,12 +2,12 @@
  * @file san test utils wrapper array is visible test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
-describeWithShallowAndMount('is visible', mount => {
+describeWithShallowAndAttach('is visible', attach => {
     test('returns true if node has no inline style', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /></div>'
         });
 
@@ -15,7 +15,7 @@ describeWithShallowAndMount('is visible', mount => {
     });
 
     test('returns false if node has inline style display: none', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p style="display: none;" /><p /></div>'
         });
 
@@ -23,7 +23,7 @@ describeWithShallowAndMount('is visible', mount => {
     });
 
     test('returns false if node has visibility: hidden', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p style="visibility: hidden;" /><p /></div>'
         });
 
@@ -32,7 +32,7 @@ describeWithShallowAndMount('is visible', mount => {
 
     test('throws error if wrapper array contains no items', () => {
         const message = '[san-test-utils]: isVisible cannot be called on 0 items';
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         const fn = () => wrapper.findAll('p').isVisible('p');

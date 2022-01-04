@@ -1,9 +1,9 @@
 /**
- * @file san test utils mount options test file
+ * @file san test utils attach options test file
  **/
 
 import san from 'san';
-import {describeWithMountingMethods} from '../../utils';
+import {describeWithAttachingMethods} from '../../utils';
 import componentWithChild from '../../resources/component-with-child';
 import component from '../../resources/component';
 import componentAsAClass from '../../resources/component-as-a-class';
@@ -11,9 +11,9 @@ import componentWithNestedChildren from '../../resources/component-with-nested-c
 import config from '../../../src/config';
 
 /* global test jest */
-describeWithMountingMethods('options.stub', (mount, methodName) => {
+describeWithAttachingMethods('options.stub', (attach, methodName) => {
     test('accepts valid component stubs', () => {
-        mount(componentWithChild, {
+        attach(componentWithChild, {
             stubs: {
                 'child-component': component,
                 'child-component1': componentAsAClass
@@ -23,7 +23,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
 
     if (methodName !== 'renderToString') {
         test('replaces component with template string ', () => {
-            const wrapper = mount(componentWithChild, {
+            const wrapper = attach(componentWithChild, {
                 stubs: {
                     'child-component': '<div class="stub"></div>'
                 }
@@ -39,7 +39,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
                 template: '<div />',
                 attached
             });
-            const wrapper = mount(componentWithChild, {
+            const wrapper = attach(componentWithChild, {
                 stubs: {
                     'child-component': stub
                 }
@@ -51,16 +51,16 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
     }
 
     test('does not error if component to stub contains no components', () => {
-        mount(component, {
+        attach(component, {
             stubs: {
                 doesnotexist: component
             }
         });
     });
 
-    if (methodName !== 'shallowMount' && methodName !== 'renderToString') {
+    if (methodName !== 'shallowAttach' && methodName !== 'renderToString') {
         test('does not modify component directly', () => {
-            const wrapper = mount(componentWithNestedChildren, {
+            const wrapper = attach(componentWithNestedChildren, {
                 stubs: {
                     'child-component': '<xxx />'
                 }
@@ -68,20 +68,20 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
 
             expect(wrapper.findAll(component).length).toEqual(0);
 
-            const mountedWrapper = mount(componentWithNestedChildren);
-            expect(mountedWrapper.findAll(component).length).toEqual(1);
+            const attachedWrapper = attach(componentWithNestedChildren);
+            expect(attachedWrapper.findAll(component).length).toEqual(1);
         });
 
         test('does not modify component directly with a class component', () => {
-            const wrapper = mount(componentAsAClass, {
+            const wrapper = attach(componentAsAClass, {
                 stubs: {
                     'child-component': '<span />'
                 }
             });
             expect(wrapper.findAll(component).length).toEqual(0);
 
-            const mountedWrapper = mount(componentAsAClass);
-            expect(mountedWrapper.findAll(component).length).toEqual(1);
+            const attachedWrapper = attach(componentAsAClass);
+            expect(attachedWrapper.findAll(component).length).toEqual(1);
         });
     }
 
@@ -89,7 +89,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
         const componentWithGlobalComponent = {
             template: '<span><registered-component /></span>'
         };
-        const wrapper = mount(componentWithGlobalComponent, {
+        const wrapper = attach(componentWithGlobalComponent, {
             stubs: {
                 'registered-component': component
             }
@@ -102,14 +102,14 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
         const componentWithGlobalComponent = {
             template: '<span><registered-component /></span>'
         };
-        const wrapper = mount(componentWithGlobalComponent, {
+        const wrapper = attach(componentWithGlobalComponent, {
             stubs: ['registered-component']
         });
         const HTML = methodName === 'renderToString' ? wrapper : wrapper.html();
         expect(HTML).toContain('<registered-component-stub>');
     });
 
-    if (methodName !== 'shallowMount') {
+    if (methodName !== 'shallowAttach') {
         test('stubs nested components', () => {
             const grandChildComponent = san.defineComponent({
                 template: '<span />'
@@ -127,7 +127,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
                 }
             });
 
-            const wrapper = mount(testComponent, {
+            const wrapper = attach(testComponent, {
                 stubs: ['grand-child-component']
             });
 
@@ -144,7 +144,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
                 </stub-with-child>
             </div>`
         };
-        const wrapper = mount(TestComponent, {
+        const wrapper = attach(TestComponent, {
             stubs: ['child-component', 'stub-with-child']
         });
         const HTML = methodName === 'renderToString' ? wrapper : wrapper.html();
@@ -153,7 +153,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
 
     if (methodName !== 'renderToString') {
         test('stubs components with dummy which has name when passed a boolean', () => {
-            const wrapper = mount({
+            const wrapper = attach({
                 template: `<div>
                     <registered-component />
                 </div>`
@@ -175,16 +175,16 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
         const error = '[san-test-utils]: each item in an options.stubs array must be a string';
         invalidValues.forEach(invalidValue => {
             const fn = () =>
-                mount(TestComponent, {
+                attach(TestComponent, {
                     stubs: [invalidValue]
                 });
             expect(fn).toThrow(new Error(error));
         });
     });
 
-    if (methodName !== 'shallowMount') {
+    if (methodName !== 'shallowAttach') {
         test('does not stub component when set to false', () => {
-            const wrapper = mount(componentWithChild, {
+            const wrapper = attach(componentWithChild, {
                 stubs: {
                     'child-component': false
                 }
@@ -204,7 +204,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
             </div>`
         };
 
-        const wrapper = mount(TestComponent, {
+        const wrapper = attach(TestComponent, {
             stubs: {
                 'span-component': '<p />'
             }
@@ -214,7 +214,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
         expect(HTML).toContain('<p>');
     });
 
-    it('prioritize mounting options over config', () => {
+    it('prioritize attaching options over config', () => {
         config.stubs['time-component'] = '<p />';
         const TestComponent = {
             template: `<div>
@@ -222,7 +222,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
             </div>`
         };
 
-        const wrapper = mount(TestComponent, {
+        const wrapper = attach(TestComponent, {
             stubs: {
                 'time-component': '<span />'
             }
@@ -231,12 +231,12 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
         expect(HTML).toContain('<span>');
     });
 
-    if (methodName !== 'shallowMount' && methodName !== 'renderToString') {
+    if (methodName !== 'shallowAttach' && methodName !== 'renderToString') {
         test('stubs on child components', () => {
             const TestComponent = {
                 template: '<div><transition></transition></div>'
             };
-            const wrapper = mount(
+            const wrapper = attach(
                 {
                     components: {
                         'test-component': TestComponent
@@ -259,7 +259,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
             template: '<div><time-component /></div>'
         };
 
-        const wrapper = mount(TestComponent, {
+        const wrapper = attach(TestComponent, {
             stubs: ['a-component']
         });
 
@@ -285,7 +285,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
         const error = '[san-test-utils]: options.stub cannot contain a circular reference';
         invalidValues.forEach(invalidValue => {
             const fn = () =>
-                mount(componentWithChild, {
+                attach(componentWithChild, {
                     stubs: {
                         'child-component': invalidValue.replace(/NAME/g, 'child-component')
                     }
@@ -293,7 +293,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
             expect(fn).toThrow(new Error(error));
         });
         validValues.forEach(validValue => {
-            mount(componentWithChild, {
+            attach(componentWithChild, {
                 stubs: {
                     'child-component': validValue.replace(/NAME/g, name)
                 }
@@ -305,7 +305,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
         const error = '[san-test-utils]: options.stub values must be passed a string or component';
         const invalidValues = [1, null, [], {}, NaN];
         invalidValues.forEach(invalidValue => {
-            const fn = () => mount(componentWithChild, {
+            const fn = () => attach(componentWithChild, {
                 stubs: {
                     'child-component': invalidValue
                 }
@@ -328,7 +328,7 @@ describeWithMountingMethods('options.stub', (mount, methodName) => {
                     'to-stub': ToStub
                 }
             };
-            const wrapper = mount(TestComponent, {
+            const wrapper = attach(TestComponent, {
                 stubs: {
                     'to-stub': Stub
                 }

@@ -8,7 +8,7 @@
 * **示例**：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 
 const component = {
     template: '<div>{{foo()}}{{bar()}}{{baz()}}</div>',
@@ -26,6 +26,6 @@ const options = {
         }
     }
 };
-const wrapper = mount(component, options);
+const wrapper = attach(component, options);
 expect(wrapper.text()).toBe('aBC');
 ```

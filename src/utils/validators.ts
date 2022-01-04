@@ -13,11 +13,11 @@ export function isDomSelector(selector: SelectorValue) {
 
     try {
         if (typeof document === 'undefined') {
-            throwError('mount must be run in a browser environment like PhantomJS, jsdom or chrome');
+            throwError('attach must be run in a browser environment like PhantomJS, jsdom or chrome');
         }
     }
     catch (error) {
-        throwError('mount must be run in a browser environment like PhantomJS, jsdom or chrome');
+        throwError('attach must be run in a browser environment like PhantomJS, jsdom or chrome');
     }
     try {
         document.querySelector(selector);

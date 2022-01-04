@@ -3,12 +3,12 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
-describeWithShallowAndMount('set checked test', mount => {
+describeWithShallowAndAttach('set checked test', attach => {
     test('sets value to the input elements of type checkbox or radio', done => {
-        const wrapper = mount({
+        const wrapper = attach({
             initData() {
                 return {
                     t1: [],

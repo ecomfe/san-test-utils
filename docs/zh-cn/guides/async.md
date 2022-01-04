@@ -41,12 +41,12 @@ export default {
 测试用例可以写成像这样：
 
 ```js
-import {shallowMount} from 'san-test-utils';
+import {shallowAttach} from 'san-test-utils';
 import async from './async';
 jest.mock('axios');
 
 it('fetches async when a button is clicked', () => {
-    const wrapper = shallowMount(foo);
+    const wrapper = shallowAttach(foo);
     wrapper.find('button').trigger('click');
     expect(wrapper.vm.data('value')).toBe('value');
 })
@@ -56,7 +56,7 @@ it('fetches async when a button is clicked', () => {
 
 ```js
 it('fetches async when a button is clicked', done => {
-    const wrapper = shallowMount(async);
+    const wrapper = shallowAttach(async);
     wrapper.find('button').trigger('click');
     wrapper.vm.nextTick(() => {
         expect(wrapper.vm.data('value')).toBe('value');
@@ -72,14 +72,14 @@ it('fetches async when a button is clicked', done => {
 更新后的测试看起来像这样：
 
 ```js
-import {shallowMount} from 'san-test-utils';
+import {shallowAttach} from 'san-test-utils';
 import flushPromises from 'flush-promises';
 import async from './async';
 
 jest.mock('axios');
 
 it('fetches async when a button is clicked', async () => {
-    const wrapper = shallowMount(async);
+    const wrapper = shallowAttach(async);
     wrapper.find('button').trigger('click');
     await flushPromises();
     expect(wrapper.vm.value).toBe('value');

@@ -6,10 +6,10 @@
 * **示例**：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import foo from './foo';
 
-const wrapper = mount(foo);
+const wrapper = attach(foo);
 const options = wrapper.find('select').findAll('option');
 
 options.at(1).setSelected();

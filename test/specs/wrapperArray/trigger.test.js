@@ -2,12 +2,12 @@
  * @file san test utils wrapper array trigger test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import componentWithEvents from '../../resources/component-with-events';
 import sinon from 'sinon';
 
 /* global test */
-describeWithShallowAndMount('trigger', mount => {
+describeWithShallowAndAttach('trigger', attach => {
     const sandbox = sinon.createSandbox();
 
     afterEach(() => {
@@ -17,7 +17,7 @@ describeWithShallowAndMount('trigger', mount => {
 
     test('cause click handler to fire when wrapper.trigger("click") is called on a component', () => {
         const clickHandler = sandbox.stub();
-        const wrapper = mount(componentWithEvents, {
+        const wrapper = attach(componentWithEvents, {
             methods: {
                 clickHandler
             }
@@ -30,7 +30,7 @@ describeWithShallowAndMount('trigger', mount => {
 
     test('causes keydown handler to fire when wrapper.trigger("keydown") is fired on a component', () => {
         const keydownHandler = sandbox.stub();
-        const wrapper = mount(componentWithEvents, {
+        const wrapper = attach(componentWithEvents, {
             methods: {
                 keydownHandler
             }
@@ -42,7 +42,7 @@ describeWithShallowAndMount('trigger', mount => {
 
     test('causes keydown handler to fire when wrapper.trigger("keydown-enter") is fired on a component', () => {
         const keydownHandler = sandbox.stub();
-        const wrapper = mount(componentWithEvents, {
+        const wrapper = attach(componentWithEvents, {
             methods: {
                 keydownHandler
             }
@@ -53,7 +53,7 @@ describeWithShallowAndMount('trigger', mount => {
     });
 
     test('throws an error if type is not a string', () => {
-        const wrapper = mount(componentWithEvents);
+        const wrapper = attach(componentWithEvents);
         const invalidSelectors = [
             undefined,
             null,
@@ -75,7 +75,7 @@ describeWithShallowAndMount('trigger', mount => {
 
     test('throws error if wrapper array contains no items', () => {
         const message = '[san-test-utils]: trigger cannot be called on 0 items';
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         const fn = () => wrapper.findAll('p').trigger('p');

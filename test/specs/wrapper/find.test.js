@@ -3,7 +3,7 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import componentWithSlot from '../../resources/component-with-slot';
 import component from '../../resources/component';
 import componentWithChild from '../../resources/component-with-child';
@@ -11,16 +11,16 @@ import componentAsAClass from '../../resources/component-as-a-class';
 import componentWithSFor from '../../resources/component-with-s-for';
 
 /* global test */
-describeWithShallowAndMount('find', (mount, methodName) => {
+describeWithShallowAndAttach('find', (attach, methodName) => {
     test('returns a Wrapper matching tag selector passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /><p /></div>'
         });
         expect(wrapper.find('p').el).toBeInstanceOf(Element);
     });
 
     test('returns a wrapper matching class selector passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><div class="foo" /></div>'
         });
 
@@ -29,7 +29,7 @@ describeWithShallowAndMount('find', (mount, methodName) => {
 
     /* eslint-disable max-len */
     test('returns an array of Wrapper of elements matching class selector passed if they are declared inside a slot', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             components: {
                 'component-with-slot': componentWithSlot
             },
@@ -44,7 +44,7 @@ describeWithShallowAndMount('find', (mount, methodName) => {
     });
 
     test('returns Wrapper of elements matching id selector passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><div id="foo" /></div>'
         });
         expect(wrapper.find('#foo').el).toBeInstanceOf(Element);
@@ -60,7 +60,7 @@ describeWithShallowAndMount('find', (mount, methodName) => {
                 };
             }
         });
-        const wrapper = mount({
+        const wrapper = attach({
             components: {
                 'child-component': childComponent
             },
@@ -71,7 +71,7 @@ describeWithShallowAndMount('find', (mount, methodName) => {
     });
 
     test('returns Wrapper of elements matching attributes selector passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><a href="/" /></div>'
         });
         expect(wrapper.find('[href="/"]').el).toBeInstanceOf(Element);
@@ -79,7 +79,7 @@ describeWithShallowAndMount('find', (mount, methodName) => {
 
 
     test('throws an error when passed an invalid DOM selector', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><a href="/" /></div>'
         });
         const message = '[san-test-utils]: wrapper.find() must be passed a valid CSS selector, San component, or valid find option object';
@@ -88,39 +88,39 @@ describeWithShallowAndMount('find', (mount, methodName) => {
     });
 
     test('returns Wrapper of elements matching selector when descendant combinator passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><ul><li>list</li>item<li></li></ul></div>'
         });
         expect(wrapper.find('div li').el).toBeInstanceOf(Element);
     });
 
     test('returns Wrapper of elements matching selector when direct descendant combinator passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><ul><li>list</li>item<li></li></ul></div>'
         });
         expect(wrapper.find('div > ul').el).toBeInstanceOf(Element);
     });
 
     test('returns Wrapper of elements matching pseudo selector passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /><p /></div>'
         });
         expect(wrapper.find('p:first-of-type').el).toBeInstanceOf(Element);
     });
 
     test('returns Wrapper of San Components matching component', () => {
-        const wrapper = mount(componentWithChild);
+        const wrapper = attach(componentWithChild);
         expect(wrapper.find(component).el).toBeInstanceOf(Element);
     });
 
     test('returns Wrapper of class component', () => {
-        const wrapper = mount(componentAsAClass);
+        const wrapper = attach(componentAsAClass);
         expect(wrapper.find(componentAsAClass).el).toBeInstanceOf(Element);
     });
 
-    if (methodName !== 'shallowMount') {
+    if (methodName !== 'shallowAttach') {
         test('follows DOM tree order', () => {
-            const wrapper = mount({
+            const wrapper = attach({
                 components: {
                     'component-2': {
                         template: '<div class="2" />'
@@ -144,7 +144,7 @@ describeWithShallowAndMount('find', (mount, methodName) => {
     }
 
     test('throws error when using ref selector on an element Wrapper', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><svg /></div>'
         });
         const fn = () => wrapper.find('svg').find({ref: 'some-ref'});
@@ -154,25 +154,25 @@ describeWithShallowAndMount('find', (mount, methodName) => {
 
     test('returns correct number of San Wrappers when component has a s-for', () => {
         const items = [{id: 1}, {id: 2}, {id: 3}];
-        const wrapper = mount(componentWithSFor, {data: {items}});
+        const wrapper = attach(componentWithSFor, {data: {items}});
 
         expect(wrapper.find(component).el).toBeInstanceOf(Element);
     });
 
-    test('selector works between mounts', () => {
-        const wrapper = mount({
+    test('selector works between attachs', () => {
+        const wrapper = attach({
             components: {
                 'child-component': component
             },
             template: '<div><child-component /></div>'
         });
 
-        mount(component);
+        attach(component);
         expect(wrapper.find(component).el).toBeInstanceOf(Element);
     });
 
     test('returns empty Wrapper with error if no nodes are found', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         const selector = 'pre';
         const error = wrapper.find(selector);
         expect(error.exists()).toEqual(false);
@@ -180,33 +180,33 @@ describeWithShallowAndMount('find', (mount, methodName) => {
     });
 
     test('returns empty Wrapper with error if no nodes are found when passed a component', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         const error = wrapper.find(componentWithChild);
         expect(error.exists()).toEqual(false);
         expect(error.selector).toEqual('Component');
     });
 
     test('returns Wrapper of elements matching the ref in options object', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p ref="foo"></p></div>'
         });
         expect(wrapper.find({ref: 'foo'})).toBeInstanceOf(Object);
     });
 
     test('returns Wrapper of San Component matching the ref in options object', () => {
-        const wrapper = mount(componentWithChild);
+        const wrapper = attach(componentWithChild);
         expect(wrapper.find({ref: 'child'}).isSanInstance()).toEqual(true);
     });
 
     test('returns empty Wrapper with error if no nodes are found via ref in options object', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         const error = wrapper.find({ref: 'foo'});
         expect(error.exists()).toEqual(false);
         expect(error.selector).toEqual('ref="foo"');
     });
 
     test('throws an error if selector is not a valid selector', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         const invalidSelectors = [
             undefined,
             null,
@@ -226,7 +226,7 @@ describeWithShallowAndMount('find', (mount, methodName) => {
     });
 
     test('handles unnamed components use s-if', done => {
-        const wrapper = mount({
+        const wrapper = attach({
             components: {
                 component
             },

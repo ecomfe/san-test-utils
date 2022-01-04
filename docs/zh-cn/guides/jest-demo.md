@@ -184,12 +184,12 @@ Jest 可以被用来生成多种格式的测试覆盖率报告。以下是一个
 如果你已经熟悉了 Jasmine，你应该很适应 Jest 的[断言 API](https://jestjs.io/docs/zh-Hans/expect)：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import component from './component';
 
 describe('component', () => {
     test('is a San instance', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         expect(wrapper.isSanInstance()).toBeTruthy();
     });
 });
@@ -201,7 +201,7 @@ describe('component', () => {
 
 ```js
 test('renders correctly', () => {
-    const wrapper = mount(component);
+    const wrapper = attach(component);
     expect(wrapper.html()).toMatchSnapshot();
 });
 ```

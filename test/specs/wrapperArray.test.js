@@ -3,7 +3,7 @@
  **/
 
 import sinon from 'sinon';
-import {describeWithShallowAndMount} from '../utils';
+import {describeWithShallowAndAttach} from '../utils';
 import {Wrapper, WrapperArray} from '../../src/wrapper/wrapper';
 
 function getWrapperArray(wrappers) {
@@ -18,7 +18,7 @@ function getWrapperArray(wrappers) {
 }
 
 /* global test */
-describeWithShallowAndMount('wrapper array', mount => {
+describeWithShallowAndAttach('wrapper array', attach => {
     const sandbox = sinon.createSandbox();
 
     afterEach(() => {

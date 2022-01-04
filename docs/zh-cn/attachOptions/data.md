@@ -11,7 +11,7 @@
 const component = {
     template: '<div>{{msg}}</div>',
 };
-const wrapper = mount(component, {
+const wrapper = attach(component, {
     data: {
         msg: 'aBC'
     }

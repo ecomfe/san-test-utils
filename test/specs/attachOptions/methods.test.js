@@ -1,20 +1,20 @@
 /**
- * @file san test utils mount options test file
+ * @file san test utils attach options test file
  **/
 
-import {describeWithMountingMethods} from '../../utils';
+import {describeWithAttachingMethods} from '../../utils';
 import config from '../../../src/config';
 
 /* global test jest */
-describeWithMountingMethods('options.methods', (mount, methodName) => {
-    it('prioritize mounting options over config', () => {
+describeWithAttachingMethods('options.methods', (attach, methodName) => {
+    it('prioritize attaching options over config', () => {
         config.methods.val = () => 'methodFromConfig';
 
         const testComponent = {
             template: '<div>{{val()}}</div>'
         };
 
-        const wrapper = mount(testComponent, {
+        const wrapper = attach(testComponent, {
             methods: {
                 val() {
                     return 'methodFromOptions';

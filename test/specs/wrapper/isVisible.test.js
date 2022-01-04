@@ -3,13 +3,13 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import componentWithSIf from '../../resources/component-with-s-if';
 
 /* global test */
-describeWithShallowAndMount('is visible', mount => {
+describeWithShallowAndAttach('is visible', attach => {
     test('return true if element has no inline style', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><div><span class="visible" /></div></div>'
         });
         const element = wrapper.find('.visible');
@@ -17,7 +17,7 @@ describeWithShallowAndMount('is visible', mount => {
     });
 
     test('return false if element has inline style display: none', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><div><span class="visible" style="display: none;" /></div></div>'
         });
         const element = wrapper.find('.visible');
@@ -25,7 +25,7 @@ describeWithShallowAndMount('is visible', mount => {
     });
 
     test('return false if element has inline style visibility: hidden', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><div><span class="visible" style="visibility: hidden" /></div></div>'
         });
         const element = wrapper.find('.visible');
@@ -33,7 +33,7 @@ describeWithShallowAndMount('is visible', mount => {
     });
 
     test('return true if element has hidden attributes', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><div><span class="visible" hidden /></div></div>'
         });
         const element = wrapper.find('.visible');
@@ -41,7 +41,7 @@ describeWithShallowAndMount('is visible', mount => {
     });
 
     test('return true if element has s-if true', done => {
-        const wrapper = mount(componentWithSIf);
+        const wrapper = attach(componentWithSIf);
         wrapper.vm.data.set('ready', true);
         san.nextTick(() => {
             const notReadyElement = wrapper.find('.not-ready');
@@ -53,7 +53,7 @@ describeWithShallowAndMount('is visible', mount => {
     });
 
     test('return true if parent element has s-if true', done => {
-        const wrapper = mount(componentWithSIf);
+        const wrapper = attach(componentWithSIf);
         wrapper.vm.data.set('ready', true);
         san.nextTick(() => {
             const notReadyElement = wrapper.find('.not-ready');
@@ -65,7 +65,7 @@ describeWithShallowAndMount('is visible', mount => {
     });
 
     test('return false if root element has s-if true and parent has s-if false', done => {
-        const wrapper = mount(componentWithSIf);
+        const wrapper = attach(componentWithSIf);
         wrapper.vm.data.set('ready', false);
         wrapper.vm.data.set('rootReady', true);
         san.nextTick(() => {
@@ -78,7 +78,7 @@ describeWithShallowAndMount('is visible', mount => {
     });
 
     test('return false if one element is absent', done => {
-        const wrapper = mount(componentWithSIf);
+        const wrapper = attach(componentWithSIf);
         wrapper.vm.data.set('ready', false);
         san.nextTick(() => {
             const readyElement = wrapper.find('.child.ready');
@@ -88,7 +88,7 @@ describeWithShallowAndMount('is visible', mount => {
     });
 
     test('return true if one element is present', done => {
-        const wrapper = mount(componentWithSIf);
+        const wrapper = attach(componentWithSIf);
         wrapper.vm.data.set('ready', true);
         san.nextTick(() => {
             const readyElement = wrapper.find('.child.ready');

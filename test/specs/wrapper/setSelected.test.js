@@ -3,13 +3,13 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import componentWithInput from '../../resources/component-with-input';
 
 /* global test */
-describeWithShallowAndMount('set selected', mount => {
+describeWithShallowAndAttach('set selected', attach => {
     test('set element selected true', done => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const options = wrapper.find('select').findAll('option');
         options.at(1).setSelected();
 
@@ -20,7 +20,7 @@ describeWithShallowAndMount('set selected', mount => {
     });
 
     test('updates dom with select value', done => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const options = wrapper.find('select').findAll('option');
 
         options.at(1).setSelected();
@@ -36,7 +36,7 @@ describeWithShallowAndMount('set selected', mount => {
     });
 
     test('updates dom with select value for select with optgroups', done => {
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const options = wrapper.find('select.with-optgroups').findAll('option');
 
         options.at(1).setSelected();
@@ -53,7 +53,7 @@ describeWithShallowAndMount('set selected', mount => {
 
     test('throws error if element is not valid', () => {
         const message = '[san-test-utils]: wrapper.setSelected() cannot be called on this element';
-        const wrapper = mount(componentWithInput);
+        const wrapper = attach(componentWithInput);
         const input = wrapper.find('#label-el');
 
         const fn = () => input.setSelected();

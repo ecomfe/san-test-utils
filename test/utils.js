@@ -3,23 +3,23 @@
  **/
 
 /* global describe */
-import mount from '../src/attach';
-import shallowMount from '../src/shallowAttach';
+import attach from '../src/attach';
+import shallowAttach from '../src/shallowAttach';
 import renderToString from '../src/renderToString';
 
-const shallowAndMount = [mount, shallowMount];
-const shallowMountAndRender = [mount, shallowMount, renderToString];
-const names = ['mount', 'shallowMount', 'renderToString'];
+const shallowAndAttach = [attach, shallowAttach];
+const shallowAttachAndRender = [attach, shallowAttach, renderToString];
+const names = ['attach', 'shallowAttach', 'renderToString'];
 
-export function describeWithShallowAndMount(spec, cb) {
-    shallowAndMount.forEach((method, i) => {
+export function describeWithShallowAndAttach(spec, cb) {
+    shallowAndAttach.forEach((method, i) => {
         const name = names[i];
         describe(`${spec} with ${name}`, () => cb(method, name));
     });
 }
 
-export function describeWithMountingMethods(spec, cb) {
-    shallowMountAndRender.forEach((method, i) => {
+export function describeWithAttachingMethods(spec, cb) {
+    shallowAttachAndRender.forEach((method, i) => {
         const name = names[i];
         describe(`${spec} with ${name}`, () => cb(method, name));
     });

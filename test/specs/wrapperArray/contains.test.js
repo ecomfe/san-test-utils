@@ -2,16 +2,16 @@
  * @file san test utils wrapper array contains test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
 /* eslint-disable max-len */
-describeWithShallowAndMount('contains', mount => {
+describeWithShallowAndAttach('contains', attach => {
     test('returns true if every Wrapper contains element', () => {
         const testComponent = {
             template: '<span><div><p /></div><div><p /></div></span>'
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         const divArr = wrapper.findAll('div');
         expect(divArr.contains('p')).toEqual(true);
     });
@@ -20,7 +20,7 @@ describeWithShallowAndMount('contains', mount => {
         const testComponent = {
             template: '<div><div></div><div><p /></div></div>'
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         const divArr = wrapper.findAll('div');
         expect(divArr.contains('p')).toEqual(false);
     });
@@ -30,7 +30,7 @@ describeWithShallowAndMount('contains', mount => {
             template: '<div />'
         };
         const message = '[san-test-utils]: contains cannot be called on 0 items';
-        const fn = () => mount(testComponent).findAll('p').contains('p');
+        const fn = () => attach(testComponent).findAll('p').contains('p');
         expect(fn).toThrow(new Error(message));
     });
 
@@ -38,7 +38,7 @@ describeWithShallowAndMount('contains', mount => {
         const testComponent = {
             template: '<div><p></p></div>'
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         const pArr = wrapper.findAll('p');
         const invalidSelectors = [
             undefined,

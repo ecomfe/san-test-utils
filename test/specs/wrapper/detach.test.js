@@ -2,11 +2,11 @@
  * @file san test utils wrapper detach test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import sinon from 'sinon';
 
 /* global test */
-describeWithShallowAndMount('attributes', mount => {
+describeWithShallowAndAttach('attributes', attach => {
     const sandbox = sinon.createSandbox();
 
     afterEach(() => {
@@ -16,7 +16,7 @@ describeWithShallowAndMount('attributes', mount => {
 
     test('triggers detach', () => {
         const stub = sandbox.stub();
-        mount({
+        attach({
             template: '<div attribute="value" />',
             detached() {
                 stub();
@@ -26,7 +26,7 @@ describeWithShallowAndMount('attributes', mount => {
     });
 
     test('removes element from document.body', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         }, {
             attachToDocument: true

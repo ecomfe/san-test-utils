@@ -2,12 +2,12 @@
  * @file san test utils wrapper filter test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
-describeWithShallowAndMount('filter', mount => {
+describeWithShallowAndAttach('filter', attach => {
     test('throws an error', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         const message = '[san-test-utils]: filter() must be called on a WrapperArray';

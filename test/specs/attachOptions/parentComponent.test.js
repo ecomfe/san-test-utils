@@ -1,12 +1,12 @@
 /**
- * @file san test utils mount options test file
+ * @file san test utils attach options test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test jest */
-describeWithShallowAndMount('options.parentComponent', mount => {
-    test('mounts component with parent component set to options.parentComponent', () => {
+describeWithShallowAndAttach('options.parentComponent', attach => {
+    test('attachs component with parent component set to options.parentComponent', () => {
         const parent = {
             initData() {
                 return {
@@ -18,7 +18,7 @@ describeWithShallowAndMount('options.parentComponent', mount => {
         const testComponent = {
             template: '<div />'
         };
-        const wrapper = mount(testComponent, {
+        const wrapper = attach(testComponent, {
             parentComponent: parent
         });
         expect(wrapper.vm.parentComponent.data.get('name')).toEqual('Parent Name');
@@ -29,7 +29,7 @@ describeWithShallowAndMount('options.parentComponent', mount => {
             const testComponent = {
                 template: '<div />'
             };
-            const fn = () => mount(testComponent, {
+            const fn = () => attach(testComponent, {
                 parentComponent: invalidParent
             });
             const message = '[san-test-utils]: options.parentComponent should be a valid San component';

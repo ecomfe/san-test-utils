@@ -8,14 +8,14 @@
 * **示例**：
 
 ```js
-import {mount, shallowMount} from 'san-test-utils';
+import {attach, shallowAttach} from 'san-test-utils';
 import foo from './foo';
 
-mount(component, {
+attach(component, {
     stubs: ['registered-component']
 });
 
-shallowMount(component, {
+shallowAttach(component, {
     stubs: {
         // 使用一个特定的实现作为存根
         'registered-component': foo,

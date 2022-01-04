@@ -1,14 +1,14 @@
 /**
- * @file san test utils mount file
+ * @file san test utils attach file
  **/
 
 import san from 'san';
-import mount from '../../src/attach';
+import attach from '../../src/attach';
 
 /* global test jest */
-describe('mount', () => {
-    test('return new SanWrapper with mounted San component if no options are passed', () => {
-        const wrapper = mount({
+describe('attach', () => {
+    test('return new SanWrapper with attached San component if no options are passed', () => {
+        const wrapper = attach({
             template: '<div><input /></div>'
         });
 
@@ -18,7 +18,7 @@ describe('mount', () => {
 
     test('returns new SanWrapper with correct data', () => {
         const data = {test: 'TEST'};
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         }, {data: data});
         expect(wrapper.vm).toBeDefined();
@@ -34,7 +34,7 @@ describe('mount', () => {
                 stub();
             }
         });
-        const wrapper = mount(TestComponent, {
+        const wrapper = attach(TestComponent, {
             methods: {
                 callStub() {}
             }
@@ -55,7 +55,7 @@ describe('mount', () => {
         component.prototype.detached = () => {
             detachedFn();
         };
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         expect(attachedFn).toBeCalled();
         expect(detachedFn).not.toBeCalled();
         wrapper.detach();
@@ -79,7 +79,7 @@ describe('mount', () => {
             </div>`
         });
 
-        const wrapper = mount(TestComponent);
+        const wrapper = attach(TestComponent);
         setTimeout(() => {
             expect(wrapper.find(InputComponent).exists()).toEqual(true);
             done();
@@ -94,7 +94,7 @@ describe('mount', () => {
             }
         };
 
-        const fn = () => mount(testComponent);
+        const fn = () => attach(testComponent);
         expect(fn).toThrow('Error in attached');
     });
 
@@ -111,13 +111,13 @@ describe('mount', () => {
             template: '<div><child-component /></div>'
         };
 
-        const fn = () => mount(rootComponent);
+        const fn = () => attach(rootComponent);
 
         expect(fn).toThrow('Error in attached');
     });
 
     test('adds unused data as attributes', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: `<div height="{{height}}" extra="{{extra}}">
                 <p class="prop-1">{{prop1}}</p>
                 <p class="prop-2"></p>
@@ -160,7 +160,7 @@ describe('mount', () => {
                 }
             }
         };
-        const wrapper = mount(component, options);
+        const wrapper = attach(component, options);
         expect(wrapper.text()).toEqual('aBC');
     });
 });

@@ -3,7 +3,7 @@
  **/
 
 import san from 'san';
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 import component from '../../resources/component';
 import componentAsAClass from '../../resources/component-as-a-class';
 import componentWithSlot from '../../resources/component-with-slot';
@@ -12,23 +12,23 @@ import componentWithSFor from '../../resources/component-with-s-for';
 
 /* global test */
 /* eslint-disable max-len */
-describeWithShallowAndMount('find all', (mount, methodName) => {
+describeWithShallowAndAttach('find all', (attach, methodName) => {
     test('return an WrapperArray of elements matching tag selector passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /><p /></div>'
         });
         expect(wrapper.findAll('p').length).toEqual(2);
     });
 
     test('return an WrapperArray of elements matching class selector passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><div class="foo" /></div>'
         });
         expect(wrapper.findAll('.foo').length).toEqual(1);
     });
 
     test('return nodes matching class selector inside a slot', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             components: {
                 'component-with-slot': componentWithSlot
             },
@@ -43,7 +43,7 @@ describeWithShallowAndMount('find all', (mount, methodName) => {
     });
 
     test('works correctly with raw', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             initData() {
                 return {
                     html: '<svg />'
@@ -57,21 +57,21 @@ describeWithShallowAndMount('find all', (mount, methodName) => {
     });
 
     test('return an WrapperArray of elements matching id selector passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div class="foo"><div id="foo" /></div>'
         });
         expect(wrapper.findAll('#foo').length).toEqual(1);
     });
 
     test('return an WrapperArray of elements matching attribute selector passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><a href="/" /></div>'
         });
         expect(wrapper.findAll('[href="/"]').length).toEqual(1);
     });
 
     test('throws an error when passed an invalid DOM selector', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><a href="/" /></div>'
         });
         const message = '[san-test-utils]: wrapper.findAll() must be passed a valid CSS selector, San component, or valid find option object';
@@ -80,33 +80,33 @@ describeWithShallowAndMount('find all', (mount, methodName) => {
     });
 
     test('return an array of Wrappers of elements matching selector when descendant combinator passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><ul><li>list</li>item<li></li></ul></div>'
         });
         expect(wrapper.findAll('div li').length).toEqual(2);
     });
 
     test('return an array of Wrappers of elements matching selector with direct descendant combinator passed', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><ul><ul></ul></ul></div>'
         });
         expect(wrapper.findAll('div > ul').length).toEqual(1);
     });
 
     test('return an array of Wrappers of elements matching pseudo selector', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /><p /></div>'
         });
         expect(wrapper.findAll('p:first-of-type').length).toEqual(1);
     });
 
     test('return an array of SanWrappers of San Components matching component', () => {
-        const wrapper = mount(componentWithChild);
+        const wrapper = attach(componentWithChild);
         expect(wrapper.findAll(component).length).toEqual(1);
     });
 
     test('return correct number of San wrapper when component has a s-for', () => {
-        const wrapper = mount(componentWithSFor, {
+        const wrapper = attach(componentWithSFor, {
             data: {
                 items: [{id: 1}, {id: 2}, {id: 3}]
             }
@@ -115,7 +115,7 @@ describeWithShallowAndMount('find all', (mount, methodName) => {
     });
 
     test('return array of SanWrappers of San Components matching component if component name in parent is different to filename', () => {
-        const wrapper = mount(componentWithChild);
+        const wrapper = attach(componentWithChild);
         const div = wrapper.findAll('span').at(0);
         const componentArr = div.findAll(component);
         expect(componentArr.length).toEqual(1);
@@ -135,7 +135,7 @@ describeWithShallowAndMount('find all', (mount, methodName) => {
                 'a-component': aComponent
             }
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         const span = wrapper.find('span');
         expect(span.findAll(aComponent).length).toEqual(1);
     });
@@ -151,12 +151,12 @@ describeWithShallowAndMount('find all', (mount, methodName) => {
                 component
             }
         };
-        const wrapper = mount(testComponent);
+        const wrapper = attach(testComponent);
         expect(wrapper.findAll(component).length).toEqual(3);
     });
 
     test('return Wrapper of class component', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             components: {
                 'component-as-a-class': componentAsAClass
             },
@@ -167,21 +167,21 @@ describeWithShallowAndMount('find all', (mount, methodName) => {
     return;
 
     test('return SanWrapper with length 0 if no nodes matching selector are found', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         const preArray = wrapper.findAll('pre');
         expect(preArray.length).toEqual(0);
         expect(preArray.wrappers).toEqual([]);
     });
 
     test('return an array of Wrapper of elements matching the ref in options object', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><div s-ref="foo" /></div>'
         });
         expect(wrapper.findAll({ref: 'foo'}).length).toEqual(1);
     });
 
     test('throws an error when ref selector is called on a wrapper that is not a San component', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><a href="/"></a></div>'
         });
         const a = wrapper.find('a');
@@ -191,14 +191,14 @@ describeWithShallowAndMount('find all', (mount, methodName) => {
     });
 
     test('return SanWrapper with length 0 if no nodes matching the ref in options object are found', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         const preArray = wrapper.findAll({ref: 'foo'});
         expect(preArray.length).toEqual(0);
         expect(preArray.wrappers).toEqual([]);
     });
 
     test('throws an error if selector is not a valid selector', () => {
-        const wrapper = mount(component);
+        const wrapper = attach(component);
         const invalidSelectors = [
             undefined,
             null,
@@ -217,7 +217,7 @@ describeWithShallowAndMount('find all', (mount, methodName) => {
         });
     });
 
-    if (methodName !== 'shallowMount') {
+    if (methodName !== 'shallowAttach') {
         test('return a WrapperArray which inlcudes SanWrapper if the elemens binds a San instance', () => {
             const childComponent = san.defineComponent({
                 initData() {
@@ -227,7 +227,7 @@ describeWithShallowAndMount('find all', (mount, methodName) => {
                 },
                 template: '<p class="foo" />'
             });
-            const wrapper = mount({
+            const wrapper = attach({
                 components: {
                     'child-component': childComponent
                 },

@@ -2,12 +2,12 @@
  * @file san test utils wrapper fire by order test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
-describeWithShallowAndMount('firedByOrder', mount => {
+describeWithShallowAndAttach('firedByOrder', attach => {
     test('captures fired events in order', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
 
@@ -24,7 +24,7 @@ describeWithShallowAndMount('firedByOrder', mount => {
     });
 
     test('throws error when called on non SanWrapper', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div><p /></div>'
         });
         const message = '[san-test-utils]: wrapper.firedByOrder() can only be called on a San instance';
@@ -34,7 +34,7 @@ describeWithShallowAndMount('firedByOrder', mount => {
     });
 
     test('captures in lifecycle hook fired events in order', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             inited() {
                 this.fire('foo');
             },

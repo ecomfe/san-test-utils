@@ -12,10 +12,10 @@
 * **示例**：
 
 ```js
-import {shallowMount} from 'san-test-utils';
+import {shallowAttach} from 'san-test-utils';
 import foo from './foo';
 
-const wrapper = shallowMount(foo);
+const wrapper = shallowAttach(foo);
 const divArray = wrapper.findAll('div');
 const secondDiv = divArray.at(1);
 expect(secondDiv.is('p')).toBe(true);

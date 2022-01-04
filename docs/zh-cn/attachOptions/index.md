@@ -1,7 +1,7 @@
 # 挂载选项
 ---
 
-`mount` 和 `shallowMount` 的选项。
+`attach` 和 `shallowAttach` 的选项。
 
 * [slots](./slots.md)
 

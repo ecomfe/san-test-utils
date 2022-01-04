@@ -2,12 +2,12 @@
  * @file san test utils wrapper array set value test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test */
-describeWithShallowAndMount('set value', mount => {
+describeWithShallowAndAttach('set value', attach => {
     test('sets value to the text-control input elemens', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             initData() {
                 return {
                     t1: '',
@@ -30,7 +30,7 @@ describeWithShallowAndMount('set value', mount => {
     });
 
     it('throws error if wrapper array contains no items', () => {
-        const wrapper = mount({
+        const wrapper = attach({
             template: '<div />'
         });
         const message = '[san-test-utils]: setValue cannot be called on 0 items';

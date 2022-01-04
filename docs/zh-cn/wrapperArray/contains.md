@@ -14,11 +14,11 @@
 * **示例**：
 
 ```js
-import {shallowMount} from 'san-test-utils';
+import {shallowAttach} from 'san-test-utils';
 import foo from './foo';
 import bar from './bar';
 
-const wrapper = shallowMount(foo);
+const wrapper = shallowAttach(foo);
 const divArray = wrapper.findAll('div');
 expect(divArray.contains('p')).toBe(true);
 expect(divArray.contains(bar)).toBe(true);

@@ -1,5 +1,5 @@
 /**
- * @file san test utils mount file
+ * @file san test utils attach file
  **/
 
 import san from 'san';

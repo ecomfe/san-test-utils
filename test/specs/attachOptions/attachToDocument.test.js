@@ -1,16 +1,16 @@
 /**
- * @file san test utils mount options test file
+ * @file san test utils attach options test file
  **/
 
-import {describeWithShallowAndMount} from '../../utils';
+import {describeWithShallowAndAttach} from '../../utils';
 
 /* global test jest */
-describeWithShallowAndMount('options.attachToDocument', mount => {
+describeWithShallowAndAttach('options.attachToDocument', attach => {
     test('attaches root node to document', () => {
         const testComponent = {
             template: '<div class="attached"><input /></div>'
         };
-        mount(testComponent, {
+        attach(testComponent, {
             attachToDocument: true
         });
         expect(document.querySelector('.attached')).not.toEqual(null);

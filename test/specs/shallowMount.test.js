@@ -3,8 +3,8 @@
  **/
 
 import san from 'san';
-import mount from '../../src/mount';
-import shallowMount from '../../src/shallowMount';
+import mount from '../../src/attach';
+import shallowMount from '../../src/shallowAttach';
 import componentWithNestedChildren from '../resources/component-with-nested-children';
 import component from '../resources/component';
 import componentWithChild from '../resources/component-with-child';

@@ -4,7 +4,7 @@
 
 import {throwError} from './index';
 import isPlainObject from 'lodash/isPlainObject';
-import { SelectorValue } from '../types';
+import { SelectorValue } from '../../types';
 
 export function isDomSelector(selector: SelectorValue) {
     if (typeof selector !== 'string') {

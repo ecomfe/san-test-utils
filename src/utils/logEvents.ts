@@ -2,7 +2,7 @@
  * @file san test utils log events file
  **/
 
-import { LocalSan, LooseObject } from "../types";
+import {LocalSan, LooseObject} from '../../types';
 
 export function addEventLogger(localSan: LocalSan) {
     localSan.Component.prototype.fire = function (name: string, ...args: any[]) {
@@ -19,7 +19,6 @@ export function addEventLogger(localSan: LocalSan) {
         });
     };
 
-
     localSan.Component.prototype.dispatch = function (name: string, args: LooseObject) {
         const dispatched = this.data.get('_dispatched') || {};
         const dispatchedByOrder = this.data.get('_dispatchedByOrder') || [];
@@ -33,10 +32,7 @@ export function addEventLogger(localSan: LocalSan) {
         while (parentComponent) {
             const receiver = parentComponent.messages[name] || parentComponent.messages['*'];
             if (typeof receiver === 'function') {
-                receiver.call(
-                    parentComponent,
-                    {target: this, value: args, name: name}
-                );
+                receiver.call(parentComponent, {target: this, value: args, name: name});
                 break;
             }
 

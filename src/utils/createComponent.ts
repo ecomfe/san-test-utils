@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import cloneDeep from 'lodash/cloneDeep';
 import {throwError, genId, componentMap, getComponentProto} from './index';
 import {createComponentStubs} from './createComponentStubs';
-import { ComponentWithPrototype, LooseObject, SlotObject } from '../types';
+import { ComponentWithPrototype, LooseObject, SlotObject } from '../../types';
 import { ComponentConstructor, SanComponent, SanComponentConfig } from 'san/types';
 
 function mergeStubsComponents(rootComponent: ComponentWithPrototype, stubsComponents: LooseObject) {

@@ -9,7 +9,7 @@ import babel from 'rollup-plugin-babel';
 import typescript from '@rollup/plugin-typescript';
 
 export default [{
-    input: 'src/testUtils.ts',
+    input: 'src/index.ts',
     output: {
         file: 'dist/san-test-utils.js',
         format: 'cjs'
@@ -27,7 +27,7 @@ export default [{
         commonjs()
     ]
 }, {
-    input: 'src/testUtils.ts',
+    input: 'src/index.ts',
     output: {
         file: 'dist/san-test-utils.iife.js',
         format: 'iife',
@@ -51,7 +51,7 @@ export default [{
         typescript(),
     ]
 }, {
-    input: 'src/testUtils.ts',
+    input: 'src/index.ts',
     output: {
         file: 'dist/san-test-utils.umd.js',
         format: 'umd',
@@ -75,7 +75,7 @@ export default [{
         typescript(),
     ]
 }, {
-    input: 'src/serverTestUtils.ts',
+    input: 'src/index.ts',
     output: {
         file: 'dist/san-test-utils.ssr.js',
         format: 'cjs'

@@ -2,7 +2,7 @@
  * @file san test utils find san components file
  **/
 
-import { ComponentWithPrototype, VM } from "../types";
+import {ComponentWithPrototype, VM} from '../../types';
 
 function findAllComponents(vm: ComponentWithPrototype, components: ComponentWithPrototype[] = []) {
     const vmComponents = vm.components;

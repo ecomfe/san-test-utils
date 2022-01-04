@@ -7,7 +7,7 @@ import {throwError, mergeOptions, componentMap, versionCompare} from './utils/in
 import createComponent from './utils/createComponent';
 import config from './config';
 import {compileToRenderer} from 'san-ssr';
-import { LooseObject, MergedComponentOptions } from './types';
+import { LooseObject, MergedComponentOptions } from '../types';
 
 export default function (component: SanComponent<any>, options: MergedComponentOptions | LooseObject = {}) {
     if (options.attachToDocument) {

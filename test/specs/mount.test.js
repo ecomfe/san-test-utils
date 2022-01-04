@@ -3,7 +3,7 @@
  **/
 
 import san from 'san';
-import mount from '../../src/mount';
+import mount from '../../src/attach';
 
 /* global test jest */
 describe('mount', () => {

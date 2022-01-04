@@ -2,28 +2,22 @@
  * @file san test utils tool file
  **/
 
-import { Component } from "san";
-import { ComponentWithPrototype, LooseObject, MergedComponentOptions, SelectorValue, VM } from "../types";
+import {Component} from 'san';
+import {ComponentWithPrototype, LooseObject, MergedComponentOptions, SelectorValue, VM} from '../../types';
 
 function getOption(name: string, options: MergedComponentOptions, config: LooseObject = {}) {
-    if (options
-        || (config[name] && Object.keys(config[name]).length > 0)) {
+    if (options || (config[name] && Object.keys(config[name]).length > 0)) {
         if (options instanceof Function) {
             return options;
-        }
-        else if (Array.isArray(options)) {
-            return [
-                ...options,
-                ...Object.keys(config[name] || {})
-            ];
-        }
-        else if (!(config[name] instanceof Function)) {
+        } else if (Array.isArray(options)) {
+            return [...options, ...Object.keys(config[name] || {})];
+        } else if (!(config[name] instanceof Function)) {
             return {
                 ...config[name],
                 ...options
             };
         }
-        throwError('Config can\'t be a Function.');
+        throwError("Config can't be a Function.");
     }
     return {};
 }
@@ -33,7 +27,7 @@ export function genId() {
     let size = 10;
     let id = '';
     while (size--) {
-        id += url[Math.random() * 45 | 0];
+        id += url[(Math.random() * 45) | 0];
     }
     return id;
 }
@@ -57,7 +51,7 @@ export function templateContainsComponent(template: string, name: string) {
 }
 
 export function getComponentProto(rootComponent: LooseObject, results: LooseObject = {}) {
-    const names = Object.getOwnPropertyNames(rootComponent && rootComponent.prototype || {});
+    const names = Object.getOwnPropertyNames((rootComponent && rootComponent.prototype) || {});
     names.forEach(name => {
         if (name !== 'constructor') {
             results[name] = rootComponent!.prototype[name];
@@ -80,24 +74,33 @@ export function getComponentProto(rootComponent: LooseObject, results: LooseObje
         results.components[component] = getComponentProto(components[component]);
     });
 
-    if (typeof rootComponent === 'function' && rootComponent.name && !results.name && rootComponent.name !== 'ComponentClass') {
+    if (
+        typeof rootComponent === 'function' &&
+        rootComponent.name &&
+        !results.name &&
+        rootComponent.name !== 'ComponentClass'
+    ) {
         results.name = rootComponent.name;
-    };
+    }
 
     return results;
 }
 
-
-export function componentMap(component?: ComponentWithPrototype, callback = (component?: ComponentWithPrototype, key?: string) => component) {
+export function componentMap(
+    component?: ComponentWithPrototype,
+    callback = (component?: ComponentWithPrototype, key?: string) => component
+) {
     if (!component) {
         return;
     }
-    const components = Object.assign({}, component.components || component.prototype && component.prototype.components);
+    const components = Object.assign(
+        {},
+        component.components || (component.prototype && component.prototype.components)
+    );
     let newComponent: LooseObject = {};
     if (typeof component === 'function') {
         newComponent = getComponentProto(component);
-    }
-    else {
+    } else {
         newComponent = Object.assign({}, component);
     }
     newComponent.components = {};
@@ -108,9 +111,8 @@ export function componentMap(component?: ComponentWithPrototype, callback = (com
     return newComponent;
 }
 
-
 export function getAllComponents(rootComponent: ComponentWithPrototype, components: LooseObject = {}) {
-    const comps = rootComponent.prototype.components || {} as LooseObject;
+    const comps = rootComponent.prototype.components || ({} as LooseObject);
     Object.keys(comps).forEach(key => {
         components[key] = comps[key];
         getAllComponents(comps[key], components);
@@ -134,10 +136,11 @@ export function findSanComponent(vm: VM<any>, component: VM<any>) {
     const components = findAllComponents(vm);
     return components.filter(
         // @ts-ignore
-        item => item.constructor === component
-        // @ts-ignore
-        || (component.prototype.name && item.name === component.prototype.name)
-        || (component.name && item.name === component.name)
+        item =>
+            item.constructor === component ||
+            // @ts-ignore
+            (component.prototype.name && item.name === component.prototype.name) ||
+            (component.name && item.name === component.name)
     );
 }
 
@@ -167,8 +170,7 @@ export function versionCompare(version1: string, version2: string) {
     }
     if (diff > 0) {
         return 1;
-    }
-    else if (diff < 0) {
+    } else if (diff < 0) {
         return -1;
     }
     return 0;

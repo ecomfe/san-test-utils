@@ -3,8 +3,8 @@
  **/
 
 /* global describe */
-import mount from '../src/mount';
-import shallowMount from '../src/shallowMount';
+import mount from '../src/attach';
+import shallowMount from '../src/shallowAttach';
 import renderToString from '../src/renderToString';
 
 const shallowAndMount = [mount, shallowMount];

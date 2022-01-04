@@ -2,11 +2,11 @@
  * @file san test utils tool file
  **/
 
-import san, { ANode, ANodeProperty, SanComponent, SanComponentConfig } from 'san';
+import san, {ANode, ANodeProperty, SanComponent, SanComponentConfig} from 'san';
 import isPlainObject from 'lodash/isPlainObject';
 import {throwError, templateContainsComponent} from './index';
 import config from '../config';
-import { BasicOptions, ComponentWithPrototype, LooseObject } from '../types';
+import {BasicOptions, ComponentWithPrototype, LooseObject} from '../types';
 
 function getAllSlot(source: ANode, slots: ANode[] = []) {
     if (source.tagName === 'slot') {
@@ -34,9 +34,10 @@ function getComponentProps(source: ANode, tagName: string) {
 }
 
 function createBlankStub(originalComponent: SanComponentConfig<any, any>, name: string, props: ANodeProperty[] = []) {
-    const template = originalComponent.template
-    // @ts-ignore
-        || originalComponent.prototype && originalComponent.prototype.template;
+    const template =
+        originalComponent.template ||
+        // @ts-ignore
+        (originalComponent.prototype && originalComponent.prototype.template);
     const source = san.parseTemplate(template);
     const slots = getAllSlot(source);
     let slotTemplate = '';
@@ -53,8 +54,7 @@ function createBlankStub(originalComponent: SanComponentConfig<any, any>, name: 
             const slotName = slot.props.filter(slot => slot.name === 'name');
             slotTemplate += slotName.length ? `<slot name="${slotName[0].raw}" />` : '<slot />';
         });
-    }
-    else {
+    } else {
         slotTemplate = '<slot />';
     }
     return {
@@ -63,11 +63,12 @@ function createBlankStub(originalComponent: SanComponentConfig<any, any>, name: 
 }
 
 export function isValidStub(stub: BasicOptions) {
-    return !!stub
-        && typeof stub === 'string'
-        || stub === true
-        || (stub && stub.template)
-        || (typeof stub === 'function' && stub.name === 'ComponentClass');
+    return (
+        (!!stub && typeof stub === 'string') ||
+        stub === true ||
+        (stub && stub.template) ||
+        (typeof stub === 'function' && stub.name === 'ComponentClass')
+    );
 }
 
 export function createComponentStubs(originalComponents: LooseObject = {}, stubs: BasicOptions[]) {
@@ -82,19 +83,16 @@ export function createComponentStubs(originalComponents: LooseObject = {}, stubs
             if (typeof stub === 'string') {
                 if (!config.stubs[stub]) {
                     components[stub] = createBlankStub({}, stub);
-                }
-                else { 
+                } else {
                     components[stub] = {
                         template: config.stubs[stub]
                     };
                 }
-            }
-            else {
+            } else {
                 throwError('each item in an options.stubs array must be a string');
             }
         });
-    }
-    else {
+    } else {
         Object.keys(stubs).forEach(stub => {
             if (stubs[stub] === false) {
                 return;
@@ -117,8 +115,7 @@ export function createComponentStubs(originalComponents: LooseObject = {}, stubs
                     template: stubs[stub]
                 };
                 originalComponents[stub] && (components[stub].name = originalComponents[stub].name);
-            }
-            else {
+            } else {
                 components[stub] = stubs[stub];
                 originalComponents[stub] && (components[stub].prototype.name = originalComponents[stub].name);
             }
@@ -130,16 +127,12 @@ export function createComponentStubs(originalComponents: LooseObject = {}, stubs
 
 export function createAllStubComponents(component: ComponentWithPrototype) {
     const stubbedComponents: LooseObject = {};
-    const components = component.components
-        || component.prototype && component.prototype.components
-        || {};
+    const components = component.components || (component.prototype && component.prototype.components) || {};
 
-    const template = component.template
-        || component.prototype && component.prototype.template;
+    const template = component.template || (component.prototype && component.prototype.template);
 
     const source = san.parseTemplate(template);
-    const initData = component.initData
-        || component.prototype && component.prototype.initData;
+    const initData = component.initData || (component.prototype && component.prototype.initData);
 
     Object.keys(components).forEach(key => {
         const props = getComponentProps(source, key);
@@ -148,11 +141,8 @@ export function createAllStubComponents(component: ComponentWithPrototype) {
 
         let name;
         if (typeof comp === 'function') {
-            name = comp.name === 'ComponentClass'
-                ? comp.prototype.name
-                : comp.name;
-        }
-        else if (isPlainObject(comp)) {
+            name = comp.name === 'ComponentClass' ? comp.prototype.name : comp.name;
+        } else if (isPlainObject(comp)) {
             name = comp.name;
         }
 

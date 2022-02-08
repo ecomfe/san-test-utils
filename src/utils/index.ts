@@ -2,7 +2,6 @@
  * @file san test utils tool file
  **/
 
-import {Component} from 'san';
 import {ComponentWithPrototype, LooseObject, MergedComponentOptions, SelectorValue, VM} from '../../types';
 
 function getOption(name: string, options: MergedComponentOptions, config: LooseObject = {}) {
@@ -136,8 +135,7 @@ export function findSanComponent(vm: VM<any>, component: VM<any>) {
     const components = findAllComponents(vm);
     return components.filter(
         // @ts-ignore
-        item =>
-            item.constructor === component ||
+        item => item.constructor === component ||
             // @ts-ignore
             (component.prototype.name && item.name === component.prototype.name) ||
             (component.name && item.name === component.name)

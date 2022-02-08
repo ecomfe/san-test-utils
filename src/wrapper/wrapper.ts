@@ -9,8 +9,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import find from './find';
 import ErrorWrapper from './errorWrapper';
 import createDomEvent from './createDomEvent';
-import { SanComponent } from 'san/types';
-import {VM, SelectorValue, WrapperElement, WrapperHTMLElement, LooseObject} from '../types/index'
+import {Component} from 'san/types';
+import {VM, SelectorValue, WrapperElement, WrapperHTMLElement, LooseObject} from '../../types/index';
 
 /* eslint-disable max-len */
 function mergeData(originData: any, newData: LooseObject) {
@@ -19,8 +19,7 @@ function mergeData(originData: any, newData: LooseObject) {
         const name = keys[i];
         if (isPlainObject(newData[name]) && isPlainObject(originData[name])) {
             mergeData(originData[name], newData[name]);
-        }
-        else {
+        } else {
             originData[name] = newData[name];
         }
     }
@@ -116,7 +115,7 @@ export class Wrapper {
     el?: WrapperElement | WrapperHTMLElement;
     vm: null | VM<any> = null;
     options: object = {};
-    constructor(node: Element | SanComponent<any>, options: object, isSanWrapper: boolean) {
+    constructor(node: Element | Component, options: object, isSanWrapper: boolean) {
         if (!isSanWrapper) {
             this.el = node instanceof Element ? node : node.el;
             this.vm = null;
@@ -127,7 +126,7 @@ export class Wrapper {
     attributes(key: string) {
         const attributes = this.el!.attributes;
         let attributesMap: LooseObject = {};
-        
+
         for (let i = 0; i < attributes.length; i++) {
             attributesMap[attributes.item(i)!.localName] = attributes.item(i)!.value;
         }
@@ -240,22 +239,20 @@ export class Wrapper {
         const newSelector = getSelector(selector, 'is');
         if (newSelector.type === 'DOM_SELECTOR') {
             return this.el && this.el.matches && this.el.matches(newSelector.value);
-        }
-        else if (newSelector.type === 'COMPONENT_SELECTOR') {
+        } else if (newSelector.type === 'COMPONENT_SELECTOR') {
             const component = newSelector.value;
             return !this.vm
                 ? false
-                : this.vm.constructor === component
-                    || (component.prototype.name && this.vm.name === component.prototype.name)
-                    || (component.name && this.vm.name === component.name);
-        }
-        else if (newSelector.type === 'REF_SELECTOR') {
+                : this.vm.constructor === component ||
+                    (component.prototype.name && this.vm.name === component.prototype.name) ||
+                    (component.name && this.vm.name === component.name);
+        } else if (newSelector.type === 'REF_SELECTOR') {
             throwError('$ref selectors can not be used with wrapper.is()');
         }
     }
 
     isEmpty() {
-        return !([].slice.call(this.el!.children).length);
+        return ![].slice.call(this.el!.children).length;
     }
 
     isSanInstance() {
@@ -281,15 +278,14 @@ export class Wrapper {
         }
 
         if (type === 'checkbox') {
-            this.el!.checked = checked !== undefined
-                ? !checked
-                : this.el!.checked;
+            this.el!.checked = checked !== undefined ? !checked : this.el!.checked;
 
             this.trigger('click');
-        }
-        else if (type === 'radio') {
+        } else if (type === 'radio') {
             if (checked === false) {
-                throwError('wrapper.setChecked() cannot be called with parameter false on a <input type="radio" /> element');
+                throwError(
+                    'wrapper.setChecked() cannot be called with parameter false on a <input type="radio" /> element'
+                );
             }
             this.trigger('click');
         }
@@ -332,8 +328,7 @@ export class Wrapper {
                 //@ts-ignore
                 createWrapper(selectEl, this.options).trigger('change');
             }
-        }
-        else {
+        } else {
             throwError('wrapper.setSelected() cannot be called on this element');
         }
     }
@@ -347,17 +342,20 @@ export class Wrapper {
 
         const type = this.attributes('type');
         if (type === 'radio') {
-            throwError('wrapper.setValue() cannot be called on a <input type="radio" /> element. Use wrapper.setChecked() instead');
+            throwError(
+                'wrapper.setValue() cannot be called on a <input type="radio" /> element. Use wrapper.setChecked() instead'
+            );
         }
         if (type === 'checkbox') {
-            throwError('wrapper.setValue() cannot be called on a <input type="checkbox" /> element. Use wrapper.setChecked() instead');
+            throwError(
+                'wrapper.setValue() cannot be called on a <input type="checkbox" /> element. Use wrapper.setChecked() instead'
+            );
         }
 
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tagName)) {
             this.el!.value = value;
             this.trigger(tagName === 'SELECT' ? 'change' : 'input');
-        }
-        else {
+        } else {
             throwError('wrapper.setValue() cannot be called on this element');
         }
     }
@@ -387,8 +385,6 @@ export class SanWrapper extends Wrapper {
     }
 }
 
-export function createWrapper(vm: VM<any>, options: object) : SanWrapper | Wrapper {
-    return vm.aNode
-        ? new SanWrapper(vm, options)
-        : new Wrapper(vm, options, false);
+export function createWrapper(vm: VM<any>, options: object): SanWrapper | Wrapper {
+    return vm.aNode ? new SanWrapper(vm, options) : new Wrapper(vm, options, false);
 }

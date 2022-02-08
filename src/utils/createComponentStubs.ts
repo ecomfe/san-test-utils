@@ -2,17 +2,17 @@
  * @file san test utils tool file
  **/
 
-import san, {ANode, ANodeProperty, SanComponent, SanComponentConfig} from 'san';
+import san, {AElement, ComponentDefineOptions} from 'san';
 import isPlainObject from 'lodash/isPlainObject';
 import {throwError, templateContainsComponent} from './index';
 import config from '../config';
-import {BasicOptions, ComponentWithPrototype, LooseObject} from '../types';
+import {NewAProperty, BasicOptions, ComponentWithPrototype, LooseObject} from '../../types';
 
-function getAllSlot(source: ANode, slots: ANode[] = []) {
+function getAllSlot(source: AElement, slots: AElement[] = []) {
     if (source.tagName === 'slot') {
         slots.push(source);
     }
-    const children = source.children || [];
+    const children = source.children ? (source.children as AElement[]) : ([] as AElement[]);
     children.forEach(child => {
         getAllSlot(child, slots);
     });
@@ -20,12 +20,12 @@ function getAllSlot(source: ANode, slots: ANode[] = []) {
     return slots;
 }
 
-function getComponentProps(source: ANode, tagName: string) {
+function getComponentProps(source: AElement, tagName: string) {
     let props;
     if (source.tagName === tagName) {
         return source.props;
     }
-    const children = source.children || [];
+    const children = source.children ? (source.children as AElement[]) : ([] as AElement[]);
     children.forEach(child => {
         props = getComponentProps(child, tagName);
     });
@@ -33,26 +33,37 @@ function getComponentProps(source: ANode, tagName: string) {
     return props;
 }
 
-function createBlankStub(originalComponent: SanComponentConfig<any, any>, name: string, props: ANodeProperty[] = []) {
+function createBlankStub(originalComponent: ComponentDefineOptions, name: string, props: NewAProperty[] = []) {
     const template =
         originalComponent.template ||
         // @ts-ignore
         (originalComponent.prototype && originalComponent.prototype.template);
-    const source = san.parseTemplate(template);
+    const source = san.parseTemplate(template) as AElement;
     const slots = getAllSlot(source);
     let slotTemplate = '';
     let propsTemplate = '';
-
+    function addDelimiters(source: string, delimiters: string[] = ['{{', '}}']) {
+        return delimiters[0] + source + delimiters[1];
+    }
     if (props.length) {
         props.forEach(prop => {
-            propsTemplate += `${prop.name}="${prop.raw}" `;
+            let rawValue = prop.expr.value || '';
+            if (prop.expr.type === 4 && prop.expr.paths.length) {
+                if (prop.expr.paths[0].type === 1) {
+                    rawValue =
+                        prop.x === 1
+                            ? addDelimiters(prop.expr.paths[0].value, ['{=', '=}'])
+                            : addDelimiters(prop.expr.paths[0].value);
+                }
+            }
+            propsTemplate += `${prop.name}="${rawValue}" `;
         });
     }
 
     if (slots.length) {
         slots.forEach(slot => {
-            const slotName = slot.props.filter(slot => slot.name === 'name');
-            slotTemplate += slotName.length ? `<slot name="${slotName[0].raw}" />` : '<slot />';
+            const slotName = slot.props.filter(slot => slot.name === 'name') as NewAProperty[];
+            slotTemplate += slotName.length ? `<slot name="${slotName[0].expr.value}" />` : '<slot />';
         });
     } else {
         slotTemplate = '<slot />';
@@ -131,11 +142,12 @@ export function createAllStubComponents(component: ComponentWithPrototype) {
 
     const template = component.template || (component.prototype && component.prototype.template);
 
-    const source = san.parseTemplate(template);
+    const source = san.parseTemplate(template) as AElement;
     const initData = component.initData || (component.prototype && component.prototype.initData);
 
     Object.keys(components).forEach(key => {
-        const props = getComponentProps(source, key);
+        const props = getComponentProps(source, key) as NewAProperty[];
+
         stubbedComponents[key] = createBlankStub(components[key], key, props);
         const comp = components[key];
 

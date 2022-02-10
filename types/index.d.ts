@@ -1,16 +1,21 @@
-import {ANode, LifeCycleStage, ComponentDefineOptions, Component, ComponentLoader, Expr} from 'san';
+import {ANode, LifeCycleStage, ComponentDefineOptions, Component, ComponentLoader, Expr, DataChangeListener, ComponentDefineOptionMessages} from 'san';
 
 import * as san from 'san';
 
-interface IPrototype {
-    prototype?: any;
+interface NewComponent extends Component {
+    listeners: {
+        [k: string]: {
+            fn: (this: NewComponent, event: any) => void;
+            declaration?: string;
+        }[]
+    };
+    messages: ComponentDefineOptionMessages;
+    prototype: NewComponent;
+    parentComponent: NewComponent;
 }
-type ComponentWithPrototype = ComponentDefineOptions & IPrototype;
 
-interface LocalSan {
-    Component: ComponentWithPrototype;
-    SanComponent: Component;
-    SanComponentLoader: ComponentLoader;
+interface LocalSan extends san {
+    Component: NewComponent;
 }
 
 interface LooseObject {

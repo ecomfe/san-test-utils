@@ -2,7 +2,8 @@
  * @file san test utils tool file
  **/
 
-import {ComponentWithPrototype, LooseObject, MergedComponentOptions, SelectorValue, VM} from '../../types';
+import {ComponentDefineOptions} from 'san';
+import {LooseObject, MergedComponentOptions, SelectorValue, VM} from '../../types';
 
 function getOption(name: string, options: MergedComponentOptions, config: LooseObject = {}) {
     if (options || (config[name] && Object.keys(config[name]).length > 0)) {
@@ -86,8 +87,8 @@ export function getComponentProto(rootComponent: LooseObject, results: LooseObje
 }
 
 export function componentMap(
-    component?: ComponentWithPrototype,
-    callback = (component?: ComponentWithPrototype, key?: string) => component
+    component?: ComponentDefineOptions,
+    callback = (component?: ComponentDefineOptions, key?: string) => component
 ) {
     if (!component) {
         return;
@@ -110,7 +111,7 @@ export function componentMap(
     return newComponent;
 }
 
-export function getAllComponents(rootComponent: ComponentWithPrototype, components: LooseObject = {}) {
+export function getAllComponents(rootComponent: ComponentDefineOptions, components: LooseObject = {}) {
     const comps = rootComponent.prototype.components || ({} as LooseObject);
     Object.keys(comps).forEach(key => {
         components[key] = comps[key];

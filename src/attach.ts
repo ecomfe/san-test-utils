@@ -2,7 +2,7 @@
  * @file san test utils attach file
  **/
 
-import san, { Component } from 'san';
+import san, { ComponentDefineOptions } from 'san';
 import {throwError, mergeOptions} from './utils/index';
 import isPlainObject from 'lodash/isPlainObject';
 import isFunction from 'lodash/isFunction';
@@ -12,7 +12,7 @@ import config from './config';
 import createComponent from './utils/createComponent';
 import { LooseObject, MergedComponentOptions, VM } from '../types';
 
-export default function (component: Component | LooseObject, options: MergedComponentOptions | LooseObject = {}) {
+export default function (component: ComponentDefineOptions | LooseObject, options: MergedComponentOptions | LooseObject = {}) {
     if (!isPlainObject(component) && !isFunction(component)) {
         throwError('component must be plain Object or san component.');
     }

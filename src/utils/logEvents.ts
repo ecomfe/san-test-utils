@@ -2,7 +2,7 @@
  * @file san test utils log events file
  **/
 
-import {LocalSan, LooseObject} from '../../types';
+import {LocalSan, LooseObject, NewComponent} from '../../types';
 
 export function addEventLogger(localSan: LocalSan) {
     localSan.Component.prototype.fire = function (name: string, ...args: any[]) {
@@ -27,7 +27,7 @@ export function addEventLogger(localSan: LocalSan) {
         this.data.set('_dispatched', dispatched);
         this.data.set('_dispatchedByOrder', dispatchedByOrder);
 
-        let parentComponent = this.parentComponent;
+        let parentComponent = this.parentComponent as NewComponent;
 
         while (parentComponent) {
             const receiver = parentComponent.messages[name] || parentComponent.messages['*'];

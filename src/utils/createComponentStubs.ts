@@ -6,7 +6,7 @@ import san, {AElement, ComponentDefineOptions} from 'san';
 import isPlainObject from 'lodash/isPlainObject';
 import {throwError, templateContainsComponent} from './index';
 import config from '../config';
-import {NewAProperty, BasicOptions, ComponentWithPrototype, LooseObject} from '../../types';
+import {NewAProperty, BasicOptions, LooseObject} from '../../types';
 
 function getAllSlot(source: AElement, slots: AElement[] = []) {
     if (source.tagName === 'slot') {
@@ -42,7 +42,7 @@ function createBlankStub(originalComponent: ComponentDefineOptions, name: string
     const slots = getAllSlot(source);
     let slotTemplate = '';
     let propsTemplate = '';
-    function addDelimiters(source: string, delimiters: string[] = ['{{', '}}']) {
+    function addDelimiters(source: string, delimiters: [string, string] = ['{{', '}}']) {
         return delimiters[0] + source + delimiters[1];
     }
     if (props.length) {
@@ -136,7 +136,7 @@ export function createComponentStubs(originalComponents: LooseObject = {}, stubs
     return components;
 }
 
-export function createAllStubComponents(component: ComponentWithPrototype) {
+export function createAllStubComponents(component: ComponentDefineOptions) {
     const stubbedComponents: LooseObject = {};
     const components = component.components || (component.prototype && component.prototype.components) || {};
 

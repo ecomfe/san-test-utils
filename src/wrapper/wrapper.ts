@@ -270,7 +270,7 @@ export class Wrapper {
         return true;
     }
 
-    setChecked(checked?: boolean) {
+    setChecked(checked: boolean = true): void{
         const type = this.attributes('type');
 
         if (checked && typeof checked !== 'boolean') {
@@ -278,7 +278,7 @@ export class Wrapper {
         }
 
         if (type === 'checkbox') {
-            this.el!.checked = checked !== undefined ? !checked : this.el!.checked;
+            this.el!.checked = !checked;
 
             this.trigger('click');
         } else if (type === 'radio') {

@@ -2,15 +2,16 @@
  * @file san test utils tool file
  **/
 
+import {ComponentNewOptions} from 'san';
 import isPlainObject from 'lodash/isPlainObject';
 import isEmpty from 'lodash/isEmpty';
 import cloneDeep from 'lodash/cloneDeep';
 import {throwError, genId, componentMap, getComponentProto} from './index';
 import {createComponentStubs} from './createComponentStubs';
-import {ComponentWithPrototype, LooseObject, SlotObject} from '../../types';
+import {LooseObject, SlotObject} from '../../types';
 import {ComponentDefineOptionComponents, Component, ComponentDefineOptions} from 'san/types';
 
-function mergeStubsComponents(rootComponent: ComponentWithPrototype, stubsComponents: LooseObject) {
+function mergeStubsComponents(rootComponent: ComponentDefineOptions, stubsComponents: LooseObject) {
     if (isEmpty(rootComponent.components)) {
         rootComponent.components = stubsComponents;
     }
@@ -52,14 +53,10 @@ export function getNewComponent(component: ComponentDefineOptions) {
     return getComponentProto(component);
 }
 
-export default function (component: Component | LooseObject, options: LooseObject = {}) {
+export default function (component: ComponentDefineOptions | LooseObject, options: LooseObject = {}) {
     let newComponent = getNewComponent(component);
 
-    const componentOptions: {
-        data: LooseObject;
-        source?: string;
-        owner?: any;
-    } = {
+    const componentOptions: ComponentNewOptions = {
         data: options.data || {}
     };
 
@@ -115,7 +112,7 @@ export default function (component: Component | LooseObject, options: LooseObjec
         });
 
         componentOptions.source = `<slots-component>${slotTemplate}</slots-component>`;
-        componentOptions.owner = newComponent;
+        componentOptions.owner = newComponent as Component;
     }
 
     return {

@@ -2,7 +2,7 @@
  * @file san test utils attach file
  **/
 
-import san from 'san';
+import san, { ComponentDefineOptions } from 'san';
 import {throwError, mergeOptions} from './utils/index';
 import isPlainObject from 'lodash/isPlainObject';
 import isFunction from 'lodash/isFunction';
@@ -10,9 +10,9 @@ import {createWrapper} from './wrapper/wrapper';
 import {addEventLogger} from './utils/logEvents';
 import config from './config';
 import createComponent from './utils/createComponent';
-import {ComponentWithPrototype, LooseObject, MergedComponentOptions, VM} from '../types';
+import { LooseObject, MergedComponentOptions, VM } from '../types';
 
-export default function (component: ComponentWithPrototype, options: MergedComponentOptions | LooseObject = {}) {
+export default function (component: ComponentDefineOptions | LooseObject, options: MergedComponentOptions | LooseObject = {}) {
     if (!isPlainObject(component) && !isFunction(component)) {
         throwError('component must be plain Object or san component.');
     }
@@ -30,7 +30,8 @@ export default function (component: ComponentWithPrototype, options: MergedCompo
 
     if (document && mergedOptions.attachToDocument) {
         vm.attach(document.body);
-    } else {
+    }
+    else {
         //@ts-ignore
         vm.attach();
     }

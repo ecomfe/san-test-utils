@@ -2,22 +2,6 @@ import {ANode, LifeCycleStage, ComponentDefineOptions, Component, ComponentLoade
 
 import * as san from 'san';
 
-interface NewComponent extends Component {
-    listeners: {
-        [k: string]: {
-            fn: (this: NewComponent, event: any) => void;
-            declaration?: string;
-        }[]
-    };
-    messages: ComponentDefineOptionMessages;
-    prototype: NewComponent;
-    parentComponent: NewComponent;
-}
-
-interface LocalSan extends san {
-    Component: NewComponent;
-}
-
 interface LooseObject {
     [key: string]: any;
 }

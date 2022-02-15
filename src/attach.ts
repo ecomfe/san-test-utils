@@ -17,7 +17,7 @@ export default function (component: ComponentDefineOptions | LooseObject, option
         throwError('component must be plain Object or san component.');
     }
 
-    addEventLogger(san as any);
+    addEventLogger(san);
 
     const mergedOptions = mergeOptions(options as MergedComponentOptions, config);
 

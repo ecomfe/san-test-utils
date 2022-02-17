@@ -295,7 +295,7 @@ describeWithAttachingMethods('options.stub', (attach, methodName) => {
         validValues.forEach(validValue => {
             attach(componentWithChild, {
                 stubs: {
-                    'child-component': validValue.replace(/NAME/g, name)
+                    'child-component': validValue.replace(/NAME/g, 'child-component')
                 }
             });
         });

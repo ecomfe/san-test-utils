@@ -41,7 +41,7 @@ export class WrapperArray {
         return this.wrappers[index];
     }
 
-    contains(selector: SelectorValue) {
+    contains(selector?: SelectorValue) {
         this.throwErrorIfEmpty('contains');
         return this.wrappers.every(wrapper => wrapper.contains(selector));
     }
@@ -55,7 +55,7 @@ export class WrapperArray {
         return this.length > 0 && this.wrappers.every(wrapper => wrapper.exists());
     }
 
-    filter(fn: (value: Wrapper, index: number, array: Wrapper[]) => value is Wrapper, thisArg?: any) {
+    filter(fn: (value: Wrapper, index?: number, array?: Wrapper[]) => boolean) {
         return new WrapperArray(this.wrappers.filter(fn));
     }
 
@@ -115,7 +115,7 @@ export class Wrapper {
     el?: WrapperElement | WrapperHTMLElement;
     vm: null | VM<any> = null;
     options: object = {};
-    constructor(node: Element | Component, options: object, isSanWrapper: boolean) {
+    constructor(node: Element | Component, options: object = {}, isSanWrapper?: boolean) {
         if (!isSanWrapper) {
             this.el = node instanceof Element ? node : node.el;
             this.vm = null;
@@ -139,7 +139,7 @@ export class Wrapper {
         return key ? classes.contains(key) : [].slice.call(classes);
     }
 
-    contains(selector: SelectorValue) {
+    contains(selector?: SelectorValue) {
         const newSelector = getSelector(selector, 'contains');
         return !!find(this.el!, this.vm!, newSelector).length;
     }

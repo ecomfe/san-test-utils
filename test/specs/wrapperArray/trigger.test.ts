@@ -68,7 +68,7 @@ describeWithShallowAndAttach('trigger', attach => {
         ];
         invalidSelectors.forEach(invalidSelector => {
             const message = '[san-test-utils]: wrapper.trigger() must be passed a string';
-            const fn = () => wrapper.trigger(invalidSelector);
+            const fn = () => wrapper.trigger(invalidSelector as string);
             expect(fn).toThrow(new Error(message));
         });
     });

@@ -2,25 +2,29 @@
  * @file san test utils attach file
  **/
 
-import san from 'san';
+import san, { TemplateParseOptionTrimWhitespace } from 'san';
 import attach from '../../src/attach';
 import shallowAttach from '../../src/shallowAttach';
 import componentWithNestedChildren from '../resources/component-with-nested-children';
 import component from '../resources/component';
 import componentWithChild from '../resources/component-with-child';
 import componentAsAClassWithChild from '../resources/component-as-a-class-with-child';
-import sinon from 'sinon';
+import sinon, { SinonStub } from 'sinon';
 
 /* global test jest */
 describe('shallow attach', () => {
+    let infoStub: SinonStub | undefined;
+    let errorStub: SinonStub | undefined;
     beforeEach(() => {
-        sinon.stub(console, 'info').callThrough();
-        sinon.stub(console, 'error').callThrough();
+        infoStub = sinon.stub(console, 'info');
+        errorStub = sinon.stub(console, 'error');
+        infoStub.callThrough();
+        errorStub.callThrough();
     });
 
     afterEach(() => {
-        console.info.restore();
-        console.error.restore();
+        infoStub.restore();
+        errorStub.restore();
     });
 
     test('return new SanWrapper with attached San component if no options are passed', () => {
@@ -70,7 +74,7 @@ describe('shallow attach', () => {
             </div>`
         });
         const testComponent = {
-            trimWhitespace: 'all',
+            trimWhitespace: 'all' as TemplateParseOptionTrimWhitespace,
             components: {
                 child
             },
@@ -141,12 +145,12 @@ describe('shallow attach', () => {
         };
         const wrapper = shallowAttach(testComponent);
         expect(wrapper.html()).toContain('<test-component-stub>');
-        expect(console.error).not.called;
+        expect(errorStub.called).toEqual(false);
     });
 
     test('does not call stubbed children lifecycle hooks', () => {
         shallowAttach(componentWithNestedChildren);
-        expect(console.info.called).toEqual(false);
+        expect(infoStub.called).toEqual(false);
     });
 
     test('stubs San class component children', () => {

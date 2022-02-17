@@ -6,14 +6,16 @@ import san from 'san';
 import {describeWithShallowAndAttach} from '../../utils';
 import componentWithSIf from '../../resources/component-with-s-if';
 import componentWithWatch from '../../resources/component-with-watch';
-import sinon from 'sinon';
+import sinon, { SinonStub } from 'sinon';
 
 /* global test */
 describeWithShallowAndAttach('set data', attach => {
     const sandbox = sinon.createSandbox();
+    let infoStub: SinonStub | undefined;
 
     beforeEach(() => {
-        sandbox.stub(console, 'info').callThrough();
+        infoStub = sandbox.stub(console, 'info')
+        infoStub.callThrough();
     });
 
     afterEach(() => {
@@ -65,7 +67,7 @@ describeWithShallowAndAttach('set data', attach => {
         const wrapper = attach(componentWithWatch);
         wrapper.setData({data1, data2: 'newData'});
         san.nextTick(() => {
-            expect(console.info.args[0][0]).toEqual(data1);
+            expect(infoStub.args[0][0]).toEqual(data1);
             done();
         });
     });

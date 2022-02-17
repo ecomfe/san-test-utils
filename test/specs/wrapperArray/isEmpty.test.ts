@@ -28,7 +28,7 @@ describeWithShallowAndAttach('is empty', attach => {
             template: '<div />'
         });
         const message = '[san-test-utils]: isEmpty cannot be called on 0 items';
-        const fn = () => wrapper.findAll('p').isEmpty('p');
+        const fn = () => wrapper.findAll('p').isEmpty();
         expect(fn).toThrow(new Error(message));
     });
 });

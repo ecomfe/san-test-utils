@@ -35,7 +35,7 @@ describeWithShallowAndAttach('is visible', attach => {
         const wrapper = attach({
             template: '<div />'
         });
-        const fn = () => wrapper.findAll('p').isVisible('p');
+        const fn = () => wrapper.findAll('p').isVisible();
         expect(fn).toThrow(new Error(message));
     });
 });

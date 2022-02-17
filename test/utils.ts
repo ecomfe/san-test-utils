@@ -11,14 +11,20 @@ const shallowAndAttach = [attach, shallowAttach];
 const shallowAttachAndRender = [attach, shallowAttach, renderToString];
 const names = ['attach', 'shallowAttach', 'renderToString'];
 
-export function describeWithShallowAndAttach(spec, cb) {
+export function describeWithShallowAndAttach(
+    spec: string,
+    cb: (method: typeof attach | typeof shallowAttach, name: string) => void
+) {
     shallowAndAttach.forEach((method, i) => {
         const name = names[i];
         describe(`${spec} with ${name}`, () => cb(method, name));
     });
 }
 
-export function describeWithAttachingMethods(spec, cb) {
+export function describeWithAttachingMethods(
+    spec: string,
+    cb: (method: typeof attach | typeof shallowAttach, name: string) => void
+) {
     shallowAttachAndRender.forEach((method, i) => {
         const name = names[i];
         describe(`${spec} with ${name}`, () => cb(method, name));

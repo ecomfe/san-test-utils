@@ -12,6 +12,7 @@ declare class VM<T> extends Component<T> {
     aNode: ANode;
     children: VM[];
     lifeCycle: LifeCycleStage;
+    [k: string]: Function;
     super();
 }
 

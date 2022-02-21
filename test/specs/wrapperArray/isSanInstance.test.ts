@@ -27,7 +27,7 @@ describeWithShallowAndAttach('is san instance', attach => {
         const wrapper = attach({
             template: '<div />'
         });
-        const fn = () => wrapper.findAll('p').isSanInstance('p');
+        const fn = () => wrapper.findAll('p').isSanInstance();
         expect(fn).toThrow(new Error(message));
     });
 });

@@ -6,11 +6,11 @@ import sinon from 'sinon';
 import {describeWithShallowAndAttach} from '../utils';
 import {Wrapper, WrapperArray} from '../../src/wrapper/wrapper';
 
-function getWrapperArray(wrappers) {
+function getWrapperArray(wrappers?: any[]){
     if (!wrappers) {
         wrappers = [1, 2, 3].map(item => {
             const p = document.createElement('p');
-            p.textContent = item;
+            p.textContent = item + '';
             return new Wrapper(p);
         });
     }

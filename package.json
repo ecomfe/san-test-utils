@@ -1,13 +1,15 @@
 {
   "name": "san-test-utils",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Utilities for testing San Components.",
   "main": "dist/san-test-utils.js",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist/*.js"
   ],
   "scripts": {
     "dev": "rollup -c -w",
+    "prepublishOnly": "npm test && npm run build",
     "build": "rollup -c",
     "test": "jest ./test/specs/",
     "release": "sh scripts/release.sh",

@@ -1,5 +1,5 @@
 /**
- * @file san test utils resource component
+ * @file Basic San component, only template ana name
  **/
 
 import san from 'san';

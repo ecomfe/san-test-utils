@@ -1,5 +1,5 @@
 /**
- * @file san test utils resource component
+ * @file San component with all lifecycle hooks
  **/
 
 import san from 'san';

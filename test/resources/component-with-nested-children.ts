@@ -1,5 +1,5 @@
 /**
- * @file san test utils resource component
+ * @file San component with nested child components
  **/
 
 import san from 'san';

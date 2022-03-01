@@ -1,5 +1,5 @@
 /**
- * @file san test utils resource component
+ * @file extends a San component in ESNext.
  **/
 
 import {Component} from 'san';

@@ -1,5 +1,5 @@
 /**
- * @file san test utils resource component
+ * @file San component with input elements which apply two-way binding.
  **/
 
 import san from 'san';

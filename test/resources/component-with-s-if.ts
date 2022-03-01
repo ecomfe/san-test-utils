@@ -1,5 +1,5 @@
 /**
- * @file san test utils resource component
+ * @file San component with s-if directive
  **/
 
 import san from 'san';

@@ -6,29 +6,15 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import babel from 'rollup-plugin-babel';
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
+import { DEFAULT_EXTENSIONS } from '@babel/core';
 
-export default [{
-    input: 'src/testUtils.ts',
-    output: {
+export default {
+    input: 'src/index.ts',
+    output: [{
         file: 'dist/san-test-utils.js',
         format: 'cjs'
-    },
-    plugins: [
-        resolve({
-            preferBuiltins: true
-        }),
-        peerDepsExternal(),
-        json(),
-        babel({
-            runtimeHelpers: true
-        }),
-        typescript(),
-        commonjs()
-    ]
-}, {
-    input: 'src/testUtils.ts',
-    output: {
+    }, {
         file: 'dist/san-test-utils.iife.js',
         format: 'iife',
         name: 'SanTestUtils',
@@ -37,22 +23,7 @@ export default [{
             'san-ssr': 'SanSsr',
             'cheerio': 'Cheerio'
         }
-    },
-    plugins: [
-        resolve({
-            preferBuiltins: true
-        }),
-        peerDepsExternal(),
-        commonjs(),
-        json(),
-        babel({
-            runtimeHelpers: true
-        }),
-        typescript(),
-    ]
-}, {
-    input: 'src/testUtils.ts',
-    output: {
+    }, {
         file: 'dist/san-test-utils.umd.js',
         format: 'umd',
         name: 'SanTestUtils',
@@ -61,35 +32,28 @@ export default [{
             'san-ssr': 'SanSsr',
             'cheerio': 'Cheerio'
         }
-    },
-    plugins: [
-        resolve({
-            preferBuiltins: true
-        }),
-        peerDepsExternal(),
-        commonjs(),
-        json(),
-        babel({
-            runtimeHelpers: true
-        }),
-        typescript(),
-    ]
-}, {
-    input: 'src/serverTestUtils.ts',
-    output: {
+    }, {
         file: 'dist/san-test-utils.ssr.js',
         format: 'cjs'
-    },
+    }],
     plugins: [
         resolve({
             preferBuiltins: true
         }),
         peerDepsExternal(),
-        commonjs(),
         json(),
         babel({
-            runtimeHelpers: true
+            runtimeHelpers: true,
+            extensions: [
+                ...DEFAULT_EXTENSIONS,
+                '.ts',
+                '.tsx'
+            ]
         }),
-        typescript(),
+        typescript({
+            useTsconfigDeclarationDir: true,
+            check: false,
+        }),
+        commonjs()
     ]
-}];
+}

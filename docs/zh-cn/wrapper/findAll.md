@@ -14,11 +14,11 @@
 * **示例**：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import foo from './foo';
 import bar from './bar';
 
-const wrapper = mount(foo);
+const wrapper = attach(foo);
 const div = wrapper.findAll('div').at(0);
 expect(div.is('div')).toBe(true);
 const bar = wrapper.findAll(bar).at(0);

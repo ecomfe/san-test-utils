@@ -4,7 +4,7 @@
 
 import {throwError} from './index';
 import isPlainObject from 'lodash/isPlainObject';
-import { SelectorValue } from '../types';
+import { SelectorValue } from '../../types';
 
 export function isDomSelector(selector: SelectorValue) {
     if (typeof selector !== 'string') {
@@ -13,11 +13,11 @@ export function isDomSelector(selector: SelectorValue) {
 
     try {
         if (typeof document === 'undefined') {
-            throwError('mount must be run in a browser environment like PhantomJS, jsdom or chrome');
+            throwError('attach must be run in a browser environment like PhantomJS, jsdom or chrome');
         }
     }
     catch (error) {
-        throwError('mount must be run in a browser environment like PhantomJS, jsdom or chrome');
+        throwError('attach must be run in a browser environment like PhantomJS, jsdom or chrome');
     }
     try {
         document.querySelector(selector);

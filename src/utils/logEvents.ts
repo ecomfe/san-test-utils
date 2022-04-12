@@ -2,23 +2,23 @@
  * @file san test utils log events file
  **/
 
-import { LocalSan, LooseObject } from "../types";
+import san from 'san';
+import {LooseObject} from '../../types';
 
-export function addEventLogger(localSan: LocalSan) {
-    localSan.Component.prototype.fire = function (name: string, ...args: any[]) {
+const fire = san.Component.prototype.fire;
+const dispatch = san.Component.prototype.dispatch;
+
+export function addEventLogger(localSan: typeof san) {
+    localSan.Component.prototype.fire = function (name: string, ...args: any[]) {;
         const fired = this.data.get('_fired') || {};
         const firedByOrder = this.data.get('_firedByOrder') || [];
         (fired[name] || (fired[name] = [])).push(args);
         firedByOrder.push({name, args});
         this.data.set('_fired', fired);
         this.data.set('_firedByOrder', firedByOrder);
-
-        const listeners = this.listeners[name] || [];
-        listeners.forEach((listener: any) => {
-            listener.fn.call(this, ...args);
-        });
+        // @ts-ignore
+        return fire.call(this, name, ...args);
     };
-
 
     localSan.Component.prototype.dispatch = function (name: string, args: LooseObject) {
         const dispatched = this.data.get('_dispatched') || {};
@@ -27,20 +27,6 @@ export function addEventLogger(localSan: LocalSan) {
         dispatchedByOrder.push({name, args: args || null});
         this.data.set('_dispatched', dispatched);
         this.data.set('_dispatchedByOrder', dispatchedByOrder);
-
-        let parentComponent = this.parentComponent;
-
-        while (parentComponent) {
-            const receiver = parentComponent.messages[name] || parentComponent.messages['*'];
-            if (typeof receiver === 'function') {
-                receiver.call(
-                    parentComponent,
-                    {target: this, value: args, name: name}
-                );
-                break;
-            }
-
-            parentComponent = parentComponent.parentComponent;
-        }
+        return dispatch.call(this, name, args);
     };
 }

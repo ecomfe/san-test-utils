@@ -2,10 +2,10 @@
  * @file san test utils find san components file
  **/
 
-import { ComponentWithPrototype, VM } from "../types";
+import {ComponentDefineOptions} from 'san/types';
 
-function findAllComponents(vm: ComponentWithPrototype, components: ComponentWithPrototype[] = []) {
-    const vmComponents = vm.components;
+function findAllComponents(vm: ComponentDefineOptions, components: ComponentDefineOptions[] = []) {
+    const vmComponents = vm.components as ComponentDefineOptions;
     for (let key in vmComponents) {
         components.push(vmComponents[key]);
     }
@@ -19,7 +19,7 @@ function findAllComponents(vm: ComponentWithPrototype, components: ComponentWith
     return components;
 }
 
-export default function (vm: ComponentWithPrototype, component: ComponentWithPrototype) {
+export default function (vm: ComponentDefineOptions, component: ComponentDefineOptions) {
     const components = findAllComponents(vm);
     return components.filter(item => item === component);
 }

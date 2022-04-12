@@ -2,17 +2,17 @@
  * @file san test utils tool file
  **/
 
-import san, { ANode, ANodeProperty, SanComponent, SanComponentConfig } from 'san';
+import san, {AElement, ComponentDefineOptions} from 'san';
 import isPlainObject from 'lodash/isPlainObject';
 import {throwError, templateContainsComponent} from './index';
 import config from '../config';
-import { BasicOptions, ComponentWithPrototype, LooseObject } from '../types';
+import {NewAProperty, BasicOptions, LooseObject} from '../../types';
 
-function getAllSlot(source: ANode, slots: ANode[] = []) {
+function getAllSlot(source: AElement, slots: AElement[] = []) {
     if (source.tagName === 'slot') {
         slots.push(source);
     }
-    const children = source.children || [];
+    const children = source.children ? (source.children as AElement[]) : ([] as AElement[]);
     children.forEach(child => {
         getAllSlot(child, slots);
     });
@@ -20,12 +20,12 @@ function getAllSlot(source: ANode, slots: ANode[] = []) {
     return slots;
 }
 
-function getComponentProps(source: ANode, tagName: string) {
+function getComponentProps(source: AElement, tagName: string) {
     let props;
     if (source.tagName === tagName) {
         return source.props;
     }
-    const children = source.children || [];
+    const children = source.children ? (source.children as AElement[]) : ([] as AElement[]);
     children.forEach(child => {
         props = getComponentProps(child, tagName);
     });
@@ -33,28 +33,39 @@ function getComponentProps(source: ANode, tagName: string) {
     return props;
 }
 
-function createBlankStub(originalComponent: SanComponentConfig<any, any>, name: string, props: ANodeProperty[] = []) {
-    const template = originalComponent.template
-    // @ts-ignore
-        || originalComponent.prototype && originalComponent.prototype.template;
-    const source = san.parseTemplate(template);
+function createBlankStub(originalComponent: ComponentDefineOptions, name: string, props: NewAProperty[] = []) {
+    const template =
+        originalComponent.template ||
+        // @ts-ignore
+        (originalComponent.prototype && originalComponent.prototype.template);
+    const source = san.parseTemplate(template) as AElement;
     const slots = getAllSlot(source);
     let slotTemplate = '';
     let propsTemplate = '';
-
+    function addDelimiters(source: string, delimiters: [string, string] = ['{{', '}}']) {
+        return delimiters[0] + source + delimiters[1];
+    }
     if (props.length) {
         props.forEach(prop => {
-            propsTemplate += `${prop.name}="${prop.raw}" `;
+            let rawValue = prop.expr.value || '';
+            if (prop.expr.type === 4 && prop.expr.paths.length) {
+                if (prop.expr.paths[0].type === 1) {
+                    rawValue =
+                        prop.x === 1
+                            ? addDelimiters(prop.expr.paths[0].value, ['{=', '=}'])
+                            : addDelimiters(prop.expr.paths[0].value);
+                }
+            }
+            propsTemplate += `${prop.name}="${rawValue}" `;
         });
     }
 
     if (slots.length) {
         slots.forEach(slot => {
-            const slotName = slot.props.filter(slot => slot.name === 'name');
-            slotTemplate += slotName.length ? `<slot name="${slotName[0].raw}" />` : '<slot />';
+            const slotName = slot.props.filter(slot => slot.name === 'name') as NewAProperty[];
+            slotTemplate += slotName.length ? `<slot name="${slotName[0].expr.value}" />` : '<slot />';
         });
-    }
-    else {
+    } else {
         slotTemplate = '<slot />';
     }
     return {
@@ -63,11 +74,12 @@ function createBlankStub(originalComponent: SanComponentConfig<any, any>, name: 
 }
 
 export function isValidStub(stub: BasicOptions) {
-    return !!stub
-        && typeof stub === 'string'
-        || stub === true
-        || (stub && stub.template)
-        || (typeof stub === 'function' && stub.name === 'ComponentClass');
+    return (
+        (!!stub && typeof stub === 'string') ||
+        stub === true ||
+        (stub && stub.template) ||
+        (typeof stub === 'function' && stub.name === 'ComponentClass')
+    );
 }
 
 export function createComponentStubs(originalComponents: LooseObject = {}, stubs: BasicOptions[]) {
@@ -82,19 +94,16 @@ export function createComponentStubs(originalComponents: LooseObject = {}, stubs
             if (typeof stub === 'string') {
                 if (!config.stubs[stub]) {
                     components[stub] = createBlankStub({}, stub);
-                }
-                else { 
+                } else {
                     components[stub] = {
                         template: config.stubs[stub]
                     };
                 }
-            }
-            else {
+            } else {
                 throwError('each item in an options.stubs array must be a string');
             }
         });
-    }
-    else {
+    } else {
         Object.keys(stubs).forEach(stub => {
             if (stubs[stub] === false) {
                 return;
@@ -117,8 +126,7 @@ export function createComponentStubs(originalComponents: LooseObject = {}, stubs
                     template: stubs[stub]
                 };
                 originalComponents[stub] && (components[stub].name = originalComponents[stub].name);
-            }
-            else {
+            } else {
                 components[stub] = stubs[stub];
                 originalComponents[stub] && (components[stub].prototype.name = originalComponents[stub].name);
             }
@@ -128,31 +136,25 @@ export function createComponentStubs(originalComponents: LooseObject = {}, stubs
     return components;
 }
 
-export function createAllStubComponents(component: ComponentWithPrototype) {
+export function createAllStubComponents(component: ComponentDefineOptions) {
     const stubbedComponents: LooseObject = {};
-    const components = component.components
-        || component.prototype && component.prototype.components
-        || {};
+    const components = component.components || (component.prototype && component.prototype.components) || {};
 
-    const template = component.template
-        || component.prototype && component.prototype.template;
+    const template = component.template || (component.prototype && component.prototype.template);
 
-    const source = san.parseTemplate(template);
-    const initData = component.initData
-        || component.prototype && component.prototype.initData;
+    const source = san.parseTemplate(template) as AElement;
+    const initData = component.initData || (component.prototype && component.prototype.initData);
 
     Object.keys(components).forEach(key => {
-        const props = getComponentProps(source, key);
+        const props = getComponentProps(source, key) as NewAProperty[];
+
         stubbedComponents[key] = createBlankStub(components[key], key, props);
         const comp = components[key];
 
         let name;
         if (typeof comp === 'function') {
-            name = comp.name === 'ComponentClass'
-                ? comp.prototype.name
-                : comp.name;
-        }
-        else if (isPlainObject(comp)) {
+            name = comp.name === 'ComponentClass' ? comp.prototype.name : comp.name;
+        } else if (isPlainObject(comp)) {
             name = comp.name;
         }
 

@@ -13,12 +13,12 @@
 * **示例**：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import sinon from 'sinon';
 import foo from './foo';
 
 const clickHandler = sinon.stub();
-const wrapper = mount(foo, {
+const wrapper = attach(foo, {
     methods: { clickHandler }
 });
 

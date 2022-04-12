@@ -15,10 +15,10 @@
 * **示例**：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import foo from './foo';
 
-const wrapper = mount(Foo);
+const wrapper = attach(Foo);
 expect(wrapper.classes()).toContain('bar');
 expect(wrapper.classes('bar')).toBe(true);
 ```

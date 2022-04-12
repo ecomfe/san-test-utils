@@ -10,7 +10,7 @@
 
 * **返回值**：`{Promise<CheerioWrapper>}`
 
-* **选项**：移步 [挂载选项](../mountOptions/index.md)
+* **选项**：移步 [挂载选项](../attachOptions/index.md)
 
 * **用法**：
 

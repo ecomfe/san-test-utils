@@ -16,10 +16,10 @@
 * **示例**：
 
 ```js
-import {shallowMount} from 'san-test-utils';
+import {shallowAttach} from 'san-test-utils';
 import foo from './foo';
 
-const wrapper = shallowMount(foo);
+const wrapper = shallowAttach(foo);
 const filteredDivArray = wrapper
   .findAll('div')
   .filter(w => !w.hasClass('filtered'));

@@ -8,9 +8,9 @@
 * **示例**：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 
-const wrapper = mount(component);
+const wrapper = attach(component);
 
 wrapper.vm.dispatch('foo');
 wrapper.vm.dispatch('bar', 123);

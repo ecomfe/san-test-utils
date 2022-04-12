@@ -12,10 +12,10 @@
 * **示例**：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import foo from './foo';
 
-const wrapper = mount(foo);
+const wrapper = attach(foo);
 wrapper.setData({foo: 'bar'});
 expect(wrapper.vm.data.get('foo')).toBe('bar');
 ```

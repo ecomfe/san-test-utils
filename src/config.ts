@@ -2,7 +2,7 @@
  * @file san test utils config file
  **/
 
-import { LooseObject } from "./types";
+import {LooseObject} from '../types';
 
 export default {
     stubs: {} as LooseObject,

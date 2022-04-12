@@ -2,15 +2,16 @@
  * @file san test utils tool file
  **/
 
+import {ComponentNewOptions} from 'san';
 import isPlainObject from 'lodash/isPlainObject';
 import isEmpty from 'lodash/isEmpty';
 import cloneDeep from 'lodash/cloneDeep';
 import {throwError, genId, componentMap, getComponentProto} from './index';
 import {createComponentStubs} from './createComponentStubs';
-import { ComponentWithPrototype, LooseObject, SlotObject } from '../types';
-import { ComponentConstructor, SanComponent, SanComponentConfig } from 'san/types';
+import {LooseObject, SlotObject} from '../../types';
+import {ComponentDefineOptionComponents, Component, ComponentDefineOptions} from 'san/types';
 
-function mergeStubsComponents(rootComponent: ComponentWithPrototype, stubsComponents: LooseObject) {
+function mergeStubsComponents(rootComponent: ComponentDefineOptions, stubsComponents: LooseObject) {
     if (isEmpty(rootComponent.components)) {
         rootComponent.components = stubsComponents;
     }
@@ -31,8 +32,7 @@ function getSlotObject(key: string, value: string | Function | object) {
         result.type = 'component';
         result.component = value;
         template = `<${result.slotId} />`;
-    }
-    else if (typeof value === 'string') {
+    } else if (typeof value === 'string') {
         result.type = 'string';
         template = value;
     }
@@ -40,26 +40,23 @@ function getSlotObject(key: string, value: string | Function | object) {
     return result;
 }
 
-export function getNewComponent(component: SanComponentConfig<any, any>) {
+export function getNewComponent(component: ComponentDefineOptions) {
     if (isPlainObject(component)) {
         const clonedComponent = cloneDeep(component);
         for (let key in clonedComponent.components) {
-            clonedComponent.components[key] = getComponentProto(clonedComponent.components[key] as ComponentConstructor<{}, {}>);
+            clonedComponent.components[key] = getComponentProto(
+                clonedComponent.components[key] as ComponentDefineOptionComponents
+            );
         }
         return clonedComponent;
     }
     return getComponentProto(component);
 }
 
-
-export default function (component: SanComponent<any>, options: LooseObject = {}) {
+export default function (component: ComponentDefineOptions | LooseObject, options: LooseObject = {}) {
     let newComponent = getNewComponent(component);
 
-    const componentOptions: {
-        data: LooseObject,
-        source?: string,
-        owner?: any,
-    } = {
+    const componentOptions: ComponentNewOptions = {
         data: options.data || {}
     };
 
@@ -74,8 +71,10 @@ export default function (component: SanComponent<any>, options: LooseObject = {}
     // process parent component
     let parentComponent = options.parentComponent;
     if (parentComponent) {
-        if (!isPlainObject(parentComponent)
-            && (typeof parentComponent !== 'function' || parentComponent.name !== 'ComponentClass')) {
+        if (
+            !isPlainObject(parentComponent) &&
+            (typeof parentComponent !== 'function' || parentComponent.name !== 'ComponentClass')
+        ) {
             throwError('options.parentComponent should be a valid San component');
         }
         componentOptions.owner = parentComponent;
@@ -113,7 +112,7 @@ export default function (component: SanComponent<any>, options: LooseObject = {}
         });
 
         componentOptions.source = `<slots-component>${slotTemplate}</slots-component>`;
-        componentOptions.owner = newComponent;
+        componentOptions.owner = newComponent as Component;
     }
 
     return {

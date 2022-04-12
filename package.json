@@ -13,8 +13,8 @@
     "build": "rollup -c",
     "test": "jest ./test/specs/",
     "release": "sh scripts/release.sh",
-    "doc:dev": "san docit ./docs/zh-cn/",
-    "doc:release": "san docit ./docs/zh-cn/ --output --mode production --config ./docs/san.config.js"
+    "doc:dev": "sdoc start docs/zh-cn",
+    "doc:release": "sdoc build docs/zh-cn"
   },
   "repository": {
     "type": "git",
@@ -42,7 +42,7 @@
     "@rollup/plugin-commonjs": "^11.1.0",
     "@rollup/plugin-json": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
-    "@rollup/plugin-typescript": "^8.3.0",
+    "@sdoc/cli": "^1.0.9",
     "@types/jest": "^27.0.2",
     "@types/lodash": "^4.14.176",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
@@ -60,6 +60,7 @@
     "rollup": "^2.58.3",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-peer-deps-external": "^2.2.2",
+    "rollup-plugin-typescript2": "^0.31.2",
     "san": "^3.11.1",
     "san-ssr": "^4.9.1",
     "sinon": "^8.0.1",

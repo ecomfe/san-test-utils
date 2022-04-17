@@ -6,11 +6,11 @@
 * **示例**：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import sinon from 'sinon';
 
 const spy = sinon.stub();
-mount({
+attach({
     template: '<div />',
     detached() {
         spy()

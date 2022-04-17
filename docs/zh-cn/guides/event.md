@@ -5,7 +5,7 @@
 `Wrapper` 封装了一个 `trigger` 方法。它可以用来触发 DOM 事件。
 
 ```js
-const wrapper = mount(myButton);
+const wrapper = attach(myButton);
 
 wrapper.trigger('click');
 ```
@@ -13,7 +13,7 @@ wrapper.trigger('click');
 你应该注意到了，`find` 方法也会返回一个 `Wrapper`。假设 `myComponent` 包含一个按钮，下面的代码会点击这个按钮。
 
 ```js
-const wrapper = mount(myComponent);
+const wrapper = attach(myComponent);
 
 wrapper.find('button').trigger('click');
 ```
@@ -25,7 +25,7 @@ wrapper.find('button').trigger('click');
 注意 `target` 对象不能被添加到 `options` 对象中。
 
 ```js
-const wrapper = mount(myButton);
+const wrapper = attach(myButton);
 
 wrapper.trigger('click', {button: 0});
 ```
@@ -56,13 +56,13 @@ export default san.defineComponent({
 
 ```js
 import yesNoComponent from './yesNoComponent';
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import sinon from 'sinon';
 
 describe('Click event', () => {
     it('Click on yes button calls our method with argument "yes"', () => {
         const spy = sinon.spy()
-        const wrapper = mount(yesNoComponent, {
+        const wrapper = attach(yesNoComponent, {
             methods: {
                 callMe: spy
             }
@@ -131,36 +131,36 @@ export default san.defineComponent({
 
 ```js
 import quantityComponent from './quantityComponent';
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 
 describe('Key event tests', () => {
     it('Quantity is zero by default', () => {
-        const wrapper = mount(quantity);
+        const wrapper = attach(quantity);
         expect(wrapper.vm.data.get('quantity')).toBe(0);
     });
 
     it('Up arrow key increments quantity by 1', () => {
-        const wrapper = mount(quantity);
+        const wrapper = attach(quantity);
         wrapper.trigger('keydown-up');
         expect(wrapper.vm.data.get('quantity')).toBe(1);
     });
 
     it('Down arrow key decrements quantity by 1', () => {
-        const wrapper = mount(quantity);
+        const wrapper = attach(quantity);
         wrapper.vm.data.set('quantity', 5);
         wrapper.trigger('keydown-down');
         expect(wrapper.vm.data.get('quantity')).toBe(4);
     });
 
     it('Escape sets quantity to 0', () => {
-        const wrapper = mount(quantity);
+        const wrapper = attach(quantity);
         wrapper.vm.data.set('quantity', 5);
         wrapper.trigger('keydown-esc');
         expect(wrapper.vm.data.get('quantity')).toBe(0);
     });
 
     it('Magic character "a" sets quantity to 13', () => {
-        const wrapper = mount(quantity);
+        const wrapper = attach(quantity);
         wrapper.trigger('keydown', {
             key: 'a'
         });

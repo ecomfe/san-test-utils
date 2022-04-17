@@ -13,11 +13,11 @@
 * **示例**：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import foo from './foo';
 import bar from './bar';
 
-const wrapper = mount(Foo);
+const wrapper = attach(Foo);
 expect(wrapper.contains('p')).toBe(true);
 expect(wrapper.contains(bar)).toBe(true);
 ```

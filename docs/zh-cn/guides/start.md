@@ -44,18 +44,18 @@ San Test Utils 通过将它们隔离挂载，然后模拟必要的输入 (data�
 
 被挂载的组件会返回到一个 [包裹器](../wrapper/index.md) 内，而包裹器会暴露很多封装、遍历和查询其内部的 San 组件实例的便捷的方法。
 
-你可以通过 `mount` 方法来创建包裹器。让我们创建一个名叫 `test.js` 的文件：
+你可以通过 `attach` 方法来创建包裹器。让我们创建一个名叫 `test.js` 的文件：
 
 ```js
 // test.js
 
-// 从测试实用工具集中导入 `mount()` 方法
+// 从测试实用工具集中导入 `attach()` 方法
 // 同时导入你要测试的组件
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import counter from './counter';
 
 // 现在挂载组件，你便得到了这个包裹器
-const wrapper = mount(Counter);
+const wrapper = attach(Counter);
 
 // 你可以通过 `wrapper.vm` 访问实际的 San 实例
 const vm = wrapper.vm;
@@ -69,12 +69,12 @@ console.log(wrapper);
 现在我们已经有了这个包裹器，我们能做的第一件事就是确认该组件渲染出来的 HTML 符合预期。
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import counter from './counter';
 
 describe('Counter', () => {
     // 现在挂载组件，你便得到了这个包裹器
-    const wrapper = mount(counter);
+    const wrapper = attach(counter);
 
     it('renders the correct markup', () => {
         expect(wrapper.html()).toContain('<span class="count">0</span>');

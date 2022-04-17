@@ -18,12 +18,12 @@
 
 额外的，对于包含许多子组件的组件来说，整个渲染树可能会非常大。重复渲染所有的子组件可能会让我们的测试变慢。
 
-San Test Utils 允许你通过 shallowMount 方法只挂载一个组件而不渲染其子组件 (即保留它们的存根)：
+San Test Utils 允许你通过 shallowAttach 方法只挂载一个组件而不渲染其子组件 (即保留它们的存根)：
 
 ```js
-import {shallowMount} from 'san-test-utils';
+import {shallowAttach} from 'san-test-utils';
 
-const wrapper = shallowMount(component);
+const wrapper = shallowAttach(component);
 wrapper.vm; // 挂载的 San 实例
 ```
 
@@ -106,13 +106,13 @@ const parentComponent = san.defineComponent({
 测试代码
 
 ```js
-import {shallowMount} from 'san-test-utils';
+import {shallowAttach} from 'san-test-utils';
 import parentComponent from './parentComponent';
 import childComponent from './childComponent';
 
 describe('parentComponent', () => {
     it("contains class 'emitted!' when custom event is emitted", done => {
-        const wrapper = mount(parentComponent);
+        const wrapper = attach(parentComponent);
         wrapper.find(childComponent).vm.fire('custom');
         san.nextTick(() => {
             expect(wrapper.html()).toContain('<div class="emitted"></div>');
@@ -133,14 +133,14 @@ wrapper.setData({count: 10});
 ### 数据注入
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 
 const data = {
     foo: 'bar',
     bar: 123
 };
 
-mount(component, {
+attach(component, {
     data
 });
 ```
@@ -150,9 +150,9 @@ mount(component, {
 你可以使用 `stubs` 选项覆写已经注册的组件：
 
 ```js
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 
-mount(component, {
+attach(component, {
   // 将会把 globally-registered-component 解析为空的存根
   stubs: ['globally-registered-component']
 });

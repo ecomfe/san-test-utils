@@ -3,12 +3,12 @@
  **/
 
 import san from 'san';
-import {mount} from 'san-test-utils';
+import {attach} from 'san-test-utils';
 import counter from '../counter';
 
 describe('counter', () => {
     // 现在挂载组件，你便得到了这个包裹器
-    const wrapper = mount(counter);
+    const wrapper = attach(counter);
 
     it('renders the correct markup', () => {
         expect(wrapper.html()).toContain('<span class="count">0</span>');

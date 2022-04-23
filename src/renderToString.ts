@@ -9,7 +9,7 @@ import config from './config';
 import {compileToRenderer} from 'san-ssr';
 import { LooseObject, MergedComponentOptions } from '../types';
 
-export default function (component: Component<any>, options: MergedComponentOptions | LooseObject = {}) {
+export default function (component: Component<{}>, options: MergedComponentOptions | LooseObject = {}) {
     if (options.attachToDocument) {
         throwError('you cannot use attachToDocument with renderToString');
     }

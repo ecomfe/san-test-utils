@@ -2,7 +2,7 @@
  * @file san test utils find san components file
  **/
 
-import {ComponentDefineOptions} from 'san/types';
+import {ComponentDefineOptions} from 'san';
 
 function findAllComponents(vm: ComponentDefineOptions, components: ComponentDefineOptions[] = []) {
     const vmComponents = vm.components as ComponentDefineOptions;

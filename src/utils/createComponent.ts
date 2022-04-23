@@ -9,7 +9,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import {throwError, genId, componentMap, getComponentProto} from './index';
 import {createComponentStubs} from './createComponentStubs';
 import {LooseObject, SlotObject} from '../../types';
-import {ComponentDefineOptionComponents, Component, ComponentDefineOptions} from 'san/types';
+import {ComponentDefineOptionComponents, Component, ComponentDefineOptions} from 'san';
 
 function mergeStubsComponents(rootComponent: ComponentDefineOptions, stubsComponents: LooseObject) {
     if (isEmpty(rootComponent.components)) {

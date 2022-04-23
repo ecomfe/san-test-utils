@@ -2,7 +2,7 @@
  * @file san test utils shallow attach file
  **/
 
-import { ComponentDefineOptions } from 'san/types';
+import { ComponentDefineOptions } from 'san';
 import attach from './attach';
 import { LooseObject, MergedComponentOptions } from '../types';
 import {getNewComponent} from './utils/createComponent';

@@ -2,6 +2,7 @@
  * @file san test utils wrapper file
  **/
 
+import {Component} from 'san';
 import {getSelector} from '../utils/validators';
 import {throwError} from '../utils/index';
 import isPlainObject from 'lodash/isPlainObject';
@@ -9,7 +10,6 @@ import cloneDeep from 'lodash/cloneDeep';
 import find from './find';
 import ErrorWrapper from './errorWrapper';
 import createDomEvent from './createDomEvent';
-import {Component} from 'san/types';
 import {VM, SelectorValue, WrapperElement, WrapperHTMLElement, LooseObject} from '../../types/index';
 
 /* eslint-disable max-len */

@@ -18,6 +18,9 @@
     "doc:dev": "sdoc start docs/zh-cn",
     "doc:release": "sdoc build docs/zh-cn"
   },
+  "engines": {
+    "npm": ">=7.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ecomfe/san-test-utils.git"
@@ -68,7 +71,7 @@
     "sinon": "^8.0.1",
     "ts-jest": "^27.0.7",
     "tslib": "^2.3.1",
-    "typescript": "^3.9.10",
+    "typescript": "^4.6.4",
     "webpack": "^4.41.4"
   }
 }

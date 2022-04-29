@@ -58,7 +58,6 @@
     "express": "^4.17.1",
     "file-loader": "^5.0.2",
     "jest": "^27.3.1",
-    "jest-babel": "^1.0.1",
     "rollup": "^2.58.3",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-peer-deps-external": "^2.2.2",

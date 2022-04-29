@@ -52,7 +52,7 @@ export function templateContainsComponent(template: string, name: string) {
 
 export function getComponentProto(rootComponent: LooseObject, results: LooseObject = {}) {
     // 原型链上的属性和方法都要拷贝到新的对象上
-    for (var name in rootComponent.prototype) {
+    for (let name in rootComponent.prototype) {
         if (!Component.prototype.hasOwnProperty(name)) {
             results[name] = rootComponent.prototype[name];
         }

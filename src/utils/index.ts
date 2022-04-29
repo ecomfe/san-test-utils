@@ -2,7 +2,7 @@
  * @file san test utils tool file
  **/
 
-import {ComponentDefineOptions} from 'san';
+import {ComponentDefineOptions, Component} from 'san';
 import {LooseObject, MergedComponentOptions, SelectorValue, VM} from '../../types';
 
 function getOption(name: string, options: MergedComponentOptions, config: LooseObject = {}) {
@@ -51,12 +51,12 @@ export function templateContainsComponent(template: string, name: string) {
 }
 
 export function getComponentProto(rootComponent: LooseObject, results: LooseObject = {}) {
-    const names = Object.getOwnPropertyNames((rootComponent && rootComponent.prototype) || {});
-    names.forEach(name => {
-        if (name !== 'constructor') {
-            results[name] = rootComponent!.prototype[name];
+    // 原型链上的属性和方法都要拷贝到新的对象上
+    for (var name in rootComponent.prototype) {
+        if (!Component.prototype.hasOwnProperty(name)) {
+            results[name] = rootComponent.prototype[name];
         }
-    });
+    }
 
     const staticProto = Object.keys(rootComponent);
     if (staticProto.length) {

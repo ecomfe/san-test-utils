@@ -4,6 +4,7 @@
 
 import san from 'san';
 import attach from '../../src/attach';
+import ComponentExtendsBase from '../resources/component-extends-base';
 
 /* global test jest */
 describe('attach', () => {
@@ -162,5 +163,13 @@ describe('attach', () => {
         };
         const wrapper = attach(component, options);
         expect(wrapper.text()).toEqual('aBC');
+    });
+
+    test('attach class component extends Base class with customMethod()', () => {
+        const wrapper = attach(ComponentExtendsBase);
+        expect(wrapper.vm).toBeDefined();
+        expect(wrapper.data('customContent')).toEqual('customContent');
+        wrapper.find('button').trigger('click');
+        expect(wrapper.data('customContent')).toEqual('newContent');
     });
 });

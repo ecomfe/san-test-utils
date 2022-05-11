@@ -27,7 +27,7 @@
   "peerDependencies": {
     "cheerio": "1.0.0-rc.3",
     "san": "^3.11.1",
-    "san-ssr": "^4.9.1"
+    "san-ssr": "^5.4.0"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.30",
@@ -63,7 +63,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.2",
     "rollup-plugin-typescript2": "^0.31.2",
     "san": "^3.11.1",
-    "san-ssr": "^4.9.1",
+    "san-ssr": "^5.4.0",
     "sinon": "^8.0.1",
     "ts-jest": "^27.0.7",
     "tslib": "^2.3.1",
